@@ -1,0 +1,23 @@
+{
+  "name": "programming_assignment_banno",
+  "version": "1.0.0",
+  "description": "A single page, full stack application that consumes the YouTube API",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pat Kahnke",
+  "license": "ISC",
+  "dependencies": {
+    "angular": "^1.5.8",
+    "angular-route": "^1.5.8",
+    "body-parser": "^1.15.2",
+    "bootstrap": "^3.3.7",
+    "express": "^4.14.0",
+    "mongo": "^0.1.0",
+    "mongoose": "^4.6.5",
+    "ng": "0.0.0-rc6",
+    "path": "^0.12.7",
+    "router": "^1.1.4"
+  }
+}
