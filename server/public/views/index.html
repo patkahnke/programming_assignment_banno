@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="utf-8">
+    <title>YouTube VideoSearch</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="/vendors/bootstrap.min.css" />
+    <link rel="stylesheet" href="/styles/style.css" />
+    <!-- Angular -->
+    <script type="text/javascript" src="/vendors/angular.min.js"></script>
+    <script type="text/javascript" src="/vendors/angular-route.min.js"></script>
+  </head>
+  <body ng-app="mainApp">
+    <header ng-include="'views/templates/header.html'" class="jumbotron text-center"></header>
+
+    <div ng-include="'/views/templates/nav.html'"></div>
+
+    <div ng-include="'/views/templates/nowPlaying'"></div>
+
+    <main ng-view></main>
+
+    <footer ng-include="'/views/templates/footer.html'"></footer>
+
+  </body>
+</html>
