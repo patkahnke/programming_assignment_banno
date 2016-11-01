@@ -1,0 +1,15 @@
+<div class="container">
+  <h2 class="text-center">Welcome to YouTube VideoSearch!</h2>
+          <div class="col-md-6">
+            <h3>Search for videos by keyword</h3>
+            <input type="text" ng-model="keywords" placeholder="Enter keywords" />
+            <select ng-model="sortBy" ng-options="sortBy.parameters for sortBy in parameters">
+              <option value="">Sort By:</option>
+            </select>
+            <button ng-click="getVideos()">Get Videos</button>
+            <!-- <h2 ng-if="videos != undefined" >Videos:</h2>
+            <ul>
+              <li ng-repeat="video in videos" >{{video.name}}</li>
+            </ul> -->
+      </div>
+</div>
