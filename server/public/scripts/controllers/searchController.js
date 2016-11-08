@@ -2,6 +2,7 @@ myApp.controller('searchController', ['$scope', '$http', function ($scope, $http
     var key = 'AIzaSyB9HNxzV2ntrgM9dPh_77blD4HNe3sNPbY';
     var baseURL = 'https://www.googleapis.com/youtube/v3/search';
 
+    $scope.videos = undefined;
     $scope.sortBy = {};
     $scope.parameters = [
       { parameter: 'date' },
@@ -11,8 +12,7 @@ myApp.controller('searchController', ['$scope', '$http', function ($scope, $http
 
     $scope.getVideos = function () {
       var keywordSearchString = $scope.keywords.replace(/ /g, '+');
-      var query = '?part=snippet,statistics';
-      query += '&fields=items(id, snippet, statistics)';
+      var query = '?part=snippet';
       query += '&q=' + keywordSearchString;
       query += '&type=video';
       query += '&order=' + $scope.sortBy.parameter;
@@ -25,8 +25,8 @@ myApp.controller('searchController', ['$scope', '$http', function ($scope, $http
 
       $http.jsonp(request).then(
         function (response) {
-          $scope.title = 'test';
-          console.log(response);
+          $scope.videos = response.data.items;
+          console.log(response.data.items);
           //console.log(response.data.items[0].id.videoId, response.data.items[0].snippet.title);
         }
       );

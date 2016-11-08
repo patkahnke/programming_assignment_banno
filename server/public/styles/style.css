@@ -15,3 +15,11 @@ footer {
 	background: url(/images/theater-curtains-2.jpg);
   color: white;
 }
+
+.video-list-items {
+  font-size: medium
+}
+
+img {
+  margin-bottom: 25px
+}
