@@ -25,9 +25,9 @@
       <!-- Video list display section -->
       <div class="col-md-12" ng-if="videos != undefined">
         <h3>Videos:</h3>
-        <ul>
+          <ul ng-repeat="video in videos">
           <li class="row">
-            <div ng-repeat="video in videos" class="col-md-12">
+            <div class="col-md-8">
 
               <!-- Title -->
                 <h4 class="video-list-items" >{{ video.snippet.title }}</h4>
@@ -35,7 +35,7 @@
               <!-- Thumbnail -->
               <img src="{{ video.snippet.thumbnails.medium.url }}" alt="thumbnail image" class="img-thumbnail img-fluid">
             </div>
-          </li>
+            </li>
         </ul>
 
         <!-- Close video list display section -->
