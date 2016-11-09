@@ -33,7 +33,11 @@
                 <h4 class="video-list-items" >{{ video.snippet.title }}</h4>
 
               <!-- Thumbnail -->
-              <img src="{{ video.snippet.thumbnails.medium.url }}" alt="thumbnail image" class="img-thumbnail img-fluid">
+              <img
+                src="{{ video.snippet.thumbnails.medium.url }}"
+                alt="thumbnail image"
+                class="img-thumbnail img-fluid"
+                ng-click="showVideo(video.id.videoId)">
             </div>
             </li>
         </ul>

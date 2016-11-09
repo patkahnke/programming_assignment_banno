@@ -27,9 +27,35 @@ myApp.controller('searchController', ['$scope', '$http', function ($scope, $http
         function (response) {
           $scope.videos = response.data.items;
           console.log(response.data.items);
-          //console.log(response.data.items[0].id.videoId, response.data.items[0].snippet.title);
         }
       );
+
+      //Close getVideos function
     };
+
+    $scope.getVideos = function () {
+      var keywordSearchString = $scope.keywords.replace(/ /g, '+');
+      var query = '?part=snippet';
+      query += '&q=' + keywordSearchString;
+      query += '&type=video';
+      query += '&order=' + $scope.sortBy.parameter;
+      query += '&maxResults=10';
+      query += '&key=' + key;
+      query += '&callback=JSON_CALLBACK';
+
+      var request = baseURL + encodeURI(query);
+      console.log(request);
+
+      $http.jsonp(request).then(
+        function (response) {
+          $scope.videos = response.data.items;
+          console.log(response.data.items);
+        }
+      );
+
+      //Close showVideo function
+    };
+
+    //Close search controller
   },
 ]);
