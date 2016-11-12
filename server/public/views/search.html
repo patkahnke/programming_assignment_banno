@@ -27,17 +27,49 @@
         <h3>Videos:</h3>
           <ul ng-repeat="video in videos">
           <li class="row">
+
+          <!-- Thumbnail/iFrame section -->
             <div class="col-md-8">
 
               <!-- Title -->
                 <h4 class="video-list-items" >{{ video.snippet.title }}</h4>
 
               <!-- Thumbnail -->
-              <img
-                src="{{ video.snippet.thumbnails.medium.url }}"
-                alt="thumbnail image"
-                class="img-thumbnail img-fluid"
-                ng-click="showVideo(video.id.videoId)">
+                <div ng-if="video.id.videoId !== selectedId">
+                  <img
+                    src="{{ video.snippet.thumbnails.high.url }}"
+                    alt="thumbnail image"
+                    class="img-thumbnail img-fluid"
+                    ng-click="showVideo(video.id.videoId)">
+                </div>
+
+              <!-- iFrame -->
+                <div ng-if="video.id.videoId == selectedId">
+                  <iframe
+                    width="480"
+                    height="360"
+                    src="{{ embedUrl }}"
+                    frameborder="0"
+                    allowfullscreen>
+                  </iframe>
+
+                  <div class="row meta-data">
+                    <div class="col-md-2">
+                      <h4>Comments: {{  }}</h4>
+                    </div>
+                    <div class="col-md-2">
+                      <h4>Likes: {{  }}</h4>
+                    </div>
+                    <div class="col-md-2">
+                      <h4>Dislikes: {{  }}</h4>
+                    </div>
+                    <div class="col-md-2">
+                      <h4>Channel: {{  }}</h4>
+                    </div>
+                  </div>
+                </div>
+
+              <!-- Close Thumbnail/iFrame section -->
             </div>
             </li>
         </ul>
