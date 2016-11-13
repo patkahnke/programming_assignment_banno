@@ -33,9 +33,29 @@ myApp.controller('searchController', ['$scope', '$http', '$sce', function ($scop
       //Close getVideos function
     };
 
-    $scope.showVideo = function (videoId) {
+    function embedVideos(response) {
+      var videoList = response;
+
+      var queryIdList = buildQueryIdList(videoList);
+
+
+    }
+
+    function buildQueryIdList(videoList) {
+      var queryIdList = '';
+
+      for (var i = 0; i < videoList.length - 1; i++) {
+        queryIdList += videoList[i].id.videoId + ',';
+      }
+
+      queryIdList += videoList[videoList.length - 1].id.videoId;
+
+      return queryIdList;
+    }
+
+    getEmbedVideos = function (videoIdList) {
       var baseURL = 'https://www.googleapis.com/youtube/v3/videos';
-      var query = '?id=' + videoId;
+      var query = '?id=' + videoIdList;
       query += '&part=statistics';
       query += '&key=' + key;
       query += '&callback=JSON_CALLBACK';
