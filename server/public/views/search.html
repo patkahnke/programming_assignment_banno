@@ -28,27 +28,17 @@
           <ul ng-repeat="video in videos">
           <li class="row">
 
-          <!-- Thumbnail/iFrame section -->
+          <!-- iFrame section -->
             <div class="col-md-8">
 
               <!-- Title -->
                 <h4 class="video-list-items" >{{ video.snippet.title }}</h4>
 
-              <!-- Thumbnail -->
-                <div ng-if="video.id.videoId !== selectedId">
-                  <img
-                    src="{{ video.snippet.thumbnails.high.url }}"
-                    alt="thumbnail image"
-                    class="img-thumbnail img-fluid"
-                    ng-click="showVideo(video.id.videoId)">
-                </div>
-
               <!-- iFrame -->
-                <div ng-if="video.id.videoId == selectedId">
                   <iframe
                     width="480"
                     height="360"
-                    src="{{ embedUrl }}"
+                    src="{{ video.embedUrl }}"
                     frameborder="0"
                     allowfullscreen>
                   </iframe>
@@ -67,7 +57,6 @@
                       <h4>Channel: {{  }}</h4>
                     </div>
                   </div>
-                </div>
 
               <!-- Close Thumbnail/iFrame section -->
             </div>

@@ -11,12 +11,11 @@
   "license": "ISC",
   "dependencies": {
     "angular": "^1.5.8",
+    "angular-environment": "^1.0.4",
     "angular-route": "^1.5.8",
     "body-parser": "^1.15.2",
     "bootstrap": "^3.3.7",
     "express": "^4.14.0",
-    "mongo": "^0.1.0",
-    "mongoose": "^4.6.5",
     "ng": "0.0.0-rc6",
     "path": "^0.12.7",
     "router": "^1.1.4"

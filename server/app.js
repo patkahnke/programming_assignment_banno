@@ -2,9 +2,11 @@ var express = require('express');
 var app = express();
 var path = require('path');
 var bodyParser = require('body-parser');
+var env = require('../env.js');
 
 // modules
 var index = require('./routes/index');
+var environmentVars = require('./routes/environmentVars');
 
 // middleware
 app.use(express.static(path.join(__dirname, './public')));
@@ -12,6 +14,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // express routes
+app.use('/environmentVars', environmentVars);
 app.use('/', index);
 
 // start server
