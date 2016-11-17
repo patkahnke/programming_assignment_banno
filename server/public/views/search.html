@@ -34,15 +34,29 @@
               <!-- Title -->
                 <h4 class="video-list-items" >{{ video.snippet.title }}</h4>
 
+                <div class="row">
               <!-- iFrame -->
-                  <iframe
-                    width="480"
-                    height="360"
-                    src="{{ video.embedUrl }}"
-                    frameborder="0"
-                    allowfullscreen>
-                  </iframe>
+                  <div class="col-md-8">
+                    <iframe
+                      width="480"
+                      height="360"
+                      src="{{ video.embedUrl }}"
+                      frameborder="0"
+                      allowfullscreen>
+                    </iframe>
+                  </div>
 
+                  <!-- "Add Comments" field -->
+                  <div class="col-md-4">
+                    <input type="text" ng-model="comment" placeholder="Add a comment for yourself" />
+
+                  <!-- "Add Favorite" button -->
+                    <button type="submit" class="btn btn-primary btn-sm" ng-click="addFavorite(video)">Favorite</button>
+                </div>
+              </div>
+
+              <div class="row">
+              <div class="col-md-8">
                   <div class="row meta-data">
                     <div class="col-md-2">
                       <h4>Comments: {{  }}</h4>
@@ -55,6 +69,13 @@
                     </div>
                     <div class="col-md-2">
                       <h4>Channel: {{  }}</h4>
+                    </div>
+                  </div>
+                </div>
+
+                  <!-- "Favorite Added" message -->
+                    <div class="col-md-2" ng-if="favoriteAdded === true">
+                      <h4>This video has been added to your favorites</h4>
                     </div>
                   </div>
 

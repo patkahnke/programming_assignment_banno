@@ -2,10 +2,13 @@ var express = require('express');
 var app = express();
 var path = require('path');
 var bodyParser = require('body-parser');
+
+//load the environment variables from a non-tracked env.js file in the root folder
 var env = require('../env.js');
 
 // modules
 var index = require('./routes/index');
+var favorites = require('./routes/favorites');
 var environmentVars = require('./routes/environmentVars');
 
 // middleware
@@ -14,6 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // express routes
+app.use('/favorites', favorites);
 app.use('/environmentVars', environmentVars);
 app.use('/', index);
 

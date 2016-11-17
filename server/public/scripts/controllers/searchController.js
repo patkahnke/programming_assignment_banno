@@ -1,7 +1,9 @@
 //Inject $sce (Strict Contextual Escaping) dependency, in order to allow for the embed
 //urls from YouTube to be trusted by AngularJS. $sce is called within the buildEmbedVideos function
-myApp.controller('searchController', ['$scope', '$http', '$sce', 'EnvironmentVarsFactory', function ($scope, $http, $sce, EnvironmentVarsFactory) {
+myApp.controller('searchController', ['$scope', '$http', '$sce', '$filter', 'EnvironmentVarsFactory', function ($scope, $http, $sce, $filter, EnvironmentVarsFactory) {
     console.log('search controller running');
+
+    $scope.favoriteAdded = false;
 
     var environmentVarsFactory = EnvironmentVarsFactory;
     console.log('big console log', environmentVarsFactory.factoryGetYoutubeKey());
@@ -13,7 +15,7 @@ myApp.controller('searchController', ['$scope', '$http', '$sce', 'EnvironmentVar
     } else {
       key = environmentVarsFactory.factoryGetYoutubeKey();
     }
-    
+
     //set $scope.videos to "undefined" so search page is blank until a search is made
     $scope.videos = undefined;
 
@@ -61,8 +63,29 @@ myApp.controller('searchController', ['$scope', '$http', '$sce', 'EnvironmentVar
         embedVideos(videoList);
       }
       );
-
       //close the $scope.getVideos function
+    };
+
+    $scope.addFavorite = function (video) {
+      var favorite = {};
+      favorite.title = video.snippet.title;
+      favorite.videoId = video.id;
+      favorite.thumbnail = video.snippet.thumbnails.high.url;
+      favorite.comments = $scope.comment;
+      favorite.keyword = $scope.keyword;
+      favorite.date_added = $filter('date')(new Date(), 'medium');
+      console.log('favorite: ', favorite);
+
+      $http.post('/favorites', favorite).then(addFavoriteMsg, failedFavoriteMsg);
+    };
+
+    addFavoriteMsg = function () {
+      $scope.favoriteAdded = true;
+      console.log('favorite supposedly added');
+    };
+
+    failedFavoriteMsg = function () {
+      console.log('favorite not added');
     };
 
     //using the list of videos from the initial response, request more detailed
@@ -104,6 +127,7 @@ myApp.controller('searchController', ['$scope', '$http', '$sce', 'EnvironmentVar
           //drill down into the response object to return the array of video resources
           var videos = response.data.items;
           $scope.videos = buildEmbedUrls(videos);
+          console.log('$scope.videos: ', $scope.videos);
         }
       );
 
