@@ -9,15 +9,21 @@
         <h3>Search for videos by keyword</h3>
 
         <!-- Search text field -->
-        <input type="text" ng-model="keywords" placeholder="Enter keywords" />
+        <input type="text"
+                ng-model="keywords"
+                placeholder="Enter keywords" />
 
         <!-- "Sort By" options drop-down menu -->
-        <select ng-model="sortBy" ng-options="sortBy.parameter for sortBy in parameters">
+        <select ng-model="sortBy"
+                ng-options="sortBy.parameter for sortBy in parameters">
           <option value="">Sort By:</option>
         </select>
 
         <!-- Submit button -->
-        <button type="submit" class="btn btn-primary btn-sm" ng-click="getVideos()">Get Videos</button>
+        <button type="submit"
+                class="btn btn-primary btn-sm"
+                ng-click="getVideos()">Get Videos
+        </button>
 
         <!-- Close search section -->
       </div>
@@ -46,13 +52,20 @@
                     </iframe>
                   </div>
 
-                  <!-- "Add Comments" field -->
-                  <div class="col-md-4">
-                    <input type="text" ng-model="comment" placeholder="Add a comment for yourself" />
+                    <!-- "Add Favorite" button -->
+                    <div class="col-md-4">
+                      <button ng-show="!video.isFavorite"
+                              type="submit"
+                              class="btn btn-primary btn-sm"
+                              ng-click="addFavorite(video)">Add Favorite
+                      </button>
+                      <button ng-show="video.isFavorite"
+                              type="submit"
+                              class="btn btn-warning btn-sm"
+                              ng-click="deleteFavorite(video)">Delete Favorite
+                      </button>
+                    </div>
 
-                  <!-- "Add Favorite" button -->
-                    <button type="submit" class="btn btn-primary btn-sm" ng-click="addFavorite(video)">Favorite</button>
-                </div>
               </div>
 
               <div class="row">
@@ -74,7 +87,7 @@
                 </div>
 
                   <!-- "Favorite Added" message -->
-                    <div class="col-md-2" ng-if="favoriteAdded === true">
+                    <div class="col-md-2" ng-if="favoriteAdded == true && selectedVideo == video.id">
                       <h4>This video has been added to your favorites</h4>
                     </div>
                   </div>

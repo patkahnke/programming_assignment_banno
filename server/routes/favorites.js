@@ -13,35 +13,10 @@ router.get('/', function (req, res) {
       done();
 
       console.log(result.rows);
-
       res.send(result.rows);
     });
   });
 });
-
-// router.post('/', function (req, res) {
-//   var movie = req.body;
-//
-//   pg.connect(connectionString, function (err, client, done) {
-//     if (err) {
-//       res.sendStatus(500);
-//     }
-//
-//     client.query('INSERT INTO movies (title, year, director) ' +
-//                   'VALUES ($1, $2, $3)',
-//                    [movie.title, movie.videoID, movie.keyword],
-//                  function (err, result) {
-//                    done();
-//
-//                    if (err) {
-//                      res.sendStatus(500);
-//                      return;
-//                    }
-//
-//                    res.sendStatus(201);
-//                  });
-//   });
-// });
 
 router.post('/', function (req, res) {
   var favorite = req.body;
@@ -51,10 +26,9 @@ console.log('favorite: ', favorite);
       res.sendStatus(500);
     }
 
-    client.query('INSERT INTO favorites (title, videoid, thumbnail, comments, keyword, date_added) ' +
-                  'VALUES ($1, $2, $3, $4, $5, $6)',
-                   [favorite.title, favorite.videoid, favorite.thumbnail, favorite.comments,
-                     favorite.keyword, favorite.date_added],
+    client.query('INSERT INTO favorites (title, videoid, thumbnail, date_added) ' +
+                  'VALUES ($1, $2, $3, $4)',
+                   [favorite.title, favorite.videoId, favorite.thumbnail, favorite.date_added],
                      function (err, result) {
                        done();
 
