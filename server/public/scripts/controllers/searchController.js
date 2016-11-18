@@ -14,9 +14,7 @@ myApp.controller('searchController',
 
     //Variables
     $scope.favorites = setFavorites();
-    console.log('$scope.favorites: ', $scope.favorites);
     $scope.favoriteAdded = false;
-    $scope.selectedVideo = null;
     $scope.videos = undefined;
 
     //set up the sortBy object for the drop-down menu
@@ -35,8 +33,6 @@ myApp.controller('searchController',
     } else {
       key = environmentVarsFactory.factoryGetYoutubeKey();
     }
-
-console.log('key: ', key);
     //Scope functions
 
     //"getVideos"
@@ -45,7 +41,7 @@ console.log('key: ', key);
     //    match the search parameters, then
     // 2 - a second request is made for specific videos, using the IDs
     //    that are sent in the first response.
-    $scope.getVideos = function (favoritesIds) {
+    $scope.getVideos = function () {
       var baseURL = 'https://www.googleapis.com/youtube/v3/search';
 
       //replace spaces in the search string with "+"
@@ -62,7 +58,6 @@ console.log('key: ', key);
       query += '&callback=JSON_CALLBACK';
 
       var request = baseURL + encodeURI(query);
-console.log('request: ', request);
 
       //chain two promises together:
       //1 - make the request for relevant videos, including IDs, then upon receipt of the response
@@ -74,9 +69,7 @@ console.log('request: ', request);
 
         //drill down into the response object for the array of video resources
         var videoList = response.data.items;
-        console.log('response: ', response);
-        console.log('videolist: ', videoList);
-        embedVideos(videoList, favoritesIds);
+        embedVideos(videoList);
       }
 
         //close the $http.jsonp request
@@ -93,33 +86,43 @@ console.log('request: ', request);
       favorite.videoId = video.id;
       favorite.thumbnail = video.snippet.thumbnails.high.url;
       favorite.date_added = $filter('date')(new Date(), 'medium');
-      console.log('favorite: ', favorite);
 
       $http.post('/favorites', favorite).then(addFavoriteMsg(video), failedFavoriteMsg);
     };
 
-    checkIfFavorite = function (videos) {
-      favorites = $scope.favorites;
-      console.log('checkIfFavorite is being called');
-      console.log('favorites: ', favorites);
-      for (var i = 0; i < videos.length; i++) {
-        videos[i].isFavorite = false;
+    checkIfFavorite = function () {
+      for (var i = 0; i < $scope.videos.length; i++) {
+        $scope.videos[i].isFavorite = false;
       };
 
-      for (var i = 0; i < videos.length; i++) {
-        for (var j = 0; j < favorites.length; j++) {
-          if (videos[i].videoid === favorites[j].videoid) {
-            videos[i].isFavorite = true;
+      for (var i = 0; i < $scope.videos.length; i++) {
+        for (var j = 0; j < $scope.favorites.length; j++) {
+          if ($scope.videos[i].id === $scope.favorites[j].videoid) {
+            $scope.videos[i].isFavorite = true;
+            $scope.videos[i].databaseId = $scope.favorites[j].id;
           };
         };
       };
+    };
 
-      return videos;
+    $scope.deleteFavorite = function (video) {
+      $scope.httpRequestFactory.factoryDeleteFavorite(video.databaseId).then(function (video) {
+        for (var i = 0; i < $scope.videos.length; i++) {
+          if ($scope.videos[i].id === video.id) {
+            $scope.videos[i].isFavorite = false;
+          };
+        };
+      });
     };
 
     function addFavoriteMsg(video) {
       $scope.favoriteAdded = true;
       $scope.selectedVideo = video.id;
+      for (var i = 0; i < $scope.videos.length; i++) {
+        if ($scope.videos[i].id === video.id) {
+          $scope.videos[i].isFavorite = true;
+        };
+      };
       console.log('favorite supposedly added');
     }
 
@@ -165,12 +168,11 @@ console.log('request: ', request);
 
           //drill down into the response object to return the array of video resources
           var videos = response.data.items;
+          console.log('response: ', response);
+          console.log('videos: ', videos);
           $scope.videos = buildEmbedUrls(videos);
+          checkIfFavorite($scope.videos);
         });
-
-      setFavorites().then(function () {
-        $scope.videos = checkIfFavorite($scope.videos);
-      });
     };
 
     // build embedded urls rather than accessing them from the YouTube API in order

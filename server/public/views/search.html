@@ -57,42 +57,48 @@
                       <button ng-show="!video.isFavorite"
                               type="submit"
                               class="btn btn-primary btn-sm"
-                              ng-click="addFavorite(video)">Add Favorite
+                              ng-click="addFavorite(video)"
+                              >Add to collection
                       </button>
                       <button ng-show="video.isFavorite"
+                              ng-init="!alreadyFavorite"
                               type="submit"
-                              class="btn btn-warning btn-sm"
-                              ng-click="deleteFavorite(video)">Delete Favorite
+                              class="btn btn-success btn-sm"
+                              ng-click="alreadyFavorite = true"
+                              >In collection
                       </button>
+                      <div ng-show="alreadyFavorite">
+                        <span>This video is already saved as a favorite.</span>
+                      </div>
+                      <div ng-if="favoriteAdded == true && selectedVideo == video.id">
+                        <span>This video has been added to your favorites.</span>
+                      </div>
                     </div>
-
-              </div>
+                    <!-- close row for iFrame and button -->
+                  </div>
 
               <div class="row">
-              <div class="col-md-8">
+              <div class="col-md-12">
                   <div class="row meta-data">
                     <div class="col-md-2">
-                      <h4>Comments: {{  }}</h4>
+                      <h4>Views:<br>{{ video.statistics.viewCount }}</h4>
                     </div>
                     <div class="col-md-2">
-                      <h4>Likes: {{  }}</h4>
+                      <h4>Likes:<br>{{ video.statistics.likeCount }}</h4>
                     </div>
                     <div class="col-md-2">
-                      <h4>Dislikes: {{  }}</h4>
+                      <h4>Dislikes:<br>{{ video.statistics.dislikeCount }}</h4>
                     </div>
                     <div class="col-md-2">
-                      <h4>Channel: {{  }}</h4>
+                      <h4>Comments:<br>{{ video.statistics.commentCount }}</h4>
+                    </div>
+                    <div class="col-md-4">
+                      <h4>Channel:<br>{{ video.snippet.channelTitle }}</h4>
                     </div>
                   </div>
                 </div>
 
-                  <!-- "Favorite Added" message -->
-                    <div class="col-md-2" ng-if="favoriteAdded == true && selectedVideo == video.id">
-                      <h4>This video has been added to your favorites</h4>
-                    </div>
-                  </div>
-
-              <!-- Close Thumbnail/iFrame section -->
+              <!-- Close iFrame section -->
             </div>
             </li>
         </ul>

@@ -7,7 +7,6 @@ myApp.factory('HttpRequestFactory', ['$http', function ($http) {
   //CRUD functions
   function getFavorites() {
     var promise = $http.get('/favorites').then(function (response) {
-      console.log('favoritesId data returned: ', response.data);
       favorites = response.data;
     });
 
@@ -26,6 +25,18 @@ myApp.factory('HttpRequestFactory', ['$http', function ($http) {
     return promise;
   }
 
+  function deleteFavorite(id) {
+    var promise = $http({
+      type: 'DELETE',
+      url: '/favorites/' + id,
+      success: function (data) {
+        console.log('favorite deleted');
+      },
+    });
+
+    return promise;
+  }
+
   // PUBLIC
   var publicApi = {
     factoryRefreshFavorites: function () {
@@ -39,6 +50,10 @@ myApp.factory('HttpRequestFactory', ['$http', function ($http) {
     factorySaveFavorite: function (newFavorite) {
       return saveFavorite(newFavorite);
     },
+
+    factoryDeleteFavorite: function (id) {
+      return deleteFavorite(id);
+    }
   };
 
   return publicApi;
