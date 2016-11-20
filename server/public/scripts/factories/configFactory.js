@@ -1,5 +1,4 @@
-myApp.factory('EnvironmentVarsFactory', ['$http', function($http) {
-  console.log('EnvironmentVarsFactory running');
+myApp.factory('ConfigFactory', ['$http', function ($http) {
 
   environmentVars = {
     youtubeAPIKey: undefined,
@@ -9,24 +8,24 @@ myApp.factory('EnvironmentVarsFactory', ['$http', function($http) {
 
   function getEnvironmentVars() {
     var promise = $http.get('/environmentVars').then(function (response) {
-      console.log('Async data returned: ', response.data);
       environmentVars = response.data;
+      console.log('environmentVars: ', environmentVars);
     });
 
     return promise;
   };
 
   var publicAPI = {
-    factoryRefreshEnvironmentVars: function () {
+    refreshConfig: function () {
       return getEnvironmentVars();
     },
 
-    factoryGetYoutubeKey: function () {
+    getYoutubeKey: function () {
       var key = environmentVars.youtubeAPIKey;
       return key;
     },
 
-    factoryGetDatabaseVars: function () {
+    getDatabaseVars: function () {
       var databaseVars = {
         user: environmentVars.user,
         password: environmentVars.password,
@@ -38,4 +37,5 @@ myApp.factory('EnvironmentVarsFactory', ['$http', function($http) {
 
   return publicAPI;
 
-}]);
+},
+]);

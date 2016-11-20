@@ -1,14 +1,23 @@
 //Inject $sce (Strict Contextual Escaping) dependency, in order to allow for the embed
 //urls from YouTube to be trusted by AngularJS. $sce is called within the buildEmbedVideos function
-myApp.controller('searchController', ['$scope', '$http', '$sce', 'EnvironmentVarsFactory', function ($scope, $http, $sce, EnvironmentVarsFactory) {
-    console.log('search controller running');
+myApp.controller('searchController',
+                ['$scope', '$http', '$sce',
+                'EnvironmentVarsFactory',
+                'HttpRequestFactory',
+        function ($scope, $http, $sce,
+                EnvironmentVarsFactory,
+                HttpRequestFactory) {
+
+    console.log('favorites controller running');
 
     var environmentVarsFactory = EnvironmentVarsFactory;
-    console.log('big console log', environmentVarsFactory.factoryGetYoutubeKey());
+    $scope.httpRequestfactory = HttpRequestFactory;
 
     if (environmentVarsFactory.factoryGetYoutubeKey() === undefined) {
       environmentVarsFactory.factoryRefreshEnvironmentVars().then(function () {
         key = environmentVarsFactory.factoryGetYoutubeKey();
+        user = environmentVarsFactory.factoryGetDatabaseVars().user;
+        password = environmentVarsFactory.factoryGetDatabaseVars().password;
       });
     } else {
       user = environmentVarsFactory.factoryGetDatabaseVars().user;
@@ -25,6 +34,11 @@ myApp.controller('searchController', ['$scope', '$http', '$sce', 'EnvironmentVar
       { parameter: 'title' },
     ];
 
+    $scope.deleteFavorite = function (video) {
+      $scope.httpRequestFactory.factoryDeleteFavorite(video.databaseId).then(function () {
+        $scope.httpRequestFactory.getVideos();
+      });
+    };
     /**-------- AJAX FUNCTIONS --------**/
     $scope.getFavorites = function () {
         $.ajax({
