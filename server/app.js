@@ -9,7 +9,7 @@ var env = require('../env.js');
 // modules
 var index = require('./routes/index');
 var favorites = require('./routes/favorites');
-var environmentVars = require('./routes/environmentVars');
+var youtubeAPIKey = require('./routes/youtubeAPIKey');
 
 // middleware
 app.use(express.static(path.join(__dirname, './public')));
@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 
 // express routes
 app.use('/favorites', favorites);
-app.use('/environmentVars', environmentVars);
+app.use('/youtubeAPIKey', youtubeAPIKey);
 app.use('/', index);
 
 // start server

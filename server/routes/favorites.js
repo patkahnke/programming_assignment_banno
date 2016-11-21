@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var pg = require('pg');
-var connectionString = 'postgres://localhost:5432/patkahnke';
+var user = process.env.user;
+var password = process.env.password;
+var connectionString = 'postgres://localhost:5432/patkahnke?user=' + user + '&password=' + password;
 
 router.get('/', function (req, res) {
   pg.connect(connectionString, function (err, client, done) {
@@ -12,7 +14,6 @@ router.get('/', function (req, res) {
     client.query('SELECT * FROM favorites', function (err, result) {
       done();
 
-      console.log(result.rows);
       res.send(result.rows);
     });
   });
@@ -20,7 +21,7 @@ router.get('/', function (req, res) {
 
 router.post('/', function (req, res) {
   var favorite = req.body;
-console.log('favorite: ', favorite);
+  console.log('favorite: ', favorite);
   pg.connect(connectionString, function (err, client, done) {
     if (err) {
       res.sendStatus(500);

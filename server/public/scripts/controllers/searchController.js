@@ -4,11 +4,11 @@ myApp.controller('searchController',
                 ['$scope', '$http',
                 'YoutubeFactory',
                 'DatabaseFactory',
-                'addFavoriteService',
+                'updateVideosService',
         function ($scope, $http,
                   YoutubeFactory,
                   DatabaseFactory,
-                  addFavoriteService) {
+                  updateVideosService) {
 
   //Factories
   youtubeFactory = YoutubeFactory;
@@ -39,7 +39,7 @@ myApp.controller('searchController',
     databaseFactory.createFavorite(video).then(function () {
       $scope.favoriteAdded = true;
       $scope.selectedVideo = video.id;
-      $scope.videos = addFavoriteService.updateVideos(video, $scope.videos);
+      $scope.videos = updateVideosService.updateVids(video, $scope.videos);
     });
   };
 

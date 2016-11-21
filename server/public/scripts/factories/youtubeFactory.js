@@ -1,65 +1,39 @@
 myApp.factory('YoutubeFactory',
               ['$http', '$filter', '$sce', '$q',
-              'ConfigFactory',
+              'KeyFactory',
               'DatabaseFactory',
     function ($http, $filter, $sce, $q,
-              ConfigFactory,
+              KeyFactory,
               DatabaseFactory) {
 
   // PRIVATE
 
   // Factories
-  var configFactory = ConfigFactory;
+  var keyFactory = KeyFactory;
   var databaseFactory = DatabaseFactory;
 
-  // Set up variables
-  var key;
-  setKey();
-  var favorites = setFavorites();
+  //  Global Variables
+  var youtubeAPIKey;
+  var favorites;
   var videoIdsObject = {};
   var videoDataObject = {};
 
-  // Utility functions
+  setKey();
+  setFavorites();
 
-  function setKey() {
-    // set up the YouTube API key
-    if (configFactory.getYoutubeKey() === undefined) {
-      configFactory.refreshConfig().then(function () {
-        key = configFactory.getYoutubeKey();
-      });
-    } else {
-      key = configFactory.getYoutubeKey();
-    };
-  }
-
-  function setFavorites() {
-    var favorites = {};
-    if (databaseFactory.getFavorites() === undefined) {
-      databaseFactory.refreshFavorites().then(function () {
-        return favorites = databaseFactory.getFavorites();
-      });
-    } else {
-      return favorites = databaseFactory.getFavorites();
-    }
-  };
-
-  function formatKeywords(keywords) {
-    var newString = keywords.replace(/ /g, '+');
-    return newString;
-  }
-
+  // Main Request Functions
   function youtubeRequestOne(rawKeywords, sortBy) {
+    // Makes initial request for relevant videos, by keywords
     var keywords;
     var requestOne;
 
     // replace spaces between keywords with "+" and build the request
     keywords = formatKeywords(rawKeywords);
-    requestOne = buildRequestOne(keywords, sortBy, key);
+    requestOne = buildRequestOne(keywords, sortBy, youtubeAPIKey);
 
-    // make the request for relevant videos, by keywords
+    // make the request
     var promise = $http.jsonp(requestOne).then(
       function (response) {
-        console.log('response1: ', response);
         videoIdsObject = response;
       });
 
@@ -67,6 +41,7 @@ myApp.factory('YoutubeFactory',
   }
 
   function youtubeRequestTwo(videoIdsObject) {
+    // makes a second request to YouTube, by video id, for more data on videos in list
     var request;
     var queryIdList;
     var vidList = videoIdsObject.data.items;
@@ -78,7 +53,6 @@ myApp.factory('YoutubeFactory',
     var promise = $http.jsonp(request).then(
       function (response) {
         videoDataObject = response;
-        console.log('response request two: ', response);
       });
 
     return promise;
@@ -86,16 +60,39 @@ myApp.factory('YoutubeFactory',
 
   function createEmbedVideos() {
     var videosToEmbed = videoDataObject.data.items;
-    var embedVideos;
-    var embedFavVideos;
-    console.log('createEmbedVideos called');
-      console.log('data before buildEmbedurls: ', videosToEmbed);
-      var embedVideos = buildEmbedUrls(videosToEmbed);
-      console.log('embedVideos after buildembedvideos: ', embedVideos);
-      var embedFavVideos = checkIfFavorite(embedVideos);
-      console.log('embedVideos after checkIfFavoeite: ', embedFavVideos);
-      return embedFavVideos;
+    var embedVideos = buildEmbedUrls(videosToEmbed);
+    embedVideos = checkIfFavorite(embedVideos);
+    return embedVideos;
   }
+
+  // Utility functions
+  function setKey() {
+    // retrieve the YouTube API Key from the KeyFactory
+    if (keyFactory.getYoutubeKey() === undefined) {
+      keyFactory.refreshKey().then(function () {
+        youtubeAPIKey = keyFactory.getYoutubeKey();
+      });
+    } else {
+      youtubeAPIKey = keyFactory.getYoutubeKey();
+    };
+  }
+
+  function setFavorites() {
+    // retrieve all favorited videos from the database
+    if (databaseFactory.getFavorites() === undefined) {
+      databaseFactory.refreshFavorites().then(function () {
+        favorites = databaseFactory.getFavorites();
+      });
+    } else {
+      favorites = databaseFactory.getFavorites();
+    }
+  };
+
+  function formatKeywords(keywords) {
+    var newString = keywords.replace(/ /g, '+');
+    return newString;
+  }
+
 
   function buildQueryIdList(videoList) {
     //build a comma-separated list of the returned video IDs to insert into the request URL
@@ -128,6 +125,7 @@ myApp.factory('YoutubeFactory',
   }
 
   function checkIfFavorite(vidsObject) {
+    console.log('favorites: ', favorites);
     for (var i = 0; i < vidsObject.length; i++) {
       vidsObject[i].isFavorite = false;
     };
@@ -166,7 +164,7 @@ myApp.factory('YoutubeFactory',
 
     //statistics returns meta data such as number of views, likes, and dislikes
     query += '&part=statistics,snippet';
-    query += '&key=' + key;
+    query += '&key=' + youtubeAPIKey;
     query += '&callback=JSON_CALLBACK';
 
     var request = baseURL + encodeURI(query);
@@ -181,7 +179,6 @@ myApp.factory('YoutubeFactory',
     },
 
     getVideosData: function () {
-      console.log(videoIdsObject);
       return youtubeRequestTwo(videoIdsObject);
     },
 

@@ -1,5 +1,5 @@
-myApp.service('addFavoriteService', function () {
-    this.updateVideos = function (video, scopeVideos) {
+myApp.service('updateVideosService', function () {
+    this.updateVids = function (video, scopeVideos) {
       var scopeVideos = scopeVideos;
       for (var i = 0; i < scopeVideos.length; i++) {
         if (scopeVideos[i].id === video.id) {
