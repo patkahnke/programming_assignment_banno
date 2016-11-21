@@ -1,8 +1,8 @@
 myApp.factory('YoutubeFactory',
-              ['$http', '$filter', '$sce',
+              ['$http', '$filter', '$sce', '$q',
               'ConfigFactory',
               'DatabaseFactory',
-    function ($http, $filter, $sce,
+    function ($http, $filter, $sce, $q,
               ConfigFactory,
               DatabaseFactory) {
 
@@ -15,30 +15,9 @@ myApp.factory('YoutubeFactory',
   // Set up variables
   var key;
   setKey();
-  console.log('key: ', key);
   var favorites = setFavorites();
-
-  // request YouTube video resources and prepare data for embedding
-  function getYoutubeVids(rawKeywords, sortBy) {
-    return new Promise(function (resolve, reject) {
-
-      // initial request for video resources by keyword
-      youtubeRequestOne(rawKeywords, sortBy).then(function (data) {
-console.log('data after request one: ', data);
-        // second request for more detailed info using the ids of the returned video resources
-        return youtubeRequestTwo(data);
-      }).then(function (data) {
-        console.log('data after request two: ', data);
-
-        // create embeddable urls, and also add boolean value "isFavorite" to videos object
-        createEmbedVideos(data);
-      }).then(function (data) {
-        var embedVideos = data;
-        console.log('embedVideos: ', embedVideos);
-        resolve(embedVideos);
-      });
-    });
-  }
+  var videoIdsObject = {};
+  var videoDataObject = {};
 
   // Utility functions
 
@@ -70,59 +49,52 @@ console.log('data after request one: ', data);
   }
 
   function youtubeRequestOne(rawKeywords, sortBy) {
-    return new Promise(function (resolve, reject) {
-      var keywords;
-      var request;
-      var videoList;
+    var keywords;
+    var requestOne;
 
-      // replace spaces between keywords with "+" and build the request
-      keywords = formatKeywords(rawKeywords);
-      request = buildRequestOne(keywords, sortBy, key);
-      console.log('requestOne: ', request);
+    // replace spaces between keywords with "+" and build the request
+    keywords = formatKeywords(rawKeywords);
+    requestOne = buildRequestOne(keywords, sortBy, key);
 
-      // make the request for relevant videos, by keywords
-      $http.jsonp(request).then(
-        function (response) {
-          videoList = response.data.items;
-          resolve(videoList);
-        });
-    });
+    // make the request for relevant videos, by keywords
+    var promise = $http.jsonp(requestOne).then(
+      function (response) {
+        console.log('response1: ', response);
+        videoIdsObject = response;
+      });
+
+    return promise;
   }
 
-  function youtubeRequestTwo(data) {
-    return new Promise(function (resolve, reject) {
-      var request;
-      var queryIdList;
-      var videoList = data;
+  function youtubeRequestTwo(videoIdsObject) {
+    var request;
+    var queryIdList;
+    var vidList = videoIdsObject.data.items;
 
-      // build a request with a list of all returned video resource ids
-      queryIdList = buildQueryIdList(videoList);
-      request = buildRequestTwo(queryIdList);
+    // build a request with a list of all returned video resource ids
+    queryIdList = buildQueryIdList(vidList);
+    request = buildRequestTwo(queryIdList);
 
-      $http.jsonp(request).then(
-        function (response) {
+    var promise = $http.jsonp(request).then(
+      function (response) {
+        videoDataObject = response;
+        console.log('response request two: ', response);
+      });
 
-          //drill down into the response object to return the array of video resources
-          var videos = response.data.items;
-          console.log('response.data.items: ', response.data.items);
-          console.log('videos before second resolve: ', videos);
-          resolve(videos);
-        });
-    });
+    return promise;
   }
 
-  function createEmbedVideos(data) {
+  function createEmbedVideos() {
+    var videosToEmbed = videoDataObject.data.items;
+    var embedVideos;
+    var embedFavVideos;
     console.log('createEmbedVideos called');
-    return new Promise(function (resolve, reject) {
-      var videos = data;
-      console.log('data before buildEmbedurls: ', data);
-      console.log('videos before buildEmbedUrls:', videos);
-      var embedVideos = buildEmbedUrls(videos);
+      console.log('data before buildEmbedurls: ', videosToEmbed);
+      var embedVideos = buildEmbedUrls(videosToEmbed);
       console.log('embedVideos after buildembedvideos: ', embedVideos);
-      embedVideos = checkIfFavorite(embedVideos);
-      console.log('embedVideos after checkIfFavoeite: ', embedVideos);
-      resolve(embedVideos);
-    });
+      var embedFavVideos = checkIfFavorite(embedVideos);
+      console.log('embedVideos after checkIfFavoeite: ', embedFavVideos);
+      return embedFavVideos;
   }
 
   function buildQueryIdList(videoList) {
@@ -137,11 +109,11 @@ console.log('data after request one: ', data);
     return queryIdList;
   }
 
-  function buildEmbedUrls(videos) {
+  function buildEmbedUrls(videosObject) {
     // build embedded urls rather than accessing them from the YouTube API in order
     // to have more control over parameters
-    for (var i = 0; i < videos.length; i++) {
-      var videoId = videos[i].id;
+    for (var i = 0; i < videosObject.length; i++) {
+      var videoId = videosObject[i].id;
 
       //As a security measure, AngularJS' Strict Contextual Escaping does not allow binding of
       //arbitrary HTML that is controlled by the user, such as the embedded url below.
@@ -149,27 +121,27 @@ console.log('data after request one: ', data);
       embedUrl = $sce.trustAsResourceUrl('https://www.youtube.com/embed/' + videoId);
 
       //add "embedUrl" to the videos object and populate it with the new embedUrls
-      videos[i].embedUrl = embedUrl;
+      videosObject[i].embedUrl = embedUrl;
     }
 
-    return videos;
+    return videosObject;
   }
 
-  function checkIfFavorite(embedVideos) {
-    for (var i = 0; i < embedVideos.length; i++) {
-      embedVideos[i].isFavorite = false;
+  function checkIfFavorite(vidsObject) {
+    for (var i = 0; i < vidsObject.length; i++) {
+      vidsObject[i].isFavorite = false;
     };
 
-    for (var i = 0; i < embedVideos.length; i++) {
+    for (var i = 0; i < vidsObject.length; i++) {
       for (var j = 0; j < favorites.length; j++) {
-        if (embedVideos[i].id === favorites[j].videoid) {
-          embedVideos[i].isFavorite = true;
-          embedVideos[i].databaseId = favorites[j].id;
+        if (vidsObject[i].id === favorites[j].videoid) {
+          vidsObject[i].isFavorite = true;
+          vidsObject[i].databaseId = favorites[j].id;
         };
       };
     }
 
-    return embedVideos;
+    return vidsObject;
   }
 
   function buildRequestOne(keywordSearchString, sortBy, key) {
@@ -204,12 +176,20 @@ console.log('data after request one: ', data);
 
   // PUBLIC
   var publicApi = {
-    getYoutubeVideos: function (keywords, sortBy) {
-      getYoutubeVids(keywords, sortBy);
+    getVideoIds: function (keywords, sortBy) {
+      return youtubeRequestOne(keywords, sortBy);
+    },
+
+    getVideosData: function () {
+      console.log(videoIdsObject);
+      return youtubeRequestTwo(videoIdsObject);
+    },
+
+    formatVideosData: function () {
+      return createEmbedVideos(videoDataObject);
     },
   };
 
   return publicApi;
-
 },
 ]);

@@ -11,8 +11,8 @@ myApp.controller('searchController',
                   addFavoriteService) {
 
   //Factories
-  var youtubeFactory = YoutubeFactory;
-  var databaseFactory = DatabaseFactory;
+  youtubeFactory = YoutubeFactory;
+  databaseFactory = DatabaseFactory;
 
   //Variables
   $scope.favoriteAdded = false;
@@ -28,8 +28,11 @@ myApp.controller('searchController',
 
   //Scope functions
   $scope.getVideos = function () {
-    $scope.videos = youtubeFactory.getYoutubeVideos($scope.keywords, $scope.sortBy);
-    console.log('$scope.videos: ', $scope.videos);
+    youtubeFactory.getVideoIds($scope.keywords, $scope.sortBy).then(function () {
+      youtubeFactory.getVideosData().then(function () {
+        $scope.videos = youtubeFactory.formatVideosData();
+      });
+    });
   };
 
   $scope.addFavorite = function (video) {
