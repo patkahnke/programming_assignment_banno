@@ -1,6 +1,8 @@
 myApp.factory('DatabaseFactory', ['$http', '$filter', '$sce', function ($http, $filter, $sce) {
 
   // PRIVATE
+
+  // Global Variables
   var favorites = undefined;
 
   // Database CRUD functions
@@ -18,9 +20,11 @@ myApp.factory('DatabaseFactory', ['$http', '$filter', '$sce', function ($http, $
     favorite.videoId = video.id;
     favorite.thumbnail = video.snippet.thumbnails.high.url;
     favorite.date_added = $filter('date')(new Date(), 'medium');
-    var promise = $http.post('/favorite', favorite).then(function (response) {
+
+    // post favorite to database
+    var promise = $http.post('/favorites', favorite).then(function (response) {
       if (response.status == 201) {
-        return console.log('Added to favorites: ', favorite.title);
+        youtubeFactory.refreshFavorites();
       } else {
         console.log('Error', response.data);
       }

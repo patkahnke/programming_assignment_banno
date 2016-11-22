@@ -1,10 +1,9 @@
-myApp.factory('YoutubeFactory',
-              ['$http', '$filter', '$sce', '$q',
-              'KeyFactory',
-              'DatabaseFactory',
-    function ($http, $filter, $sce, $q,
-              KeyFactory,
-              DatabaseFactory) {
+myApp.factory('YoutubeFactory', ['$http', '$filter', '$sce', '$q',
+                                'KeyFactory',
+                                'DatabaseFactory',
+                        function ($http, $filter, $sce, $q,
+                                KeyFactory,
+                                DatabaseFactory) {
 
   // PRIVATE
 
@@ -79,20 +78,15 @@ myApp.factory('YoutubeFactory',
 
   function setFavorites() {
     // retrieve all favorited videos from the database
-    if (databaseFactory.getFavorites() === undefined) {
-      databaseFactory.refreshFavorites().then(function () {
-        favorites = databaseFactory.getFavorites();
-      });
-    } else {
+    databaseFactory.refreshFavorites().then(function () {
       favorites = databaseFactory.getFavorites();
-    }
-  };
+    });
+  }
 
   function formatKeywords(keywords) {
     var newString = keywords.replace(/ /g, '+');
     return newString;
   }
-
 
   function buildQueryIdList(videoList) {
     //build a comma-separated list of the returned video IDs to insert into the request URL
@@ -184,6 +178,10 @@ myApp.factory('YoutubeFactory',
 
     formatVideosData: function () {
       return createEmbedVideos(videoDataObject);
+    },
+
+    refreshFavorites: function () {
+      return setFavorites();
     },
   };
 

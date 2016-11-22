@@ -14,7 +14,7 @@ myApp.controller('searchController',
   youtubeFactory = YoutubeFactory;
   databaseFactory = DatabaseFactory;
 
-  //Variables
+  //Scope Variables
   $scope.favoriteAdded = false;
   $scope.videos = undefined;
 
@@ -39,7 +39,7 @@ myApp.controller('searchController',
     databaseFactory.createFavorite(video).then(function () {
       $scope.favoriteAdded = true;
       $scope.selectedVideo = video.id;
-      $scope.videos = updateVideosService.updateVids(video, $scope.videos);
+      $scope.videos = updateVideosService.updateVids(video, $scope.videos, recentlyAddedVideos);
     });
   };
 

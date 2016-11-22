@@ -1,4 +1,6 @@
-myApp.service('updateVideosService', function () {
+myApp.service('updateVideosService', ['YoutubeFactory', function (YoutubeFactory) {
+    var youtubeFactory = YoutubeFactory;
+
     this.updateVids = function (video, scopeVideos) {
       var scopeVideos = scopeVideos;
       for (var i = 0; i < scopeVideos.length; i++) {
@@ -7,7 +9,9 @@ myApp.service('updateVideosService', function () {
         };
       };
 
+      youtubeFactory.refreshFavorites();
       console.log('favorite supposedly added');
       return scopeVideos;
     };
-  });
+  },
+]);
