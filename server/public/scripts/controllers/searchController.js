@@ -15,8 +15,8 @@ myApp.controller('searchController',
   databaseFactory = DatabaseFactory;
 
   //Scope Variables
+  $scope.videos;
   $scope.favoriteAdded = false;
-  $scope.videos = undefined;
 
   //set up the sortBy object for the drop-down menu
   $scope.sortBy = {};
@@ -26,11 +26,15 @@ myApp.controller('searchController',
     { parameter: 'relevance' },
   ];
 
+  $scope.searchWord = {};
+  $scope.searchParams;
+
   //Scope functions
   $scope.getVideos = function () {
     youtubeFactory.getVideoIds($scope.keywords, $scope.sortBy).then(function () {
       youtubeFactory.getVideosData().then(function () {
         $scope.videos = youtubeFactory.formatVideosData();
+        console.log('$scope.videos: ', $scope.videos);
       });
     });
   };
@@ -39,12 +43,17 @@ myApp.controller('searchController',
     databaseFactory.createFavorite(video).then(function () {
       $scope.favoriteAdded = true;
       $scope.selectedVideo = video.id;
-      $scope.videos = updateVideosService.updateVids(video, $scope.videos, recentlyAddedVideos);
+      $scope.videos = updateVideosService.updateVids(video, $scope.videos);
     });
   };
 
-  function failedFavoriteMsg() {
-    console.log('favorite not added');
-  }
+  $scope.getSearchParams = function () {
+    databaseFactory.refreshKeywords().then(function () {
+      $scope.searchParams = databaseFactory.getKeywords();
+      console.log('$scope.searchParams: ', $scope.searchParams);
+    });
+  };
+
+  $scope.getSearchParams();
 },
 ]);

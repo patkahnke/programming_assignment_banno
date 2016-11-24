@@ -6,75 +6,95 @@
 
       <!-- Search section -->
       <div class="col-md-6">
-        <h3>Search for videos by keyword</h3>
-
-        <!-- Search text field -->
-        <input type="text" ng-model="keywords" placeholder="Enter keywords" />
+        <h3>Search Through Your Collection</h3>
 
         <!-- "Sort By" options drop-down menu -->
-        <!-- <select ng-model="sortBy" ng-options="sortBy.parameter for sortBy in parameters">
-          <option value="">Sort By:</option>
-        </select> -->
+        <select ng-model="sortBy"
+                ng-options="sortBy.parameter for sortBy in parameters">
+                <option value="">Sort By:</option>
+        </select>
 
         <!-- Submit button -->
-        <button type="submit" class="btn btn-primary btn-sm" ng-click="getFavorites()">Get Videos</button>
+        <button type="submit"
+                class="btn btn-primary btn-sm"
+                ng-click="getFavorites()">Get Videos</button>
 
         <!-- Close search section -->
       </div>
 
+    <div class="col-md-6">
+      <h3>Create New Keywords</h3>
+
+      <!-- Keyword input field -->
+      <input  type="text"
+              ng-model="newKeyword"
+              placeholder="Enter new keyword" />
+
+      <!-- Submit button -->
+      <button type="submit"
+              class="btn btn-primary btn-sm"
+              ng-click="addKeyword()">Get Videos</button>
+
+      <!-- Close search section -->
+    </div>
+
       <!-- Video list display section -->
-      <div class="col-md-12" ng-if="videos != undefined">
+      <div  class="col-md-12"
+            ng-if="favVideos != undefined">
         <h3>Videos:</h3>
-          <ul ng-repeat="video in videos">
+          <ul ng-repeat="favVideo in favVideos | orderBy : '-date_added'">
           <li class="row">
 
           <!-- iFrame/Thumbnail section -->
-            <div class="col-md-8">
+            <div class="col-md-12">
 
               <!-- Title -->
-                <h4 class="video-list-items" >{{ video.snippet.title }}</h4>
+                <h4 class="video-list-items" >{{ favVideo.title }} {{ favVideo.favorite_id }}</h4>
 
+          <div class="row">
               <!-- Thumbnail -->
-                <div ng-if="video.id.videoId !== selectedId">
-                  <img
-                    src="{{ video.snippet.thumbnails.high.url }}"
-                    alt="thumbnail image"
-                    class="img-thumbnail img-fluid"
-                    ng-click="showVideo(video.id.videoId)">
-                </div>
+                <div  class="col-md-8"
+                      ng-if="favVideo.videoid !== selectedId">
+                    <img
+                      ng-src="{{ favVideo.thumbnail }}"
+                      alt="thumbnail image"
+                      class="img-thumbnail img-fluid"
+                      ng-click="showVideo(favVideo)">
+                  </div>
 
               <!-- iFrame -->
-                <div ng-if="video.id.videoId == selectedId">
+            <div  class="col-md-8"
+                  ng-if="favVideo.videoid == selectedId">
+                <div>
                   <iframe
                     width="480"
                     height="360"
-                    src="{{ embedUrl }}"
+                    ng-src="{{ favVideo.embedUrl }}"
                     frameborder="0"
                     allowfullscreen>
                   </iframe>
-
-                  <div class="row meta-data">
+                </div>
+              </div>
 
                     <!-- Delete button -->
                     <div class="col-md-2">
-                      <button type="submit" class="btn btn-primary btn-sm" ng-click="deleteFavorite()">Delete</button>
+                      <button type="submit"
+                              class="btn btn-primary btn-sm"
+                              ng-click="deleteFavorite(favVideo)">Delete</button>
                     </div>
 
                     <!-- Update button -->
                     <div class="col-md-2">
-                      <button type="submit" class="btn btn-primary btn-sm" ng-click="updateFavorite()">Update</button>
-                    </div>
-                    <div class="col-md-2">
-                      <h4>Dislikes: {{  }}</h4>
-                    </div>
-                    <div class="col-md-2">
-                      <h4>Channel: {{  }}</h4>
+                      <button type="submit"
+                              class="btn btn-primary btn-sm"
+                              ng-click="updateFavorite()">Update</button>
                     </div>
                   </div>
-                </div>
+
 
               <!-- Close Thumbnail/iFrame section -->
             </div>
+          </div>
             </li>
         </ul>
 
