@@ -1,7 +1,7 @@
-myApp.factory('YoutubeFactory', ['$http', '$filter', '$sce', '$q',
+myApp.factory('YoutubeFactory', ['$http', '$filter', '$sce',
                                 'KeyFactory',
                                 'DatabaseFactory',
-                        function ($http, $filter, $sce, $q,
+                        function ($http, $filter, $sce,
                                 KeyFactory,
                                 DatabaseFactory) {
 
@@ -119,7 +119,6 @@ myApp.factory('YoutubeFactory', ['$http', '$filter', '$sce', '$q',
   }
 
   function checkIfFavorite(vidsObject) {
-    console.log('favorites: ', favorites);
     for (var i = 0; i < vidsObject.length; i++) {
       vidsObject[i].isFavorite = false;
     };
@@ -180,8 +179,8 @@ myApp.factory('YoutubeFactory', ['$http', '$filter', '$sce', '$q',
       return createEmbedVideos(videoDataObject);
     },
 
-    refreshFavorites: function () {
-      return setFavorites();
+    refreshFavorites: function (searchBy) {
+      return setFavorites(searchBy);
     },
   };
 

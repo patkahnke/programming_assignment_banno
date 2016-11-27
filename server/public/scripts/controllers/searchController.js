@@ -1,11 +1,9 @@
-//Inject $sce (Strict Contextual Escaping) dependency, in order to allow for the embed
-//urls from YouTube to be trusted by AngularJS. $sce is called within the buildEmbedVideos function
 myApp.controller('searchController',
-                ['$scope', '$http',
+                ['$scope',
                 'YoutubeFactory',
                 'DatabaseFactory',
                 'updateVideosService',
-        function ($scope, $http,
+        function ($scope,
                   YoutubeFactory,
                   DatabaseFactory,
                   updateVideosService) {
@@ -14,27 +12,28 @@ myApp.controller('searchController',
   youtubeFactory = YoutubeFactory;
   databaseFactory = DatabaseFactory;
 
-  //Scope Variables
+  // Scope Variables
   $scope.videos;
   $scope.favoriteAdded = false;
+  $scope.searchBy;
 
-  //set up the sortBy object for the drop-down menu
+  // Database Search select menu
+  $scope.searchWord = {};
+  $scope.databaseSearchParams;
+
+  // YouTube Search select menu
   $scope.sortBy = {};
-  $scope.parameters = [
+  $scope.youtubeSearchParams = [
     { parameter: 'date' },
     { parameter: 'rating' },
     { parameter: 'relevance' },
   ];
 
-  $scope.searchWord = {};
-  $scope.searchParams;
-
   //Scope functions
-  $scope.getVideos = function () {
+  $scope.getYoutubeVideos = function () {
     youtubeFactory.getVideoIds($scope.keywords, $scope.sortBy).then(function () {
       youtubeFactory.getVideosData().then(function () {
         $scope.videos = youtubeFactory.formatVideosData();
-        console.log('$scope.videos: ', $scope.videos);
       });
     });
   };
@@ -43,15 +42,18 @@ myApp.controller('searchController',
     databaseFactory.createFavorite(video).then(function () {
       $scope.favoriteAdded = true;
       $scope.selectedVideo = video.id;
-      $scope.videos = updateVideosService.updateVids(video, $scope.videos);
+      $scope.videos = updateVideosService.updateVids(video, $scope.videos, $scope.searchWord);
     });
   };
 
   $scope.getSearchParams = function () {
-    databaseFactory.refreshKeywords().then(function () {
-      $scope.searchParams = databaseFactory.getKeywords();
-      console.log('$scope.searchParams: ', $scope.searchParams);
+    databaseFactory.refreshSearchWords().then(function () {
+      $scope.databaseSearchParams = databaseFactory.getSearchWords();
     });
+  };
+
+  $scope.assignSearchWord = function (searchWord, video) {
+    databaseFactory.assignSearchWord(searchWord, video);
   };
 
   $scope.getSearchParams();

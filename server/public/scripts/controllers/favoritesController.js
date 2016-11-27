@@ -1,27 +1,28 @@
 myApp.controller('favoritesController',
-                ['$scope', '$sce',
+                ['$scope',
                 'DatabaseFactory',
-        function ($scope, $sce,
+        function ($scope,
                 DatabaseFactory) {
 
     var databaseFactory = DatabaseFactory;
 
+    // Scope variables
     $scope.favVideos;
     $scope.selectedId;
-    $scope.newKeyword;
-    $scope.keywords;
+    $scope.newSearchWord;
 
-    //set up the sortBy object for the drop-down menu
-    $scope.sortBy = {};
+    // Database search select menu
+    $scope.searchBy = {};
+    $scope.searchWords;
 
-    $scope.getFavorites = function () {
-      databaseFactory.refreshFavorites($scope.sortBy).then(function () {
+    // Scope functions
+    $scope.getFavorites = function (searchBy) {
+      databaseFactory.refreshFavorites(searchBy).then(function () {
         $scope.favVideos = databaseFactory.getFavorites();
       });
     };
 
     $scope.deleteFavorite = function (favVideo) {
-      console.log('favVideo.favorite_id: ', favVideo.favorite_id);
       databaseFactory.deleteFavorite(favVideo.favorite_id).then(function () {
         databaseFactory.refreshFavorites().then(function () {
           $scope.getFavorites();
@@ -33,23 +34,21 @@ myApp.controller('favoritesController',
     //   $scope.selectedId = favVideo.videoid;
     // };
 
-    $scope.addKeyword = function () {
-      databaseFactory.createKeyWord($scope.newKeyword).then(function () {
-        databaseFactory.refreshKeywords().then(function () {
-            $scope.getKeywords();
+    $scope.addSearchWord = function () {
+      databaseFactory.createSearchWord($scope.newSearchWord).then(function () {
+        databaseFactory.refreshSearchWords().then(function () {
+            $scope.getSearchWords();
           });
       });
     };
 
-    $scope.getKeywords = function () {
-      databaseFactory.refreshKeywords().then(function () {
-        $scope.keywords = databaseFactory.getKeywords();
-        $scope.parameters = $scope.keywords;
-        console.log('$scope.keywords: ', $scope.keywords);
+    $scope.getSearchWords = function () {
+      databaseFactory.refreshSearchWords().then(function () {
+        $scope.searchWords = databaseFactory.getSearchWords();
       });
     };
 
-    $scope.getKeywords();
+    $scope.getSearchWords();
 
     //Close search controller
   },

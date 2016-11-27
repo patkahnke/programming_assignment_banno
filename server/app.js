@@ -7,10 +7,11 @@ var bodyParser = require('body-parser');
 var env = require('../env.js');
 
 // modules
-var index = require('./routes/index');
 var favorites = require('./routes/favorites');
+var favoritesSearchWords = require('./routes/favoritesSearchWords');
+var searchWords = require('./routes/searchWords');
 var youtubeAPIKey = require('./routes/youtubeAPIKey');
-var keywords = require('./routes/keywords');
+var index = require('./routes/index');
 
 // middleware
 app.use(express.static(path.join(__dirname, './public')));
@@ -19,8 +20,9 @@ app.use(bodyParser.json());
 
 // express routes
 app.use('/favorites', favorites);
+app.use('/favoritesSearchWords', favoritesSearchWords);
+app.use('/searchWords', searchWords);
 app.use('/youtubeAPIKey', youtubeAPIKey);
-app.use('/keywords', keywords);
 app.use('/', index);
 
 // start server

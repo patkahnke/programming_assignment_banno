@@ -1,12 +1,18 @@
-myApp.factory('DatabaseFactory', ['$http', '$filter', '$sce', function ($http, $filter, $sce) {
+myApp.factory('DatabaseFactory',
+              ['$http', '$filter', '$sce',
+              'getFavoriteIDService',
+              'getSearchWordIDService',
+    function ($http, $filter, $sce,
+              getFavoriteIDService,
+              getSearchWordIDService) {
 
   // PRIVATE
 
   // Global Variables
   var favorites;
-  var keywords = [];
-  retrieveFavs();
-  retrieveKeywords();
+  var searchWords = [];
+  retrieveFavs(1);
+  retrieveSearchWords();
 
   // Database CRUD functions
   function createFav(video) {
@@ -28,14 +34,13 @@ myApp.factory('DatabaseFactory', ['$http', '$filter', '$sce', function ($http, $
     return promise;
   }
 
-  function createKeyword(keyword) {
-    var keywordObject = {};
-    keywordObject.keyword = keyword;
-console.log('keywordObject inside creatKeyword factory: ', keywordObject);
-    // post keyword to database
-    var promise = $http.post('/keywords', keywordObject).then(function (response) {
+  function createSearchWord(searchWord) {
+    var searchWordObject = {};
+    searchWordObject.searchWord = searchWord;
+
+    var promise = $http.post('/searchWords', searchWordObject).then(function (response) {
       if (response.status == 201) {
-        console.log('keyword added to database');
+        console.log('searchWord added to database');
       } else {
         console.log('Error', response.data);
       }
@@ -44,25 +49,41 @@ console.log('keywordObject inside creatKeyword factory: ', keywordObject);
     return promise;
   }
 
-  function retrieveFavs() {
-    var promise = $http.get('/favorites').then(function (response) {
+  function retrieveFavs(searchBy) {
+    console.log('searchBy in retrieveFavs: ', searchBy);
+    if (searchBy === undefined) {
+      var searchID = null;
+      console.log('searchID in retrieveFavs null?: ', searchID);
+    } else {
+      var searchID = searchBy.search_word_id;
+      console.log('searchID in retrieveFavs notnull?: ', searchID);
+    };
+    console.log('searchID output in retrieveFavs: ', searchID);
+    var promise = $http.get('/favorites', { params: { search: searchID } }).then(function (response) {
       favorites = buildEmbedUrls(response.data);
-      console.log('favorites inside retrieveFavs: ', favorites);
     });
 
     return promise;
   };
 
-  function retrieveKeywords() {
-    var promise = $http.get('/keywords').then(function (response) {
-        keywords.length = 0;
-        for (var i = 0, l = response.data.length; i < l; i++) {
-          var param = { parameter: response.data[i].keyword };
-          keywords.push(param);
-        }
+  // function retrieveFavs() {
+  //   var promise = $http.get('/favorites').then(function (response) {
+  //     favorites = buildEmbedUrls(response.data);
+  //   });
+  //
+  //   return promise;
+  // };
 
-        console.log('response.data: ', response.data);
-        console.log('keywords inside retrieveKeywords: ', keywords);
+  function retrieveSearchWords() {
+    var promise = $http.get('/searchWords').then(function (response) {
+        searchWords.length = 0;
+        for (var i = 0, l = response.data.length; i < l; i++) {
+          var param = {
+                        parameter: response.data[i].search_word,
+                        search_word_id: response.data[i].search_word_id,
+                      };
+          searchWords.push(param);
+        }
       });
 
     return promise;
@@ -86,7 +107,7 @@ console.log('keywordObject inside creatKeyword factory: ', keywordObject);
   function deleteFav(id) {
     var promise = $http.delete('/favorites/' + id, id).then(function (response) {
       if (response.status == 200) {
-          console.log('favorite deleted');
+        console.log('favorite deleted');
       } else {
         console.log('Error', response.data);
       }
@@ -95,16 +116,29 @@ console.log('keywordObject inside creatKeyword factory: ', keywordObject);
     return promise;
   }
 
-  function deleteKeyword(id) {
-    var promise = $http.delete('/keywords/' + id, id).then(function (response) {
+  function deleteSearchword(id) {
+    var promise = $http.delete('/searchWords/' + id, id).then(function (response) {
       if (response.status == 200) {
-          console.log('keyword deleted');
+        console.log('searchWord deleted');
       } else {
         console.log('Error', response.data);
       }
     });
 
     return promise;
+  }
+
+  function assignSearchword(searchWord, video) {
+    var pairing = {};
+    pairing.favoriteID = getFavoriteIDService.getFavoriteID(video, favorites);
+    pairing.searchWordID = getSearchWordIDService.getSearchWordID(searchWord, searchWords);
+    $http.post('/favoritesSearchWords', pairing).then(function (response) {
+      if (response.status == 201) {
+        console.log('pairing added to database');
+      } else {
+        console.log('Error', response.data);
+      }
+    });
   }
 
   function buildEmbedUrls(videosObject) {
@@ -131,8 +165,8 @@ console.log('keywordObject inside creatKeyword factory: ', keywordObject);
       return createFav(video);
     },
 
-    refreshFavorites: function (sortBy) {
-      return retrieveFavs();
+    refreshFavorites: function (searchBy) {
+      return retrieveFavs(searchBy);
     },
 
     getFavorites: function () {
@@ -143,20 +177,24 @@ console.log('keywordObject inside creatKeyword factory: ', keywordObject);
       return deleteFav(id);
     },
 
-    createKeyWord: function (keyword) {
-      return createKeyword(keyword);
+    createSearchWord: function (searchWord) {
+      return createSearchWord(searchWord);
     },
 
-    refreshKeywords: function () {
-      return retrieveKeywords();
+    refreshSearchWords: function () {
+      return retrieveSearchWords();
     },
 
-    getKeywords: function () {
-      return keywords;
+    getSearchWords: function () {
+      return searchWords;
     },
 
-    deleteKeyWord: function (id) {
-      return deleteKeyword(id);
+    deleteSearchWord: function (id) {
+      return deleteSearchword(id);
+    },
+
+    assignSearchWord: function (searchWord, video) {
+      return assignSearchword(searchWord, video);
     },
   };
 

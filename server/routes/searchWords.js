@@ -6,16 +6,16 @@ var password = process.env.password;
 var connectionString = 'postgres://localhost:5432/patkahnke?user=' + user + '&password=' + password;
 
 router.post('/', function (req, res) {
-  var keyword = req.body.keyword;
-  console.log('req.body.keyword: ', req.body.keyword);
+  var searchWord = req.body.searchWord;
+  console.log('req.body.searchWord: ', req.body.searchWord);
   pg.connect(connectionString, function (err, client, done) {
     if (err) {
       res.sendStatus(500);
     }
 
-    client.query('INSERT INTO keywords (keyword) ' +
+    client.query('INSERT INTO search_words (search_Word) ' +
                   'VALUES ($1)',
-                   [keyword],
+                   [searchWord],
      function (err, result) {
        done();
 
@@ -35,7 +35,7 @@ router.get('/', function (req, res) {
       res.sendStatus(500);
     }
 
-    client.query('SELECT * FROM keywords', function (err, result) {
+    client.query('SELECT * FROM search_words', function (err, result) {
       done();
 console.log('result.rows: ', result.rows);
       res.send(result.rows);
@@ -43,16 +43,16 @@ console.log('result.rows: ', result.rows);
   });
 });
 
-router.delete('/:keyword_id', function (req, res) {
-  var id = req.params.keyword_id;
+router.delete('/:search_word_id', function (req, res) {
+  var id = req.params.search_word_id;
   pg.connect(connectionString, function (err, client, done) {
     if (err) {
       console.log(err);
       res.sendStatus(500);
     }
 
-    client.query('DELETE FROM keywords ' +
-                  'WHERE keyword_id = $1',
+    client.query('DELETE FROM search_words ' +
+                  'WHERE search_word_id = $1',
                    [id],
      function (err, result) {
        done();
