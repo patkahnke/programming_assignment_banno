@@ -30,18 +30,22 @@ router.post('/', function (req, res) {
 });
 
 router.get('/', function (req, res) {
-  console.log('params: ', params);
+  console.log('req.query: ', req.query);
+  console.log('req.query.search: ', req.query.search);
   pg.connect(connectionString, function (err, client, done) {
     if (err) {
       res.sendStatus(500);
-    } else if (params === null) {
+    } else if (req.query.search == 0) {
       client.query('SELECT * FROM favorites', function (err, result) {
         done();
         res.send(result.rows);
       });
     } else {
-      client.query('SELECT * FROM favorites' +
-                    'WHERE favorite_id=114', function (err, result) {
+      client.query('SELECT * FROM favorites ' +
+                    'JOIN favorites_search_words ' +
+                    'ON favorites.favorite_id=favorites_search_words.favorite_id ' +
+                    'WHERE search_word_id=' + req.query.search,
+                    function (err, result) {
         done();
         res.send(result.rows);
       });

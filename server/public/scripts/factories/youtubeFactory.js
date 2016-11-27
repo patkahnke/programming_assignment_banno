@@ -17,6 +17,7 @@ myApp.factory('YoutubeFactory', ['$http', '$filter', '$sce',
   var videoIdsObject = {};
   var videoDataObject = {};
 
+console.log('youtubeController is running');
   setKey();
   setFavorites();
 
@@ -76,9 +77,9 @@ myApp.factory('YoutubeFactory', ['$http', '$filter', '$sce',
     };
   }
 
-  function setFavorites() {
+  function setFavorites(searchBy) {
     // retrieve all favorited videos from the database
-    databaseFactory.refreshFavorites().then(function () {
+    databaseFactory.refreshFavorites(searchBy).then(function () {
       favorites = databaseFactory.getFavorites();
     });
   }

@@ -11,7 +11,7 @@ myApp.factory('DatabaseFactory',
   // Global Variables
   var favorites;
   var searchWords = [];
-  retrieveFavs(1);
+  retrieveFavs();
   retrieveSearchWords();
 
   // Database CRUD functions
@@ -52,14 +52,15 @@ myApp.factory('DatabaseFactory',
   function retrieveFavs(searchBy) {
     console.log('searchBy in retrieveFavs: ', searchBy);
     if (searchBy === undefined) {
-      var searchID = null;
+      var searchID = 0;
       console.log('searchID in retrieveFavs null?: ', searchID);
     } else {
       var searchID = searchBy.search_word_id;
+      console.log('searchBy: ', searchBy);
       console.log('searchID in retrieveFavs notnull?: ', searchID);
     };
     console.log('searchID output in retrieveFavs: ', searchID);
-    var promise = $http.get('/favorites', { params: { search: searchID } }).then(function (response) {
+    var promise = $http.get('/favorites?search=' + searchID).then(function (response) {
       favorites = buildEmbedUrls(response.data);
     });
 

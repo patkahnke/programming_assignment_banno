@@ -7,7 +7,8 @@ myApp.controller('searchController',
                   YoutubeFactory,
                   DatabaseFactory,
                   updateVideosService) {
-
+                    
+console.log('searchController is running');
   //Factories
   youtubeFactory = YoutubeFactory;
   databaseFactory = DatabaseFactory;
@@ -15,7 +16,7 @@ myApp.controller('searchController',
   // Scope Variables
   $scope.videos;
   $scope.favoriteAdded = false;
-  $scope.searchBy;
+  $scope.searchBy = 1;
 
   // Database Search select menu
   $scope.searchWord = {};
