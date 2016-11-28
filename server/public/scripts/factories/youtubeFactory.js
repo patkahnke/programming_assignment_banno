@@ -1,8 +1,8 @@
-myApp.factory('YoutubeFactory', ['$http', '$filter',
+myApp.factory('YoutubeFactory', ['$http', '$filter', '$q',
                                 'KeyFactory',
                                 'DatabaseFactory',
                                 'buildEmbedUrlsService',
-                        function ($http, $filter,
+                        function ($http, $filter, $q,
                                 KeyFactory,
                                 DatabaseFactory,
                                 buildEmbedUrlsService) {
@@ -14,72 +14,87 @@ myApp.factory('YoutubeFactory', ['$http', '$filter',
   var databaseFactory = DatabaseFactory;
 
   //  Global Variables
-  var youtubeAPIKey;
-  var favorites;
-  var videoIdsObject = {};
-  var videoDataObject = {};
-
+  var youTubeAPIKey;
   setKey();
+
+  var favorites;
   setFavorites();
 
-  // Main Request Functions
+  function factoryGetYouTubeVideos(rawKeywords, sortBy) {
+    // Main video request function that is called from the "searchController"
+    //Step three in the YouTube API request: Format the videos returned from "getVideosData".
+    var deferredThree = $q.defer();
+    getVideosData(rawKeywords, sortBy).then(function (response) {
+      var promise = formatVideos(response, deferredThree);
+    });
 
-  function factoryGetVideoIds(rawKeywords, sortBy) {
-    // Make initial request for relevant videos, by keywords
+    return deferredThree.promise;
+  }
 
+  //Utility Functions
+  function getVideosData(rawKeywords, sortBy) {
+    // Step two in the YouTube API request: Get more data on video IDs returned from "getVideoIds"
+    var deferredTwo = $q.defer();
+    getVideoIds(rawKeywords, sortBy).then(function (response) {
+        var requestTwo;
+        var queryIdList;
+        var videoList = response.data.items;
+
+        // build a request with a list of all returned video resource ids
+        queryIdList = buildQueryIdList(videoList);
+        requestTwo = buildRequestTwo(queryIdList);
+        var promise = youtubeRequest(requestTwo, deferredTwo);
+      });
+
+    return deferredTwo.promise;
+  }
+
+  function getVideoIds(rawKeywords, sortBy) {
+    // Step one in the YouTube API request: get a list of video resources based on keyword
+    var deferredOne = $q.defer();
     var keywords;
     var requestOne;
 
     // Replace spaces between keywords with "+" and build the request
     keywords = formatKeywords(rawKeywords);
-    requestOne = buildRequestOne(keywords, sortBy, youtubeAPIKey);
+    requestOne = buildRequestOne(keywords, sortBy, youTubeAPIKey);
 
-    // Make the request
-    var promise = $http.jsonp(requestOne).then(
-      function (response) {
-        videoIdsObject = response;
-      });
-
-    return promise;
+    // Make the request to YouTube
+    var promise = youtubeRequest(requestOne, deferredOne);
+    return deferredOne.promise;
   }
 
-  function factoryGetVideosData(videoIdsObject) {
-    // Make a second request to YouTube, by video id, for more data on videos in list
-
-    var request;
-    var queryIdList;
-    var vidList = videoIdsObject.data.items;
-
-    // build a request with a list of all returned video resource ids
-    queryIdList = buildQueryIdList(vidList);
-    request = buildRequestTwo(queryIdList);
-
-    var promise = $http.jsonp(request).then(
-      function (response) {
-        videoDataObject = response;
+  function youtubeRequest(requestURL, deferred) {
+    // Basic YouTube request: Return a promise for the requested data
+    $http.jsonp(requestURL).then(function (response) {
+        deferred.resolve(response);
       });
-
-    return promise;
   }
 
-  function factoryFormatVideos(videoDataObject) {
+  function formatVideos(videoDataObject, deferredThree) {
+    // Build embeddable URLs for video resources, and assign an "isFavorite" value of true or false
     var autoplay = '';
     var videosToEmbed = videoDataObject.data.items;
     var embedVideos = buildEmbedUrlsService.buildEmbedUrls(videosToEmbed, autoplay);
     embedVideos = checkIfFavorite(embedVideos);
-    return embedVideos;
+    deferredThree.resolve(embedVideos);
   }
 
-  // Utility functions
+  // function setKey() {
+  //   // Retrieve the YouTube API Key from the KeyFactory
+  //   if (keyFactory.getYouTubeKey() === undefined) {
+  //     keyFactory.refreshKey().then(function () {
+  //       youtubeAPIKey = keyFactory.getYouTubeKey();
+  //     });
+  //   } else {
+  //     youtubeAPIKey = keyFactory.getYouTubeKey();
+  //   };
+  // }
+
   function setKey() {
-    // retrieve the YouTube API Key from the KeyFactory
-    if (keyFactory.getYoutubeKey() === undefined) {
-      keyFactory.refreshKey().then(function () {
-        youtubeAPIKey = keyFactory.getYoutubeKey();
-      });
-    } else {
-      youtubeAPIKey = keyFactory.getYoutubeKey();
-    };
+    keyFactory.getAPIKey().then(function (response) {
+      youTubeAPIKey = response;
+    });
   }
 
   function setFavorites(searchBy) {
@@ -143,9 +158,9 @@ myApp.factory('YoutubeFactory', ['$http', '$filter',
     var baseURL = 'https://www.googleapis.com/youtube/v3/videos';
     var query = '?id=' + queryIdList;
 
-    //statistics returns meta data such as number of views, likes, and dislikes
+    // "statistics" returns meta data such as number of views, likes, and dislikes
     query += '&part=statistics,snippet';
-    query += '&key=' + youtubeAPIKey;
+    query += '&key=' + youTubeAPIKey;
     query += '&callback=JSON_CALLBACK';
 
     var request = baseURL + encodeURI(query);
@@ -155,16 +170,8 @@ myApp.factory('YoutubeFactory', ['$http', '$filter',
 
   // PUBLIC
   var publicApi = {
-    getVideoIds: function (keywords, sortBy) {
-      return factoryGetVideoIds(keywords, sortBy);
-    },
-
-    getVideosData: function () {
-      return factoryGetVideosData(videoIdsObject);
-    },
-
-    formatVideos: function () {
-      return factoryFormatVideos(videoDataObject);
+    getYouTubeVideos: function (keywords, sortBy) {
+      return factoryGetYouTubeVideos(keywords, sortBy);
     },
 
     refreshFavorites: function (searchBy) {

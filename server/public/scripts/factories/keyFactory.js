@@ -1,22 +1,22 @@
-myApp.factory('KeyFactory', ['$http', function ($http) {
+myApp.factory('KeyFactory', ['$http', '$q', function ($http, $q) {
+  //
+  // var youtubeAPIKey;
 
-  var youtubeAPIKey = undefined;
+  function factoryGetAPIKey() {
+    var deferred = $q.defer();
+    var promise = getKey(deferred);
+    return deferred.promise;
+  }
 
-  function retrieveYoutubeAPIKey() {
-    var promise = $http.get('/youtubeAPIKey').then(function (response) {
-      youtubeAPIKey = response.data.youtubeAPIKey;
+  function getKey(deferred) {
+    $http.get('/youtubeAPIKey').then(function (response) {
+      deferred.resolve(response.data.youTubeAPIKey);
     });
-
-    return promise;
-  };
+  }
 
   var publicAPI = {
-    refreshKey: function () {
-      return retrieveYoutubeAPIKey();
-    },
-
-    getYoutubeKey: function () {
-      return youtubeAPIKey;
+    getAPIKey: function () {
+      return factoryGetAPIKey();
     },
   };
 

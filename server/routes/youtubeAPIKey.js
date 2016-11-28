@@ -3,7 +3,7 @@ var router = express.Router();
 
 //configuration variables
 var config = {
-  youtubeAPIKey: process.env.youtubeAPIKey,
+  youTubeAPIKey: process.env.youTubeAPIKey,
 };
 
 router.get('/', function (req, res) {

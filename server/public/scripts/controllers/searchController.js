@@ -29,11 +29,9 @@ myApp.controller('searchController',
   ];
 
   // Scope functions
-  $scope.getYoutubeVideos = function () {
-    youtubeFactory.getVideoIds($scope.keywords, $scope.sortBy).then(function () {
-      youtubeFactory.getVideosData().then(function () {
-        $scope.videos = youtubeFactory.formatVideos();
-      });
+  $scope.getYouTubeVideos = function () {
+    youtubeFactory.getYouTubeVideos($scope.keywords, $scope.sortBy).then(function (response) {
+      $scope.videos = response;
     });
   };
 
