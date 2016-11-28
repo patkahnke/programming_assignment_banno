@@ -17,15 +17,15 @@ router.post('/', function (req, res) {
                   'VALUES ($1, $2, $3, $4)',
                    [favorite.title, favorite.videoId, favorite.thumbnail, favorite.date_added],
      function (err, result) {
-       done();
+        done();
 
-       if (err) {
-         res.sendStatus(500);
-         return;
-       }
+        if (err) {
+          res.sendStatus(500);
+          return;
+        }
 
-       res.sendStatus(201);
-     });
+        res.sendStatus(201);
+      });
   });
 });
 
@@ -53,47 +53,6 @@ router.get('/', function (req, res) {
   });
 });
 
-// router.get('/', function (req, res) {
-//   pg.connect(connectionString, function (err, client, done) {
-//     if (err) {
-//       res.sendStatus(500);
-//     }
-//
-//     client.query('SELECT * FROM favorites', function (err, result) {
-//       done();
-//
-//       res.send(result.rows);
-//     });
-//   });
-// });
-
-router.put('/:favorite_id', function (req, res) {
-  var id = req.params.favorite_id;
-  var favorite = req.body;
-  console.log('req.body:', req.body);
-  console.log('req.params.id: ', req.params.id);
-  pg.connect(connectionString, function (err, client, done) {
-    if (err) {
-      res.sendStatus(500);
-    }
-
-    client.query('UPDATE favorites ' +
-                  'SET comments = $1, ' +
-                  'WHERE favorite_id = $3',
-                   [favorite.comments, id],
-     function (err, result) {
-       done();
-
-       if (err) {
-         res.sendStatus(500);
-         return;
-       }
-
-       res.sendStatus(200);
-     });
-  });
-});
-
 router.delete('/:favorite_id', function (req, res) {
   var id = req.params.favorite_id;
   pg.connect(connectionString, function (err, client, done) {
@@ -106,15 +65,15 @@ router.delete('/:favorite_id', function (req, res) {
                   'WHERE favorite_id = $1',
                    [id],
      function (err, result) {
-       done();
+        done();
 
-       if (err) {
-         console.log(err);
-         res.sendStatus(500);
-         return;
-       }
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+          return;
+        }
 
-       res.sendStatus(200);
+        res.sendStatus(200);
       });
   });
 });

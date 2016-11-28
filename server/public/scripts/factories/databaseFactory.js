@@ -1,8 +1,10 @@
 myApp.factory('DatabaseFactory',
-              ['$http', '$filter', '$sce',
+              ['$http', '$filter',
+              'buildEmbedUrlsService',
               'getFavoriteIDService',
               'getSearchWordIDService',
-    function ($http, $filter, $sce,
+    function ($http, $filter,
+              buildEmbedUrlsService,
               getFavoriteIDService,
               getSearchWordIDService) {
 
@@ -11,18 +13,20 @@ myApp.factory('DatabaseFactory',
   // Global Variables
   var favorites;
   var searchWords = [];
-  retrieveFavs();
-  retrieveSearchWords();
+  factoryRefreshFavorites();
+  factoryRefreshSearchWords();
 
   // Database CRUD functions
-  function createFav(video) {
+  function factoryCreateFavorite(video) {
+
+    // Build a "favorite" object in the database format
     var favorite = {};
     favorite.title = video.snippet.title;
     favorite.videoId = video.id;
     favorite.thumbnail = video.snippet.thumbnails.high.url;
     favorite.date_added = $filter('date')(new Date(), 'medium');
 
-    // post favorite to database
+    // post the favorite to the database "favorites" table
     var promise = $http.post('/favorites', favorite).then(function (response) {
       if (response.status == 201) {
         console.log('favorite added to database');
@@ -34,10 +38,13 @@ myApp.factory('DatabaseFactory',
     return promise;
   }
 
-  function createSearchWord(searchWord) {
+  function factoryCreateSearchWord(searchWord) {
+
+    // Wrap a new search word in an object so it is able to be included in a "post" request
     var searchWordObject = {};
     searchWordObject.searchWord = searchWord;
 
+    // Post the new search word to the database "search_words" table
     var promise = $http.post('/searchWords', searchWordObject).then(function (response) {
       if (response.status == 201) {
         console.log('searchWord added to database');
@@ -49,35 +56,37 @@ myApp.factory('DatabaseFactory',
     return promise;
   }
 
-  function retrieveFavs(searchBy) {
-    console.log('searchBy in retrieveFavs: ', searchBy);
+  function factoryRefreshFavorites(searchBy) {
+    var autoplay = '?rel=0;&autoplay=1';
+
+    // If the "searchBy" parameter is undefined, set "searchID" to zero, which will be interpreted
+    // by searchWords.js to mean that ALL favorites are requested. Otherwise, set searchID to the
+    // value of searchBy
     if (searchBy === undefined) {
       var searchID = 0;
-      console.log('searchID in retrieveFavs null?: ', searchID);
     } else {
       var searchID = searchBy.search_word_id;
-      console.log('searchBy: ', searchBy);
-      console.log('searchID in retrieveFavs notnull?: ', searchID);
     };
-    console.log('searchID output in retrieveFavs: ', searchID);
+
+    // Request favorites (filtered by "searchBy") from the database "favorites" table
     var promise = $http.get('/favorites?search=' + searchID).then(function (response) {
-      favorites = buildEmbedUrls(response.data);
+
+      // Build embeddable urls and set autoplay to "1" for immediate playback when iFrame is loaded
+      favorites = buildEmbedUrlsService.buildEmbedUrls(response.data, autoplay);
     });
 
     return promise;
   };
 
-  // function retrieveFavs() {
-  //   var promise = $http.get('/favorites').then(function (response) {
-  //     favorites = buildEmbedUrls(response.data);
-  //   });
-  //
-  //   return promise;
-  // };
+  function factoryRefreshSearchWords() {
 
-  function retrieveSearchWords() {
+    // Request all searchwords from the database "search_words" table
     var promise = $http.get('/searchWords').then(function (response) {
+
+        // Empty the global "searchWords" arbitrary
         searchWords.length = 0;
+
+        // Populate the "searchWords" array with properly formatted searchWord objects
         for (var i = 0, l = response.data.length; i < l; i++) {
           var param = {
                         parameter: response.data[i].search_word,
@@ -90,22 +99,9 @@ myApp.factory('DatabaseFactory',
     return promise;
   };
 
-  function updateFav(event) {
-    event.preventDefault();
+  function factoryDeleteFavorite(id) {
 
-    var id;
-
-    $.ajax({
-      type: 'PUT',
-      url: '/favorites/' + id,
-      data: preparedData,
-      success: function (data) {
-        getFavorites();
-      },
-    });
-  }
-
-  function deleteFav(id) {
+    // Delete a favorite, by id, from the database "favorites" table
     var promise = $http.delete('/favorites/' + id, id).then(function (response) {
       if (response.status == 200) {
         console.log('favorite deleted');
@@ -117,7 +113,10 @@ myApp.factory('DatabaseFactory',
     return promise;
   }
 
-  function deleteSearchword(id) {
+  function factoryDeleteSearchWord(searchWord) {
+
+    // Delete a searchWord, by id, from the database "search_words" table
+    var id = searchWord.search_word_id;
     var promise = $http.delete('/searchWords/' + id, id).then(function (response) {
       if (response.status == 200) {
         console.log('searchWord deleted');
@@ -129,10 +128,14 @@ myApp.factory('DatabaseFactory',
     return promise;
   }
 
-  function assignSearchword(searchWord, video) {
+  function factoryAssignSearchWord(searchWord, favorite) {
+
+    // Build an object that contains primary keys for a favorite/searchWord pair
     var pairing = {};
-    pairing.favoriteID = getFavoriteIDService.getFavoriteID(video, favorites);
+    pairing.favoriteID = getFavoriteIDService.getFavoriteID(favorite, favorites);
     pairing.searchWordID = getSearchWordIDService.getSearchWordID(searchWord, searchWords);
+
+    // Post the favorite/searchWord pair to the database "favorites_search_words" table
     $http.post('/favoritesSearchWords', pairing).then(function (response) {
       if (response.status == 201) {
         console.log('pairing added to database');
@@ -142,32 +145,18 @@ myApp.factory('DatabaseFactory',
     });
   }
 
-  function buildEmbedUrls(videosObject) {
-    // build embedded urls rather than accessing them from the YouTube API in order
-    // to have more control over parameters
-    for (var i = 0; i < videosObject.length; i++) {
-      var videoId = videosObject[i].videoid;
-
-      //As a security measure, AngularJS' Strict Contextual Escaping does not allow binding of
-      //arbitrary HTML that is controlled by the user, such as the embedded url below.
-      //$sce.trustAsResourceUrl lets AngularJS know the url is safe.
-      embedUrl = $sce.trustAsResourceUrl('https://www.youtube.com/embed/' + videoId + '?rel=0;&autoplay=1');
-
-      //add "embedUrl" to the videos object and populate it with the new embedUrls
-      videosObject[i].embedUrl = embedUrl;
-    }
-
-    return videosObject;
-  }
-
   // PUBLIC
   var publicApi = {
     createFavorite: function (video) {
-      return createFav(video);
+      return factoryCreateFavorite(video);
+    },
+
+    createSearchWord: function (searchWord) {
+      return factoryCreateSearchWord(searchWord);
     },
 
     refreshFavorites: function (searchBy) {
-      return retrieveFavs(searchBy);
+      return factoryRefreshFavorites(searchBy);
     },
 
     getFavorites: function () {
@@ -175,15 +164,11 @@ myApp.factory('DatabaseFactory',
     },
 
     deleteFavorite: function (id) {
-      return deleteFav(id);
-    },
-
-    createSearchWord: function (searchWord) {
-      return createSearchWord(searchWord);
+      return factoryDeleteFavorite(id);
     },
 
     refreshSearchWords: function () {
-      return retrieveSearchWords();
+      return factoryRefreshSearchWords();
     },
 
     getSearchWords: function () {
@@ -191,11 +176,11 @@ myApp.factory('DatabaseFactory',
     },
 
     deleteSearchWord: function (id) {
-      return deleteSearchword(id);
+      return factoryDeleteSearchWord(id);
     },
 
     assignSearchWord: function (searchWord, video) {
-      return assignSearchword(searchWord, video);
+      return factoryAssignSearchWord(searchWord, video);
     },
   };
 

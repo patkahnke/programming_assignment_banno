@@ -1,9 +1,11 @@
-myApp.factory('YoutubeFactory', ['$http', '$filter', '$sce',
+myApp.factory('YoutubeFactory', ['$http', '$filter',
                                 'KeyFactory',
                                 'DatabaseFactory',
-                        function ($http, $filter, $sce,
+                                'buildEmbedUrlsService',
+                        function ($http, $filter,
                                 KeyFactory,
-                                DatabaseFactory) {
+                                DatabaseFactory,
+                                buildEmbedUrlsService) {
 
   // PRIVATE
 
@@ -17,21 +19,22 @@ myApp.factory('YoutubeFactory', ['$http', '$filter', '$sce',
   var videoIdsObject = {};
   var videoDataObject = {};
 
-console.log('youtubeController is running');
   setKey();
   setFavorites();
 
   // Main Request Functions
-  function youtubeRequestOne(rawKeywords, sortBy) {
-    // Makes initial request for relevant videos, by keywords
+
+  function factoryGetVideoIds(rawKeywords, sortBy) {
+    // Make initial request for relevant videos, by keywords
+
     var keywords;
     var requestOne;
 
-    // replace spaces between keywords with "+" and build the request
+    // Replace spaces between keywords with "+" and build the request
     keywords = formatKeywords(rawKeywords);
     requestOne = buildRequestOne(keywords, sortBy, youtubeAPIKey);
 
-    // make the request
+    // Make the request
     var promise = $http.jsonp(requestOne).then(
       function (response) {
         videoIdsObject = response;
@@ -40,8 +43,9 @@ console.log('youtubeController is running');
     return promise;
   }
 
-  function youtubeRequestTwo(videoIdsObject) {
-    // makes a second request to YouTube, by video id, for more data on videos in list
+  function factoryGetVideosData(videoIdsObject) {
+    // Make a second request to YouTube, by video id, for more data on videos in list
+
     var request;
     var queryIdList;
     var vidList = videoIdsObject.data.items;
@@ -58,9 +62,10 @@ console.log('youtubeController is running');
     return promise;
   }
 
-  function createEmbedVideos() {
+  function factoryFormatVideos(videoDataObject) {
+    var autoplay = '';
     var videosToEmbed = videoDataObject.data.items;
-    var embedVideos = buildEmbedUrls(videosToEmbed);
+    var embedVideos = buildEmbedUrlsService.buildEmbedUrls(videosToEmbed, autoplay);
     embedVideos = checkIfFavorite(embedVideos);
     return embedVideos;
   }
@@ -99,24 +104,6 @@ console.log('youtubeController is running');
 
     queryIdList += videoList[videoList.length - 1].id.videoId;
     return queryIdList;
-  }
-
-  function buildEmbedUrls(videosObject) {
-    // build embedded urls rather than accessing them from the YouTube API in order
-    // to have more control over parameters
-    for (var i = 0; i < videosObject.length; i++) {
-      var videoId = videosObject[i].id;
-
-      //As a security measure, AngularJS' Strict Contextual Escaping does not allow binding of
-      //arbitrary HTML that is controlled by the user, such as the embedded url below.
-      //$sce.trustAsResourceUrl lets AngularJS know the url is safe.
-      embedUrl = $sce.trustAsResourceUrl('https://www.youtube.com/embed/' + videoId);
-
-      //add "embedUrl" to the videos object and populate it with the new embedUrls
-      videosObject[i].embedUrl = embedUrl;
-    }
-
-    return videosObject;
   }
 
   function checkIfFavorite(vidsObject) {
@@ -169,15 +156,15 @@ console.log('youtubeController is running');
   // PUBLIC
   var publicApi = {
     getVideoIds: function (keywords, sortBy) {
-      return youtubeRequestOne(keywords, sortBy);
+      return factoryGetVideoIds(keywords, sortBy);
     },
 
     getVideosData: function () {
-      return youtubeRequestTwo(videoIdsObject);
+      return factoryGetVideosData(videoIdsObject);
     },
 
-    formatVideosData: function () {
-      return createEmbedVideos(videoDataObject);
+    formatVideos: function () {
+      return factoryFormatVideos(videoDataObject);
     },
 
     refreshFavorites: function (searchBy) {

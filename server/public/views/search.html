@@ -4,7 +4,7 @@
   <h2 class="text-center">Welcome to YouTube VideoSearch!</h2>
     <div class="row">
 
-      <!-- Search section -->
+      <!-- "Search" section -->
       <div class="col-md-6">
         <h3>Search for videos by keyword</h3>
 
@@ -19,21 +19,54 @@
                 <option value="">Sort By:</option>
         </select>
 
-        <!-- Submit button -->
+        <!-- "Submit" button -->
         <button type="submit"
                 class="btn btn-primary btn-sm"
                 ng-click="getYoutubeVideos()">Get Videos
         </button>
-
-        <!-- Close search section -->
+        <!-- Close "Search" section -->
       </div>
-      <!-- Video list display section -->
+
+      <div class="col-md-6">
+        <h3>Create New Search Words</h3>
+
+        <!-- Keyword input field -->
+        <input  type="text"
+                ng-model="newSearchWord"
+                placeholder="Enter new search word" />
+
+        <!-- Submit button -->
+        <button type="submit"
+                class="btn btn-primary btn-sm"
+                ng-click="addSearchWord()">Add Search Word</button>
+
+        <!-- Close "Create New Search Words" section -->
+      </div>
+
+      <div class="col-md-6">
+        <h3>Delete Search Words</h3>
+
+        <!-- Search Word input field -->
+        <select ng-model="searchWordToDelete"
+                ng-options="searchWord.parameter for searchWord in databaseSearchWords">
+                <option value="">Choose a Search Word</option>
+        </select>
+
+        <!-- Submit button -->
+        <button type="submit"
+                class="btn btn-primary btn-sm"
+                ng-click="deleteSearchWord()">Delete Search Word</button>
+
+        <!-- Close "Delete Search Words" section -->
+      </div>
+
+      <!-- "Video List Display" section -->
       <div class="col-md-12" ng-if="videos != undefined">
         <h3>Videos:</h3>
           <ul ng-repeat="video in videos">
           <li class="row">
 
-          <!-- iFrame section -->
+          <!-- "iFrame" section -->
             <div class="col-md-8">
 
               <!-- Title -->
@@ -67,35 +100,37 @@
                               >In collection
                       </button>
 
-                      <!-- "Assign SearchWord" section -->
+                      <!-- "Assign Search Word" section -->
                       <div ng-show="video.isFavorite">
-                        <h3>Assign a Search Word to this video?</h3>
+                        <h3>Assign a Database Search Word to this video?</h3>
 
-                        <!-- "searchWords" options drop-down menu -->
+                        <!-- "Search Words" options drop-down menu -->
                         <select ng-model="searchWord"
-                                ng-options="searchWord.parameter for searchWord in databaseSearchParams">
+                                ng-options="searchWord.parameter for searchWord in databaseSearchWords">
                                 <option value="">Search Words</option>
                         </select>
 
-                        <!-- Submit button -->
+                        <!-- "Submit" button -->
                         <button type="submit"
                                 class="btn btn-primary btn-sm"
                                 ng-click="assignSearchWord(searchWord, video)">Assign Search Word
                         </button>
-
-                        <!-- Close "assign keyword" section -->
+                        <!-- Close "Assign Search Word" section -->
                       </div>
 
+                      <!-- "Already Favorite" section -->
                       <div ng-show="alreadyFavorite">
                         <span>This video is already saved as a favorite.</span>
                       </div>
                       <div ng-if="favoriteAdded == true && selectedVideo == video.id">
                         <span>This video has been added to your favorites.</span>
                       </div>
+                      <!-- Close "Already Favorite" section -->
                     </div>
-                    <!-- close row for iFrame and button -->
+                    <!-- Close row for iFrame and button -->
                   </div>
 
+              <!-- "Video Statistics" section -->
               <div class="row">
               <div class="col-md-12">
                   <div class="row meta-data">
@@ -115,6 +150,7 @@
                       <h4>Channel:<br>{{ video.snippet.channelTitle }}</h4>
                     </div>
                   </div>
+                  <!-- Close "Video Statistics" section -->
                 </div>
 
               <!-- Close iFrame section -->

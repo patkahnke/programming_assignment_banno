@@ -7,7 +7,6 @@ var connectionString = 'postgres://localhost:5432/patkahnke?user=' + user + '&pa
 
 router.post('/', function (req, res) {
   var searchWord = req.body.searchWord;
-  console.log('req.body.searchWord: ', req.body.searchWord);
   pg.connect(connectionString, function (err, client, done) {
     if (err) {
       res.sendStatus(500);
@@ -17,15 +16,15 @@ router.post('/', function (req, res) {
                   'VALUES ($1)',
                    [searchWord],
      function (err, result) {
-       done();
+      done();
 
-       if (err) {
-         res.sendStatus(500);
-         return;
-       }
+      if (err) {
+        res.sendStatus(500);
+        return;
+      }
 
-       res.sendStatus(201);
-     });
+      res.sendStatus(201);
+    });
   });
 });
 
@@ -37,14 +36,13 @@ router.get('/', function (req, res) {
 
     client.query('SELECT * FROM search_words', function (err, result) {
       done();
-console.log('result.rows: ', result.rows);
       res.send(result.rows);
     });
   });
 });
 
-router.delete('/:search_word_id', function (req, res) {
-  var id = req.params.search_word_id;
+router.delete('/:id', function (req, res) {
+  var id = req.params.id;
   pg.connect(connectionString, function (err, client, done) {
     if (err) {
       console.log(err);
@@ -55,15 +53,15 @@ router.delete('/:search_word_id', function (req, res) {
                   'WHERE search_word_id = $1',
                    [id],
      function (err, result) {
-       done();
+        done();
 
-       if (err) {
-         console.log(err);
-         res.sendStatus(500);
-         return;
-       }
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+          return;
+        }
 
-       res.sendStatus(200);
+        res.sendStatus(200);
       });
   });
 });

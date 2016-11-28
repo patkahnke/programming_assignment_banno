@@ -4,38 +4,58 @@
   <h2 class="text-center">Favorites Page</h2>
     <div class="row">
 
-      <!-- Search section -->
+      <!-- "Search" section -->
       <div class="col-md-6">
-        <h3>Search Through Your Collection</h3>
+        <h3>Search Through Your Collection of Favorites</h3>
 
-        <!-- "Sort By" options drop-down menu -->
-        <select ng-model="searchBy"
-                ng-options="searchBy.parameter for searchBy in searchWords">
-                <option value="">Search By:</option>
+        <!-- "Search By" options drop-down menu -->
+        <select ng-model="searchWord"
+                ng-options="searchWord.parameter for searchWord in databaseSearchWords">
+                <option value="">-- All --</option>
         </select>
 
         <!-- Submit button -->
         <button type="submit"
                 class="btn btn-primary btn-sm"
-                ng-click="getFavorites(searchBy)">Get Saved Videos</button>
+                ng-click="getFavorites(searchWord)">Get Saved Videos</button>
 
         <!-- Close search section -->
       </div>
 
+    <!-- "Edit Search Words" section -->
+      <!-- "Create New Search Words" section -->
     <div class="col-md-6">
       <h3>Create New Search Words</h3>
 
-      <!-- Keyword input field -->
+      <!-- Search Word input field -->
       <input  type="text"
               ng-model="newSearchWord"
               placeholder="Enter new search word" />
 
-      <!-- Submit button -->
+      <!-- "Submit" button -->
       <button type="submit"
               class="btn btn-primary btn-sm"
               ng-click="addSearchWord()">Add Search Word</button>
 
-      <!-- Close search section -->
+      <!-- Close "Create New Search Words" section -->
+    </div>
+
+    <!-- "Delete Search Words" section -->
+    <div class="col-md-6">
+      <h3>Delete Search Words</h3>
+
+      <!-- Search Word input field -->
+      <select ng-model="searchWordToDelete"
+              ng-options="searchWord.parameter for searchWord in databaseSearchWords">
+              <option value="">Choose a Search Word</option>
+      </select>
+
+      <!-- "Submit" button -->
+      <button type="submit"
+              class="btn btn-primary btn-sm"
+              ng-click="deleteSearchWord()">Delete Search Word</button>
+
+      <!-- Close "Delete Search Words" section -->
     </div>
 
       <!-- Video list display section -->
@@ -53,7 +73,7 @@
 
           <div class="row">
               <!-- Thumbnail -->
-                <div  class="col-md-8"
+                <div  class="col-md-6"
                       ng-if="favVideo.videoid !== selectedId">
                     <img
                       ng-src="{{ favVideo.thumbnail }}"
@@ -63,7 +83,7 @@
                   </div>
 
               <!-- iFrame -->
-            <div  class="col-md-8"
+            <div  class="col-md-6"
                   ng-if="favVideo.videoid == selectedId">
                 <div>
                   <iframe
@@ -76,30 +96,39 @@
                 </div>
               </div>
 
-                    <!-- Delete button -->
+              <!-- "Assign Search Word" section -->
+              <div class="col-md-4">
+                <h3>Assign a Search Word to this video?</h3>
+
+                <!-- "Search Words" options drop-down menu -->
+                <select ng-model="searchWord"
+                        ng-options="searchWord.parameter for searchWord in databaseSearchWords">
+                        <option value="">Search Words</option>
+                </select>
+
+                <!-- "Submit" button -->
+                <button type="submit"
+                        class="btn btn-primary btn-sm"
+                        ng-click="assignSearchWord(searchWord, favVideo)">Assign Search Word
+                </button>
+
+                <!-- Close "Assign Search Word" section -->
+              </div>
+
+                    <!-- "Delete Favorite" button -->
                     <div class="col-md-2">
                       <button type="submit"
                               class="btn btn-primary btn-sm"
                               ng-click="deleteFavorite(favVideo)">Delete</button>
                     </div>
-
-                    <!-- Update button -->
-                    <div class="col-md-2">
-                      <button type="submit"
-                              class="btn btn-primary btn-sm"
-                              ng-click="updateFavorite()">Update</button>
-                    </div>
                   </div>
-
-
-              <!-- Close Thumbnail/iFrame section -->
+              <!-- Close iFrame/Thumbnail section -->
             </div>
+
+          <!-- Close video list display section -->
           </div>
             </li>
         </ul>
-
-        <!-- Close video list display section -->
-      </div>
 
       <!-- Close wrapper row -->
     </div>
