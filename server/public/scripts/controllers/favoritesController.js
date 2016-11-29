@@ -67,6 +67,6 @@ myApp.controller('favoritesController',
 
     $scope.getSearchWords();
 
-    //Close search controller
+    //Close favorites controller
   },
 ]);

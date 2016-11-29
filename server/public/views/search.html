@@ -1,12 +1,10 @@
 <!-- Search page content -->
 <div class="container">
-
-  <h2 class="text-center">Welcome to YouTube VideoSearch!</h2>
-    <div class="row">
+  <div class="row">
 
       <!-- "Search" section -->
-      <div class="col-md-6">
-        <h3>Search for videos by keyword</h3>
+      <div class="col-md-8">
+        <h2>Search for YouTube Videos</h2>
 
         <!-- Search text field -->
         <input type="text"
@@ -27,41 +25,48 @@
         <!-- Close "Search" section -->
       </div>
 
-      <div class="col-md-6">
-        <h3>Create New Search Words</h3>
+      <!-- "Edit Search Words" Section -->
+      <div class="col-md-4">
+        <h2>Edit "Favorites" Search Words</h2>
+        <div>
+          <h3>Create New Search Words</h3>
 
-        <!-- Keyword input field -->
-        <input  type="text"
-                ng-model="newSearchWord"
-                placeholder="Enter new search word" />
+          <!-- Keyword input field -->
+          <input  type="text"
+                  ng-model="newSearchWord"
+                  placeholder="Enter new search word" />
 
-        <!-- Submit button -->
-        <button type="submit"
-                class="btn btn-primary btn-sm"
-                ng-click="addSearchWord()">Add Search Word</button>
+          <!-- Submit button -->
+          <button type="submit"
+                  class="btn btn-primary btn-sm"
+                  ng-click="addSearchWord()">Add Search Word</button>
 
-        <!-- Close "Create New Search Words" section -->
+          <!-- Close "Create New Search Words" section -->
+        </div>
+
+        <div>
+          <h3>Delete Search Words</h3>
+
+          <!-- Search Word input field -->
+          <select ng-model="searchWordToDelete"
+                  ng-options="searchWord.parameter for searchWord in databaseSearchWords">
+                  <option value="">Choose a Search Word</option>
+          </select>
+
+          <!-- Submit button -->
+          <button type="submit"
+                  class="btn btn-primary btn-sm"
+                  ng-click="deleteSearchWord()">Delete Search Word</button>
+
+          <!-- Close "Delete Search Words" section -->
+        </div>
       </div>
+    </div>
 
-      <div class="col-md-6">
-        <h3>Delete Search Words</h3>
-
-        <!-- Search Word input field -->
-        <select ng-model="searchWordToDelete"
-                ng-options="searchWord.parameter for searchWord in databaseSearchWords">
-                <option value="">Choose a Search Word</option>
-        </select>
-
-        <!-- Submit button -->
-        <button type="submit"
-                class="btn btn-primary btn-sm"
-                ng-click="deleteSearchWord()">Delete Search Word</button>
-
-        <!-- Close "Delete Search Words" section -->
-      </div>
 
       <!-- "Video List Display" section -->
-      <div class="col-md-12" ng-if="videos != undefined">
+
+      <div ng-if="videos != undefined">
         <h3>Videos:</h3>
           <ul ng-repeat="video in videos">
           <li class="row">

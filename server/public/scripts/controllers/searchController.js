@@ -1,20 +1,21 @@
 myApp.controller('searchController',
                 ['$scope',
-                'YoutubeFactory',
+                'YouTubeFactory',
                 'DatabaseFactory',
                 'updateVideosService',
         function ($scope,
-                  YoutubeFactory,
+                  YouTubeFactory,
                   DatabaseFactory,
                   updateVideosService) {
 
   //Factories
-  youtubeFactory = YoutubeFactory;
+  youTubeFactory = YouTubeFactory;
   databaseFactory = DatabaseFactory;
 
   // Scope Variables
   $scope.videos;
   $scope.favoriteAdded = false;
+  $scope.nextPageToken;
 
   // Database Search select menu
   $scope.searchWord;
@@ -30,8 +31,9 @@ myApp.controller('searchController',
 
   // Scope functions
   $scope.getYouTubeVideos = function () {
-    youtubeFactory.getYouTubeVideos($scope.keywords, $scope.sortBy).then(function (response) {
+    youTubeFactory.getYouTubeVideos($scope.keywords, $scope.sortBy).then(function (response) {
       $scope.videos = response;
+      console.log('$scope.videos: ', $scope.videos);
     });
   };
 

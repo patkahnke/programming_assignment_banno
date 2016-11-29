@@ -1,16 +1,15 @@
-myApp.factory('YoutubeFactory', ['$http', '$filter', '$q',
-                                'KeyFactory',
+myApp.factory('YouTubeFactory', ['$http', '$filter', '$q',
                                 'DatabaseFactory',
                                 'buildEmbedUrlsService',
+                                'youTubeKeyService',
                         function ($http, $filter, $q,
-                                KeyFactory,
                                 DatabaseFactory,
-                                buildEmbedUrlsService) {
+                                buildEmbedUrlsService,
+                                youTubeKeyService) {
 
   // PRIVATE
 
   // Factories
-  var keyFactory = KeyFactory;
   var databaseFactory = DatabaseFactory;
 
   //  Global Variables
@@ -92,7 +91,7 @@ myApp.factory('YoutubeFactory', ['$http', '$filter', '$q',
   // }
 
   function setKey() {
-    keyFactory.getAPIKey().then(function (response) {
+    youTubeKeyService.getAPIKey().then(function (response) {
       youTubeAPIKey = response;
     });
   }

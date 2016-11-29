@@ -1,15 +1,14 @@
-myApp.service('updateVideosService', ['YoutubeFactory', function (YoutubeFactory) {
-    var youtubeFactory = YoutubeFactory;
+myApp.service('updateVideosService', ['YouTubeFactory', function (YouTubeFactory) {
+    var youTubeFactory = YouTubeFactory;
 
     this.updateVids = function (video, scopeVideos, searchBy) {
-      console.log('searchBy in updateVids: ', searchBy);
       for (var i = 0, l = scopeVideos.length; i < l; i++) {
         if (scopeVideos[i].id === video.id) {
           scopeVideos[i].isFavorite = true;
         };
       };
 
-      youtubeFactory.refreshFavorites(searchBy);
+      youTubeFactory.refreshFavorites(searchBy);
       return scopeVideos;
     };
   },
