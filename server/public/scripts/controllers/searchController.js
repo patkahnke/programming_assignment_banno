@@ -18,20 +18,13 @@ myApp.controller('searchController',
   $scope.index;
   $scope.limitReached;
   $scope.favoriteAdded;
-  $scope.assigned;
   $scope.selectedID;
-
-  // YouTube Search select menu
-  $scope.sortBy;
   $scope.youtubeSearchParams = [
+    { parameter: 'relevance' },
     { parameter: 'date' },
     { parameter: 'rating' },
-    { parameter: 'relevance' },
   ];
-
-  // Database Search select menu
-  $scope.searchWord;
-  $scope.searchWords;
+  $scope.sortBy = $scope.youtubeSearchParams[0];
 
   // Scope functions
   $scope.getYouTubeVideos = function () {
@@ -49,14 +42,14 @@ myApp.controller('searchController',
       $scope.videos = updateVideosService.updateVids(video, $scope.videos);
     });
   };
-
-  $scope.assignSearchWord = function (searchWord, video) {
-    databaseFactory.assignSearchWord(searchWord, video);
-    $scope.selectedVideo = video.id;
-    $scope.assigned = true;
-    $scope.searchWord = undefined;
-    $timeout(function(){$scope.assigned = false}, 1500);
-  };
+  //
+  // $scope.assignSearchWord = function (searchWord, video) {
+  //   databaseFactory.assignSearchWord(searchWord, video);
+  //   $scope.selectedID = video.id;
+  //   $scope.assigned = true;
+  //   $scope.searchWord = undefined;
+  //   $timeout(function(){$scope.assigned = false}, 1500);
+  // };
 
   $scope.increaseIndex = function () {
     $scope.index += 10;

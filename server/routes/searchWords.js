@@ -34,7 +34,9 @@ router.get('/', function (req, res) {
       res.sendStatus(500);
     }
 
-    client.query('SELECT * FROM search_words', function (err, result) {
+    client.query('SELECT * FROM search_words ' +
+                  'ORDER BY search_word ASC',
+                  function (err, result) {
       done();
       res.send(result.rows);
     });

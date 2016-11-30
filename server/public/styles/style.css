@@ -1,9 +1,5 @@
 .jumbotron {
   margin-bottom: 0px;
-  /*background-image: url(../images/theater-curtains.jpg);*/
-  /*background-position: 0% 25%;
-  background-size: cover;
-  background-repeat: no-repeat;*/
   color: gray;
   text-shadow: black 0.2em 0.2em 0.2em;
   height: 200px;
@@ -51,4 +47,12 @@ span {
   border-bottom: 1px solid #ccc;
   border-radius: 4px;
   padding-bottom: 20px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.favButton {
+  margin-bottom: 25px;
 }
