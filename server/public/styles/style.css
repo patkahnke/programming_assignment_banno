@@ -21,3 +21,34 @@ a {
 .video-list-items {
   font-size: medium;
 }
+
+span {
+  font-size: 1.5em;
+}
+
+.bad {
+  color: red;
+}
+
+.good {
+  color: green;
+}
+
+.limitReached {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.topBox {
+  color: #555;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding-bottom: 20px;
+}
+
+.stats {
+  color: #555;
+  border-bottom: 1px solid #ccc;
+  border-radius: 4px;
+  padding-bottom: 20px;
+}

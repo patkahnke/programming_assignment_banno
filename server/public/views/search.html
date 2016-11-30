@@ -3,7 +3,7 @@
   <div class="row">
 
       <!-- "Search" section -->
-      <div class="col-md-8">
+      <div class="col-md-5 topBox">
         <h2>Search for YouTube Videos</h2>
 
         <!-- Search text field -->
@@ -25,61 +25,28 @@
         <!-- Close "Search" section -->
       </div>
 
-      <!-- "Edit Search Words" Section -->
-      <div class="col-md-4">
-        <h2>Edit "Favorites" Search Words</h2>
-        <div>
-          <h3>Create New Search Words</h3>
-
-          <!-- Keyword input field -->
-          <input  type="text"
-                  ng-model="newSearchWord"
-                  placeholder="Enter new search word" />
-
-          <!-- Submit button -->
-          <button type="submit"
-                  class="btn btn-primary btn-sm"
-                  ng-click="addSearchWord()">Add Search Word</button>
-
-          <!-- Close "Create New Search Words" section -->
-        </div>
-
-        <div>
-          <h3>Delete Search Words</h3>
-
-          <!-- Search Word input field -->
-          <select ng-model="searchWordToDelete"
-                  ng-options="searchWord.parameter for searchWord in databaseSearchWords">
-                  <option value="">Choose a Search Word</option>
-          </select>
-
-          <!-- Submit button -->
-          <button type="submit"
-                  class="btn btn-primary btn-sm"
-                  ng-click="deleteSearchWord()">Delete Search Word</button>
-
-          <!-- Close "Delete Search Words" section -->
-        </div>
+      <!-- "Search Words Edit" section -->
+      <!-- <div class="col-md-4" ng-include="'/views/searchWordsEdit.html'"></div> -->
+      <div class="col-md-5 topBox pull-right">
+        <pk-search-words-edit></pk-search-words-edit>
       </div>
     </div>
 
-
       <!-- "Video List Display" section -->
-
       <div ng-if="videos != undefined">
-        <h3>Videos:</h3>
-          <ul ng-repeat="video in videos">
+        <h3>YouTube Search Results:</h3>
+          <ul ng-repeat="video in videos | limitTo:10:index">
           <li class="row">
 
           <!-- "iFrame" section -->
-            <div class="col-md-8">
+            <div>
 
               <!-- Title -->
                 <h4 class="video-list-items" >{{ video.snippet.title }}</h4>
 
                 <div class="row">
               <!-- iFrame -->
-                  <div class="col-md-8">
+                  <div class="col-md-6">
                     <iframe
                       width="480"
                       height="360"
@@ -89,8 +56,8 @@
                     </iframe>
                   </div>
 
-                    <!-- "Add Favorite" button -->
-                    <div class="col-md-4">
+                    <!-- "Add Favorite" section -->
+                    <div class="col-md-6">
                       <button ng-show="!video.isFavorite"
                               type="submit"
                               class="btn btn-primary btn-sm"
@@ -105,13 +72,19 @@
                               >In collection
                       </button>
 
+                      <!-- "Already Favorite" section -->
+                      <div ng-show="alreadyFavorite">
+                        <span class="bad">This video is already saved as a favorite.</span>
+                      </div>
+
+
                       <!-- "Assign Search Word" section -->
                       <div ng-show="video.isFavorite">
-                        <h3>Assign a Database Search Word to this video?</h3>
+                        <span>Assign a Search Word to this video?</span><br>
 
                         <!-- "Search Words" options drop-down menu -->
                         <select ng-model="searchWord"
-                                ng-options="searchWord.parameter for searchWord in databaseSearchWords">
+                                ng-options="searchWord.parameter for searchWord in searchWords">
                                 <option value="">Search Words</option>
                         </select>
 
@@ -120,24 +93,19 @@
                                 class="btn btn-primary btn-sm"
                                 ng-click="assignSearchWord(searchWord, video)">Assign Search Word
                         </button>
+                        <div ng-show="assigned">
+                          <span class="good">Search word assigned</span>
+                        </div>
                         <!-- Close "Assign Search Word" section -->
                       </div>
-
-                      <!-- "Already Favorite" section -->
-                      <div ng-show="alreadyFavorite">
-                        <span>This video is already saved as a favorite.</span>
-                      </div>
-                      <div ng-if="favoriteAdded == true && selectedVideo == video.id">
-                        <span>This video has been added to your favorites.</span>
-                      </div>
-                      <!-- Close "Already Favorite" section -->
+                      <!-- Close "Add Favorite" section -->
                     </div>
                     <!-- Close row for iFrame and button -->
                   </div>
 
               <!-- "Video Statistics" section -->
               <div class="row">
-              <div class="col-md-12">
+              <div class="col-md-8 stats">
                   <div class="row meta-data">
                     <div class="col-md-2">
                       <h4>Views:<br>{{ video.statistics.viewCount }}</h4>
@@ -151,10 +119,10 @@
                     <div class="col-md-2">
                       <h4>Comments:<br>{{ video.statistics.commentCount }}</h4>
                     </div>
-                    <div class="col-md-4">
-                      <h4>Channel:<br>{{ video.snippet.channelTitle }}</h4>
-                    </div>
                   </div>
+                    <div>
+                      <h4>Channel: {{ video.snippet.channelTitle }}</h4>
+                    </div>
                   <!-- Close "Video Statistics" section -->
                 </div>
 
@@ -163,6 +131,15 @@
             </li>
         </ul>
 
+        <!-- "Submit" button for next videos in list -->
+        <button
+                ng-show="!limitReached"
+                type="submit"
+                class="btn btn-primary btn-md limitReached"
+                ng-click="increaseIndex()">Get More Videos
+        </button>
+        <span class="good limitReached" ng-show="limitReached">End of search results</span>
+        <footer ng-include="'/views/templates/footer.html'"
         <!-- Close video list display section -->
       </div>
 

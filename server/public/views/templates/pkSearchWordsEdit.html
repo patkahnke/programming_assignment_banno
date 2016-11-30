@@ -1,0 +1,42 @@
+<div>
+  <div>
+  <h1>{{hello}}</h1>
+  </div>
+  <h2>Add or Delete Search Words for Saved Favorites</h2>
+  <div>
+    <h3>Add Search Words</h3>
+
+    <!-- Keyword input field -->
+    <input  type="text"
+            ng-model="newSearchWord"
+            placeholder="Enter new search word" />
+
+    <!-- Submit button -->
+    <button type="submit"
+            class="btn btn-primary btn-sm"
+            ng-click="addSearchWord()">Add Search Word</button>
+            <span class="good" ng-show="added">Search Word Added</span>
+            <span class="bad" ng-show="alreadySearchWord">Already Search Word</span>
+
+    <!-- Close "Create New Search Words" section -->
+  </div>
+
+  <div>
+    <h3>Delete Search Words</h3>
+
+    <!-- Search Word input field -->
+    <select ng-model="searchWordToDelete"
+            ng-options="searchWord.parameter for searchWord in searchWords">
+            <option value="">Choose a Search Word</option>
+    </select>
+
+    <!-- Submit button -->
+    <button type="submit"
+            class="btn btn-primary btn-sm"
+            ng-click="deleteSearchWord()">Delete Search Word
+    </button>
+    <span class="good" ng-show="deleted">Search Word Deleted</span>
+
+    <!-- Close "Delete Search Words" section -->
+  </div>
+</div>

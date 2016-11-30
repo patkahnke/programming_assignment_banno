@@ -1,25 +1,25 @@
 myApp.controller('searchController',
-                ['$scope',
+                ['$scope', '$timeout',
                 'YouTubeFactory',
                 'DatabaseFactory',
                 'updateVideosService',
-        function ($scope,
+        function ($scope, $timeout,
                   YouTubeFactory,
                   DatabaseFactory,
                   updateVideosService) {
 
-  //Factories
+  // Factories
   youTubeFactory = YouTubeFactory;
   databaseFactory = DatabaseFactory;
 
   // Scope Variables
+  $scope.keywords;
   $scope.videos;
-  $scope.favoriteAdded = false;
-  $scope.nextPageToken;
-
-  // Database Search select menu
-  $scope.searchWord;
-  $scope.databaseSearchWords;
+  $scope.index;
+  $scope.limitReached;
+  $scope.favoriteAdded;
+  $scope.assigned;
+  $scope.selectedID;
 
   // YouTube Search select menu
   $scope.sortBy;
@@ -29,11 +29,16 @@ myApp.controller('searchController',
     { parameter: 'relevance' },
   ];
 
+  // Database Search select menu
+  $scope.searchWord;
+  $scope.searchWords;
+
   // Scope functions
   $scope.getYouTubeVideos = function () {
     youTubeFactory.getYouTubeVideos($scope.keywords, $scope.sortBy).then(function (response) {
       $scope.videos = response;
-      console.log('$scope.videos: ', $scope.videos);
+      $scope.index = 0;
+      $scope.limitReached = false;
     });
   };
 
@@ -45,35 +50,19 @@ myApp.controller('searchController',
     });
   };
 
-  $scope.getSearchWords = function () {
-    databaseFactory.refreshSearchWords().then(function () {
-      $scope.databaseSearchWords = databaseFactory.getSearchWords();
-    });
-  };
-
-  $scope.addSearchWord = function () {
-    databaseFactory.createSearchWord($scope.newSearchWord).then(function () {
-      databaseFactory.refreshSearchWords().then(function () {
-          $scope.searchWord = undefined;
-          $scope.getSearchWords();
-        });
-    });
-  };
-
-  $scope.deleteSearchWord = function () {
-    databaseFactory.deleteSearchWord($scope.searchWordToDelete).then(function () {
-      databaseFactory.refreshSearchWords().then(function () {
-          $scope.searchWord = undefined;
-          $scope.getSearchWords();
-        });
-    });
-  };
-
   $scope.assignSearchWord = function (searchWord, video) {
     databaseFactory.assignSearchWord(searchWord, video);
+    $scope.selectedVideo = video.id;
+    $scope.assigned = true;
     $scope.searchWord = undefined;
+    $timeout(function(){$scope.assigned = false}, 1500);
   };
 
-  $scope.getSearchWords();
+  $scope.increaseIndex = function () {
+    $scope.index += 10;
+    if ($scope.index === 40) {
+      $scope.limitReached = true;
+    };
+  };
 },
 ]);

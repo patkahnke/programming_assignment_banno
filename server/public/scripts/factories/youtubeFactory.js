@@ -54,7 +54,7 @@ myApp.factory('YouTubeFactory', ['$http', '$filter', '$q',
     var keywords;
     var requestOne;
 
-    // Replace spaces between keywords with "+" and build the request
+    // Replace spaces between keywords, reset "nextPageToken" if new search, and build request
     keywords = formatKeywords(rawKeywords);
     requestOne = buildRequestOne(keywords, sortBy, youTubeAPIKey);
 
@@ -78,17 +78,6 @@ myApp.factory('YouTubeFactory', ['$http', '$filter', '$q',
     embedVideos = checkIfFavorite(embedVideos);
     deferredThree.resolve(embedVideos);
   }
-
-  // function setKey() {
-  //   // Retrieve the YouTube API Key from the KeyFactory
-  //   if (keyFactory.getYouTubeKey() === undefined) {
-  //     keyFactory.refreshKey().then(function () {
-  //       youtubeAPIKey = keyFactory.getYouTubeKey();
-  //     });
-  //   } else {
-  //     youtubeAPIKey = keyFactory.getYouTubeKey();
-  //   };
-  // }
 
   function setKey() {
     youTubeKeyService.getAPIKey().then(function (response) {
@@ -137,14 +126,14 @@ myApp.factory('YouTubeFactory', ['$http', '$filter', '$q',
     return vidsObject;
   }
 
-  function buildRequestOne(keywordSearchString, sortBy, key) {
+  function buildRequestOne(keywordSearchString, sortBy, key, nextPageToken) {
     var baseURL = 'https://www.googleapis.com/youtube/v3/search';
 
     var query = '?part=snippet';
     query += '&q=' + keywordSearchString;
     query += '&type=video';
     query += '&order=' + sortBy.parameter;
-    query += '&maxResults=10';
+    query += '&maxResults=50';
     query += '&key=' + key;
     query += '&callback=JSON_CALLBACK';
 
