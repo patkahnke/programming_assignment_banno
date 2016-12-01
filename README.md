@@ -1,24 +1,25 @@
 # YouTube VideoSearch
 
-Features:
-  YouTube Search:
-    Search YouTube, by keyword
-    Return up to 50 videos at a time
-    Display videos ten at a time
-    Displayed thumbnails convert to autoplay embedded videos on click
-    Ability to "favorite" videos, which adds them to a database
-    Once "favorited," assign database search words to each video
+## Features:
 
-  Favorites Search:
-    Search "Favorites" database for saved videos, by search words
-    Display all requested videos, ten at a time
-    Displayed thumbnails convert to autoplay embedded videos on click
-    Assign database search words to each video
-    Delete videos
+### YouTube Search:
+#### Search YouTube, by keyword
+#### Return up to 50 videos at a time
+#### Display videos ten at a time
+#### Displayed thumbnails convert to autoplay embedded videos on click
+#### Ability to "favorite" videos, which adds them to a database
+#### Once "favorited," assign database search words to each video
 
-  Edit Search Words:
-    Add or delete search words for organizing the "Favorites" database
-    All current search words appear in a dropdown list for database search
+### Favorites Search:
+#### Search "Favorites" database for saved videos, by search words
+#### Display all requested videos, ten at a time
+#### Displayed thumbnails convert to autoplay embedded videos on click
+#### Assign database search words to each video
+#### Delete videos
+
+### Edit Search Words:
+#### Add or delete search words for organizing the "Favorites" database
+#### All current search words appear in a dropdown list for database search
 
 ## Getting Started (local server)
 
