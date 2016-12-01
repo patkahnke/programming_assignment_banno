@@ -19,22 +19,23 @@
           ng-click="getYouTubeVideos()">Get Videos
   </button>
 
-  <!-- "Search" section -->
+  <!-- "Favorites Search" section -->
   <div>
     <h3>Favorites (by saved search words)</h3>
 
-      <!-- "Search By" options drop-down menu -->
-      <select ng-model="searchWord"
-              ng-options="searchWord.parameter for searchWord in searchWords">
-              <option value="">-- All --</option>
-      </select>
+    <!-- "Search By" options drop-down menu -->
+    <select ng-model="searchWord"
+            ng-options="searchWord.parameter for searchWord in searchWords">
+            <option value="">-- All --</option>
+    </select>
 
-      <!-- Submit button -->
-      <button type="submit"
-              class="btn btn-primary btn-sm"
-              ng-click="getFavorites(searchWord)">Get Saved Videos</button>
+    <!-- Submit button -->
+    <button type="submit"
+            class="btn btn-primary btn-sm"
+            ng-click="getFavorites(searchWord)">Get Saved Videos
+    </button>
 
-      <!-- Close search section -->
+      <!-- Close "Favorites Search" section -->
     </div>
-  <!-- Close "Search" section -->
+  <!-- Close wrapper -->
 </div>

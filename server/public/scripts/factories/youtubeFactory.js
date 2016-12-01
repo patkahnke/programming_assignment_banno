@@ -79,19 +79,6 @@ myApp.factory('YouTubeFactory', ['$http', '$filter', '$q',
     deferredThree.resolve(embedVideos);
   }
 
-  function setKey() {
-    youTubeKeyService.getAPIKey().then(function (response) {
-      youTubeAPIKey = response;
-    });
-  }
-
-  function setFavorites(searchBy) {
-    // retrieve all favorited videos from the database
-    databaseFactory.refreshFavorites(searchBy).then(function () {
-      favorites = databaseFactory.getFavorites();
-    });
-  }
-
   function formatKeywords(keywords) {
     var newString = keywords.replace(/ /g, '+');
     return newString;
@@ -153,6 +140,19 @@ myApp.factory('YouTubeFactory', ['$http', '$filter', '$q',
     var request = baseURL + encodeURI(query);
 
     return request;
+  }
+
+  function setKey() {
+    youTubeKeyService.getAPIKey().then(function (response) {
+      youTubeAPIKey = response;
+    });
+  }
+
+  function setFavorites(searchBy) {
+    // retrieve all favorited videos from the database
+    databaseFactory.refreshFavorites(searchBy).then(function () {
+      favorites = databaseFactory.getFavorites();
+    });
   }
 
   // PUBLIC

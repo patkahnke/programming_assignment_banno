@@ -6,7 +6,6 @@ var password = process.env.password;
 var connectionString = 'postgres://localhost:5432/patkahnke?user=' + user + '&password=' + password;
 
 router.post('/', function (req, res) {
-  console.log('req.body ', req.body);
   pg.connect(connectionString, function (err, client, done) {
     if (err) {
       res.sendStatus(500);
@@ -36,7 +35,6 @@ router.get('/', function (req, res) {
 
     client.query('SELECT * FROM search_words', function (err, result) {
       done();
-console.log('result.rows: ', result.rows);
       res.send(result.rows);
     });
   });
