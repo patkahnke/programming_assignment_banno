@@ -41,8 +41,9 @@ myApp.factory('DatabaseFactory',
   function factoryCreateSearchWord(searchWord) {
 
     // Wrap a new search word in an object so it is able to be included in a "post" request
+    var newSearchWord = searchWord.toLowerCase();
     var searchWordObject = {};
-    searchWordObject.searchWord = searchWord;
+    searchWordObject.searchWord = newSearchWord;
 
     // Post the new search word to the database "search_words" table
     var promise = $http.post('/searchWords', searchWordObject).then(function (response) {
@@ -62,7 +63,7 @@ myApp.factory('DatabaseFactory',
     // If the "searchBy" parameter is undefined, set "searchID" to zero, which will be interpreted
     // by searchWords.js to mean that ALL favorites are requested. Otherwise, set searchID to the
     // value of searchBy
-    if (searchBy === undefined) {
+    if (searchBy === undefined || searchBy === null) {
       var searchID = 0;
     } else {
       var searchID = searchBy.search_word_id;

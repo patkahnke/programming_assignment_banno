@@ -9,8 +9,6 @@ myApp.controller('pkAssignSearchWordsController',
 
   // Scope Variables
   $scope.assigned;
-  $scope.searchWord;
-  $scope.searchWords;
 
   // Scope Functions
   $scope.assignSearchWord = function (searchWord, video) {

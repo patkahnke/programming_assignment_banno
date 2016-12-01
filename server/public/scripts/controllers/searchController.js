@@ -14,11 +14,12 @@ myApp.controller('searchController',
 
   // Scope Variables
   $scope.keywords;
-  $scope.videos;
+  $scope.youTubeVideos;
   $scope.index;
   $scope.limitReached;
   $scope.favoriteAdded;
   $scope.selectedID;
+  $scope.already;
   $scope.youtubeSearchParams = [
     { parameter: 'relevance' },
     { parameter: 'date' },
@@ -29,7 +30,8 @@ myApp.controller('searchController',
   // Scope functions
   $scope.getYouTubeVideos = function () {
     youTubeFactory.getYouTubeVideos($scope.keywords, $scope.sortBy).then(function (response) {
-      $scope.videos = response;
+      $scope.favVideos = undefined;
+      $scope.youTubeVideos = response;
       $scope.index = 0;
       $scope.limitReached = false;
     });
@@ -39,23 +41,21 @@ myApp.controller('searchController',
     databaseFactory.createFavorite(video).then(function () {
       $scope.favoriteAdded = true;
       $scope.selectedVideo = video.id;
-      $scope.videos = updateVideosService.updateVids(video, $scope.videos);
+      $scope.youTubeVideos = updateVideosService.updateVids(video, $scope.youTubeVideos);
     });
   };
-  //
-  // $scope.assignSearchWord = function (searchWord, video) {
-  //   databaseFactory.assignSearchWord(searchWord, video);
-  //   $scope.selectedID = video.id;
-  //   $scope.assigned = true;
-  //   $scope.searchWord = undefined;
-  //   $timeout(function(){$scope.assigned = false}, 1500);
-  // };
 
-  $scope.increaseIndex = function () {
+  $scope.increaseIndex = function (videos) {
     $scope.index += 10;
-    if ($scope.index === 40) {
+    if ($scope.index >= (videos.length - 10)) {
       $scope.limitReached = true;
     };
+  };
+
+  $scope.alreadyFavorite = function (video) {
+    $scope.selectedID = video.id;
+    $scope.already = true;
+    $timeout(function(){$scope.already = false}, 1500);
   };
 },
 ]);

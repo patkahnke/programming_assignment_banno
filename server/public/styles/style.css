@@ -5,17 +5,17 @@
   height: 200px;
 }
 
-.nav {
-  color: gray;
-  font-size: 2em;
-}
-
-a {
-  color: black;
-}
-
 .video-list-items {
   font-size: medium;
+}
+
+.logic {
+  visibility: hidden;
+  display:inline;
+}
+
+.deleteBtn {
+  margin-top: 30px;
 }
 
 span {
@@ -24,6 +24,10 @@ span {
 
 .bad {
   color: red;
+}
+
+.assign {
+  margin-bottom: 30px;
 }
 
 .good {
@@ -36,10 +40,14 @@ span {
 }
 
 .topBox {
-  color: #555;
+  color: black;
   border: 1px solid #ccc;
   border-radius: 4px;
   padding-bottom: 20px;
+  margin-top: 25px;
+  border-radius: 25px;
+  background-color: #DCDCDC;
+  margin-bottom: 40px;
 }
 
 .stats {
@@ -47,6 +55,14 @@ span {
   border-bottom: 1px solid #ccc;
   border-radius: 4px;
   padding-bottom: 20px;
+}
+
+.iFrames {
+  margin-bottom: 80px;
+}
+
+h2 {
+  font-size: 3em;
 }
 
 ul {

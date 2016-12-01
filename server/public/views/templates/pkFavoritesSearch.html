@@ -1,0 +1,75 @@
+<div class="container">
+
+      <div ng-if="favVideos != undefined">
+        <h3>Favorites Matching "{{ searchWordMessage }}" ({{ favVideos.length }} Total):</h3>
+          <ul ng-repeat="video in favVideos | orderBy : '-date_added' | limitTo:10:index">
+          <li class="row">
+
+          <!-- iFrame/Thumbnail section -->
+            <div class="col-md-12 iFrames">
+
+              <!-- Title -->
+                <h4 class="video-list-items" >{{ video.title }} {{ video.favorite_id }}</h4>
+
+          <div class="row">
+              <!-- Thumbnail -->
+                <div  class="col-md-6"
+                      ng-if="video.videoid !== selectedId">
+                    <img
+                      ng-src="{{ video.thumbnail }}"
+                      alt="thumbnail image"
+                      class="img-thumbnail img-fluid"
+                      ng-click="showVideo(video)">
+                  </div>
+
+              <!-- iFrame -->
+            <div  class="col-md-6"
+                  ng-if="video.videoid == selectedId">
+                <div>
+                  <iframe
+                    width="480"
+                    height="360"
+                    ng-src="{{ video.embedUrl }}"
+                    frameborder="0"
+                    allowfullscreen>
+                  </iframe>
+                </div>
+              </div>
+
+              <!-- "Assign Search Words" section -->
+              <div class="col-md-6">
+                <div>
+                  <pk-assign-search-words></pk-assign-search-words>
+                </div>
+
+                    <!-- "Delete Favorite" button -->
+                    <div>
+                      <span  class="deleteBtn">Delete Favorite?</span><br>
+                      <button type="submit"
+                              class="btn btn-primary btn-sm"
+                              ng-click="deleteFavorite(video)">Delete Favorite</button>
+                    </div>
+                  </div>
+
+
+          <!-- Close video list display section -->
+          </div>
+
+          <!-- Close wrapper row -->
+          </div>
+
+
+            </li>
+        </ul>
+        <!-- "Submit" button for next videos in list -->
+        <button
+                ng-show="!limitReached"
+                type="submit"
+                class="btn btn-primary btn-md limitReached"
+                ng-click="increaseIndex(favVideos)">Get More Videos
+        </button>
+        <span class="good limitReached" ng-show="limitReached">End of search results</span>
+        <!-- Close iFrame/Thumbnail section -->
+      </div>
+
+</div>

@@ -3,9 +3,10 @@
   <div class="row">
 
       <!-- "Search" section -->
-      <div class="col-md-5 topBox">
-        <h2>Search for YouTube Videos</h2>
+      <div class="col-md-5 topBox topBoxLeft">
+        <h2>Search for Videos</h2>
 
+        <h3>YouTube (by any keyword)</h3>
         <!-- Search text field -->
         <input type="text"
                 ng-model="keywords"
@@ -22,6 +23,24 @@
                 class="btn btn-primary btn-sm"
                 ng-click="getYouTubeVideos()">Get Videos
         </button>
+
+        <!-- "Search" section -->
+        <div>
+          <h3>Favorites (by saved search words)</h3>
+
+            <!-- "Search By" options drop-down menu -->
+            <select ng-model="searchWord"
+                    ng-options="searchWord.parameter for searchWord in searchWords">
+                    <option value="">-- All --</option>
+            </select>
+
+            <!-- Submit button -->
+            <button type="submit"
+                    class="btn btn-primary btn-sm"
+                    ng-click="getFavorites(searchWord)">Get Saved Videos</button>
+
+            <!-- Close search section -->
+          </div>
         <!-- Close "Search" section -->
       </div>
 
@@ -31,14 +50,16 @@
       <!-- Close wrapper row for top boxes -->
     </div>
 
+    <pk-favorites></pk-favorites>
+
       <!-- "Video List Display" section -->
-      <div ng-if="videos != undefined">
-        <h3>YouTube Search Results:</h3>
-          <ul ng-repeat="video in videos | limitTo:10:index">
+      <div ng-if="youTubeVideos != undefined">
+        <h3>YouTube Search Results ({{ youTubeVideos.length }} Total)</h3>
+          <ul ng-repeat="video in youTubeVideos | limitTo:10:index">
           <li class="row">
 
           <!-- "iFrame" section -->
-            <div class="col-md-12">
+            <div class="col-md-12 iFrames">
 
               <!-- Title -->
                 <h4 class="video-list-items" >{{ video.snippet.title }}</h4>
@@ -64,16 +85,16 @@
                               >Add to collection
                       </button>
                       <button ng-show="video.isFavorite"
-                              ng-init="!alreadyFavorite"
+                              ng-init="!already"
                               type="submit"
                               class="btn btn-success btn-sm favButton"
-                              ng-click="alreadyFavorite = true"
+                              ng-click="alreadyFavorite(video)"
                               >In collection
                       </button>
 
                       <!-- "Already Favorite" section -->
-                      <div ng-show="alreadyFavorite">
-                        <span class="bad">This video is already saved as a favorite.</span>
+                      <div ng-show="already && selectedID === video.id">
+                        <span class="bad">Already a favorite.</span>
                       </div>
 
 
@@ -118,10 +139,9 @@
                 ng-show="!limitReached"
                 type="submit"
                 class="btn btn-primary btn-md limitReached"
-                ng-click="increaseIndex()">Get More Videos
+                ng-click="increaseIndex(youTubeVideos)">Get More Videos
         </button>
         <span class="good limitReached" ng-show="limitReached">End of search results</span>
-        <footer ng-include="'/views/templates/footer.html'">
         <!-- Close video list display section -->
       </div>
 

@@ -1,8 +1,9 @@
-<div>
-  <span>Assign a Search Word to this video?</span><br>
+<div  class="assign">
+  <span>Assign a Search Word?</span><br>
 
   <!-- "Search Words" options drop-down menu -->
-  <select ng-model="searchWord"
+  <select
+          ng-model="searchWord"
           ng-options="searchWord.parameter for searchWord in searchWords">
           <option value="">Search Words</option>
   </select>
