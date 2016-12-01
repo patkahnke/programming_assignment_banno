@@ -109,21 +109,20 @@ myApp.factory('YouTubeFactory', ['$http', '$filter', '$q',
     return queryIdList;
   }
 
-  function checkIfFavorite(vidsObject) {
-    for (var i = 0; i < vidsObject.length; i++) {
-      vidsObject[i].isFavorite = false;
+  function checkIfFavorite(videos) {
+    for (var i = 0; i < videos.length; i++) {
+      videos[i].isFavorite = false;
     };
 
-    for (var i = 0; i < vidsObject.length; i++) {
+    for (var i = 0; i < videos.length; i++) {
       for (var j = 0; j < favorites.length; j++) {
-        if (vidsObject[i].id === favorites[j].videoid) {
-          vidsObject[i].isFavorite = true;
-          vidsObject[i].databaseId = favorites[j].id;
+        if (videos[i].id === favorites[j].videoid) {
+          videos[i].isFavorite = true;
         };
       };
     }
 
-    return vidsObject;
+    return videos;
   }
 
   function buildRequestOne(keywordSearchString, sortBy, key, nextPageToken) {

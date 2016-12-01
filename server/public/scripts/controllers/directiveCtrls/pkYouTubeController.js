@@ -1,4 +1,4 @@
-myApp.controller('searchController',
+myApp.controller('pkYouTubeController',
                 ['$scope', '$timeout',
                 'YouTubeFactory',
                 'DatabaseFactory',
@@ -20,12 +20,12 @@ myApp.controller('searchController',
   $scope.favoriteAdded;
   $scope.selectedID;
   $scope.already;
-  $scope.youtubeSearchParams = [
+  $scope.youTubeSearchParams = [
     { parameter: 'relevance' },
     { parameter: 'date' },
     { parameter: 'rating' },
   ];
-  $scope.sortBy = $scope.youtubeSearchParams[0];
+  $scope.sortBy = $scope.youTubeSearchParams[0];
 
   // Scope functions
   $scope.getYouTubeVideos = function () {
