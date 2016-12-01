@@ -19,7 +19,7 @@
                       ng-src="{{ video.thumbnail }}"
                       alt="thumbnail image"
                       class="img-thumbnail img-fluid"
-                      ng-click="showVideo(video)">
+                      ng-click="showFavoriteVideo(video)">
                   </div>
 
               <!-- iFrame -->
@@ -44,7 +44,7 @@
 
                     <!-- "Delete Favorite" button -->
                     <div>
-                      <span  class="deleteBtn">Delete Favorite?</span><br>
+                      <span  class="deleteBtn">Delete From Collection</span><br>
                       <button type="submit"
                               class="btn btn-primary btn-sm"
                               ng-click="deleteFavorite(video)">Delete Favorite</button>

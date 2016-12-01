@@ -9,17 +9,27 @@
               <!-- Title -->
               <h4 class="video-list-items" >{{ video.snippet.title }}</h4>
               <div class="row">
+                <!-- Thumbnail -->
+                  <div  class="col-md-6"
+                        ng-if="video.id !== selectedId">
+                      <img
+                        ng-src="{{ video.snippet.thumbnails.high.url }}"
+                        alt="thumbnail image"
+                        class="img-thumbnail img-fluid"
+                        ng-click="showYouTubeVideo(video)">
+                    </div>
 
-                <!-- iFrame -->
-                <div class="col-md-6">
-                  <iframe
-                    width="480"
-                    height="360"
-                    ng-src="{{ video.embedUrl }}"
-                    frameborder="0"
-                    allowfullscreen>
-                  </iframe>
-                </div>
+                    <!-- iFrame -->
+                    <div class="col-md-6"
+                          ng-if="video.id == selectedId">>
+                      <iframe
+                        width="480"
+                        height="360"
+                        ng-src="{{ video.embedUrl }}"
+                        frameborder="0"
+                        allowfullscreen>
+                      </iframe>
+                    </div>
 
                   <!-- "Add Favorite" section -->
                   <div class="col-md-6">

@@ -7,7 +7,6 @@ var connectionString = 'postgres://localhost:5432/patkahnke?user=' + user + '&pa
 
 router.post('/', function (req, res) {
   var favorite = req.body;
-  console.log('favorite: ', favorite);
   pg.connect(connectionString, function (err, client, done) {
     if (err) {
       res.sendStatus(500);
@@ -30,8 +29,6 @@ router.post('/', function (req, res) {
 });
 
 router.get('/', function (req, res) {
-  console.log('req.query: ', req.query);
-  console.log('req.query.search: ', req.query.search);
   pg.connect(connectionString, function (err, client, done) {
     if (err) {
       res.sendStatus(500);

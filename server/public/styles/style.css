@@ -9,6 +9,11 @@
   font-size: medium;
 }
 
+.btn {
+  margin-top: 5px;
+  border-radius: 15px;
+}
+
 .logic {
   visibility: hidden;
   display:inline;
@@ -27,7 +32,7 @@ span {
 }
 
 .assign {
-  margin-bottom: 30px;
+  margin-bottom: 80px;
 }
 
 .good {
@@ -58,7 +63,7 @@ span {
 }
 
 .iFrames {
-  margin-bottom: 80px;
+  margin-bottom: 40px;
 }
 
 h2 {

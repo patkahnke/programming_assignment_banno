@@ -7,7 +7,7 @@ myApp.controller('pkAssignSearchWordsController',
   // Factories
   databaseFactory = DatabaseFactory;
 
-  // Scope Variables
+  // Scope Variables (Specific to this directive)
   $scope.assigned;
 
   // Scope Functions
