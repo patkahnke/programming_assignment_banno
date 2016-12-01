@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var pg = require('pg');
+var database = process.env.database;
 var user = process.env.user;
 var password = process.env.password;
-var connectionString = 'postgres://localhost:5432/patkahnke?user=' + user + '&password=' + password;
+var connectionString = 'postgres://localhost:5432/' + database + '?user=' + user + '&password=' + password;
 
 router.post('/', function (req, res) {
   var favorite = req.body;

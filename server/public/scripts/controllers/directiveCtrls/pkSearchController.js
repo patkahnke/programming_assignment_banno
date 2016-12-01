@@ -13,13 +13,11 @@ myApp.controller('pkSearchController',
 
   // Scope functions
   $scope.getYouTubeVideos = function () {
-    $scope.databaseFactory.refreshFavorites().then(function () {
-      $scope.youTubeFactory.getYouTubeVideos($scope.keywords, $scope.sortBy).then(function (response) {
-        $scope.favVideos = undefined;
-        $scope.youTubeVideos = response;
-        $scope.index = 0;
-        $scope.limitReached = response.length <= 10 ? true : false;
-      });
+    $scope.youTubeFactory.getYouTubeVideos($scope.keywords, $scope.sortBy).then(function (response) {
+      $scope.favVideos = undefined;
+      $scope.youTubeVideos = response;
+      $scope.index = 0;
+      $scope.limitReached = response.length <= 10 ? true : false;
     });
   };
 },

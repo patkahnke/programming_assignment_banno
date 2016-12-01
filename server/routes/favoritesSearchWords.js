@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var pg = require('pg');
+var database = process.env.database;
 var user = process.env.user;
 var password = process.env.password;
-var connectionString = 'postgres://localhost:5432/patkahnke?user=' + user + '&password=' + password;
+var connectionString = 'postgres://localhost:5432/' + database + '?user=' + user + '&password=' + password;
 
 router.post('/', function (req, res) {
   pg.connect(connectionString, function (err, client, done) {
@@ -23,20 +24,7 @@ router.post('/', function (req, res) {
        }
 
        res.sendStatus(201);
-     });
-  });
-});
-
-router.get('/', function (req, res) {
-  pg.connect(connectionString, function (err, client, done) {
-    if (err) {
-      res.sendStatus(500);
-    }
-
-    client.query('SELECT * FROM search_words', function (err, result) {
-      done();
-      res.send(result.rows);
-    });
+   });
   });
 });
 
