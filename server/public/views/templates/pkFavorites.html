@@ -15,7 +15,7 @@
               <div  class="col-md-6"
                     ng-if="video.videoid !== selectedId">
                   <img
-                    ng-src="{{ video.thumbnail }}"
+                    src="{{ video.thumbnail }}"
                     alt="thumbnail image"
                     class="img-thumbnail img-fluid"
                     ng-click="showFavoriteVideo(video)">
@@ -28,7 +28,7 @@
                 <iframe
                   width="480"
                   height="360"
-                  ng-src="{{ video.embedUrl }}"
+                  src="{{ video.embedUrl }}"
                   frameborder="0"
                   allowfullscreen>
                 </iframe>

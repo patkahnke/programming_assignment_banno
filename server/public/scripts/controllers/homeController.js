@@ -9,8 +9,5 @@ myApp.controller('homeController',
   // Factories
   $scope.youTubeFactory = YouTubeFactory;
   $scope.databaseFactory = DatabaseFactory;
-
-  // Scope Variables (used by more than one directive)
-  $scope.selectedID;
 },
 ]);
