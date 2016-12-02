@@ -40,11 +40,6 @@ Set up a PostgreSQL database. Name it what you like. User and password are optio
 ```
 Download and install PostgreSQL: https://www.postgresql.org/download/
 Download a PostgreSQL client interface (Postico works well for Macs): https://eggerapps.at/postico/
-If you need to adjust the connection strings:
-line 7 in:
-server/routes/favorites.js
-server/routes/favoritesSearchWords.js
-server/routes/searchWords.js)
 ```
 
 Open a database connection using your client interface, then set up three tables in the database: "favorites," "search_words," and "favorites_search_words". The following code can be pasted directly into Postico to create the tables. Adjust accordingly for other client interfaces:
@@ -75,14 +70,27 @@ CREATE TABLE "public"."favorites_search_words" (
 );
 ```
 
-Set the "youTubeAPIKey" and "database" environment variables, as well as "user" and "password" variables for the database you created (if needed):
+Set the "youTubeAPIKey" and "database" environment variables:
 
 ```
 Locate the envExample.js file in the root folder of the project: programming_assignment_banno/envExample.js
 Rename it to env.js
 Change the 'YOUR_API_KEY' field to your actual YouTube Data API Key (string) i.e. 'AIzaSyB9HNxyzxyzM9dPh_77blD4HNe3sNPbY'
 Change the 'YOUR_DATABASE_NAME' field to your actual database name (string) i.e. 'myDataBase'
-Change the database user and password variables in the same way, if needed. If none are required, leave unchanged.
+```
+
+If your database requires a user (other than 'postgres') and password:
+1 - change those fields in the env.js file, as well, then:
+2 - replace the value of the variable "connectionString" in three files (to account for the user and password):
+
+```
+On line 7 in:
+server/routes/favorites.js
+server/routes/favoritesSearchWords.js
+server/routes/searchWords.js)
+
+Replace: 'postgres://localhost:5432/' + database;
+With:    'postgres://' + user + ':' + password + '@localhost:5432/' + database;
 ```
 
 Install the app and all its dependencies using Node Package Manager: https://www.npmjs.com/
