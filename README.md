@@ -80,9 +80,9 @@ Set the "youTubeAPIKey" and "database" environment variables, as well as "user" 
 ```
 Locate the envExample.js file in the root folder of the project: programming_assignment_banno/envExample.js
 Rename it to env.js
-Change the 'YOUR_API_KEY' field to your actual YouTube Data API Key
-Change the 'YOUR_DATABASE_NAME' field to your actual database name
-Change the database user and password variables, if needed. If none are required, leave unchanged.
+Change the 'YOUR_API_KEY' field to your actual YouTube Data API Key (string) i.e. 'AIzaSyB9HNxyzxyzM9dPh_77blD4HNe3sNPbY'
+Change the 'YOUR_DATABASE_NAME' field to your actual database name (string) i.e. 'myDataBase'
+Change the database user and password variables in the same way, if needed. If none are required, leave unchanged.
 ```
 
 Install the app and all its dependencies using Node Package Manager: https://www.npmjs.com/
