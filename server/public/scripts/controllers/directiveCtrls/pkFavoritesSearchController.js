@@ -42,11 +42,11 @@ myApp.controller('pkFavoritesSearchController',
           $scope.getSearchWords();
           $scope.added = searchWordService.isSearchWord($scope.searchWords, $scope.newSearchWord);
           $scope.newSearchWord = undefined;
-          $timeout($scope.added = undefined, 1500);
+          $timeout(function(){$scope.added = undefined}, 1500);
         });
       });
     } else {
-      $timeout($scope.alreadySearchWord = undefined, 1500);
+      $timeout(function(){$scope.alreadySearchWord = undefined}, 1500);
       $scope.newSearchWord = undefined;
     };
   };
@@ -57,7 +57,7 @@ myApp.controller('pkFavoritesSearchController',
           $scope.searchWord = undefined;
           $scope.getSearchWords();
           $scope.deleted = !searchWordService.isSearchWord($scope.searchWords, $scope.newSearchWord);
-          $timeout($scope.deleted = undefined, 1500);
+          $timeout(function(){$scope.deleted = undefined}, 1500);
         });
     });
   };
