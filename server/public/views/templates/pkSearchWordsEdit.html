@@ -1,8 +1,25 @@
 <div class="col-md-5 topBox pull-right">
-  <h2>Edit Search Words</h2>
+  <h2>Search My Favorites</h2>
   <div>
-    <h3>Add Search Words</h3>
 
+    <!-- "Favorites Search" section -->
+
+      <!-- "Search By" options drop-down menu -->
+      <select ng-model="searchWord"
+              ng-options="searchWord.parameter for searchWord in searchWords">
+              <option value="">-- All --</option>
+      </select>
+
+      <!-- Submit button -->
+      <button type="submit"
+              class="btn btn-primary btn-sm"
+              ng-click="getFavorites(searchWord)">Get Saved Videos
+      </button>
+
+        <!-- Close "Favorites Search" section -->
+      </div>
+    <div>
+      <h4>Add "Favorites" Search Words</h4>
     <!-- Keyword input field -->
     <input  type="text"
             ng-model="newSearchWord"
@@ -20,7 +37,7 @@
   </div>
 
   <div>
-    <h3>Delete Search Words</h3>
+    <h4>Delete "Favorites" Search Words</h4>
 
     <!-- Search Word input field -->
     <select ng-model="searchWordToDelete"

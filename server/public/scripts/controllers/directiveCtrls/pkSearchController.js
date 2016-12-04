@@ -23,15 +23,5 @@ myApp.controller('pkSearchController',
     });
   };
 
-  $scope.getFavorites = function (searchWord) {
-    $scope.selectedId = undefined;
-    $scope.databaseFactory.refreshFavorites(searchWord).then(function () {
-      $scope.youTubeVideos = undefined;
-      $scope.favVideos = $scope.databaseFactory.getFavorites();
-      $scope.limitReached = $scope.favVideos.length <= 10 ? true : false;
-      $scope.index = 0;
-      $scope.searchWordMessage = searchWord === undefined || searchWord === null ? 'All' : searchWord.parameter;
-    });
-  };
 },
 ]);

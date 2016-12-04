@@ -1,7 +1,7 @@
 myApp.directive('pkSearchWordsEdit', function () {
   return {
     restrict: 'E',
-    replace: true,
+    replace: false,
     templateUrl: 'views/templates/pkSearchWordsEdit.html',
     controller: 'pkSearchWordsEditController',
   };

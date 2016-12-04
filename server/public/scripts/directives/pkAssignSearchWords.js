@@ -1,7 +1,7 @@
 myApp.directive('pkAssignSearchWords', function () {
   return {
     restrict: 'E',
-    replace: true,
+    replace: false,
     templateUrl: 'views/templates/pkAssignSearchWords.html',
     controller: 'pkAssignSearchWordsController',
   };
