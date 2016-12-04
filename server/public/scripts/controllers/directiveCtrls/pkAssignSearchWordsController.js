@@ -16,7 +16,7 @@ myApp.controller('pkAssignSearchWordsController',
     $scope.selectedID = video.id;
     $scope.assigned = true;
     $scope.searchWord = undefined;
-    $timeout(function(){$scope.assigned = false}, 1500);
+    $timeout($scope.assigned = undefined, 1500);
   };
 },
 ]);

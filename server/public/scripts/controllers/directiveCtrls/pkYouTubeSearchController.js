@@ -1,4 +1,4 @@
-myApp.controller('pkSearchController',
+myApp.controller('pkYouTubeSearchController',
                 ['$scope',
         function ($scope) {
 
@@ -22,6 +22,5 @@ myApp.controller('pkSearchController',
       $scope.limitReached = response.length <= 10 ? true : false;
     });
   };
-
 },
 ]);

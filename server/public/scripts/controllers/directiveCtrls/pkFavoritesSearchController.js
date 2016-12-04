@@ -1,4 +1,4 @@
-myApp.controller('pkSearchWordsEditController',
+myApp.controller('pkFavoritesSearchController',
                 ['$scope', '$timeout',
                 'DatabaseFactory',
                 'searchWordService',
@@ -42,11 +42,11 @@ myApp.controller('pkSearchWordsEditController',
           $scope.getSearchWords();
           $scope.added = searchWordService.isSearchWord($scope.searchWords, $scope.newSearchWord);
           $scope.newSearchWord = undefined;
-          $timeout(function(){$scope.added = undefined}, 1500);
+          $timeout($scope.added = undefined, 1500);
         });
       });
     } else {
-      $timeout(function(){$scope.alreadySearchWord = undefined}, 1500);
+      $timeout($scope.alreadySearchWord = undefined, 1500);
       $scope.newSearchWord = undefined;
     };
   };
@@ -57,7 +57,7 @@ myApp.controller('pkSearchWordsEditController',
           $scope.searchWord = undefined;
           $scope.getSearchWords();
           $scope.deleted = !searchWordService.isSearchWord($scope.searchWords, $scope.newSearchWord);
-          $timeout(function(){$scope.deleted = undefined}, 1500);
+          $timeout($scope.deleted = undefined, 1500);
         });
     });
   };
