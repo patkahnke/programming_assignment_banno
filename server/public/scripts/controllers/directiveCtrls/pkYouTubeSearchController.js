@@ -2,8 +2,6 @@ myApp.controller('pkYouTubeSearchController',
                 ['$scope',
         function ($scope) {
 
-  // Scope Variables (specific to this directive)
-  $scope.selectedID;
   $scope.keywords;
   $scope.youTubeSearchParams = [
     { parameter: 'relevance' },
@@ -14,12 +12,12 @@ myApp.controller('pkYouTubeSearchController',
 
   // Scope functions
   $scope.getYouTubeVideos = function () {
-    $scope.selectedId = undefined;
     $scope.youTubeFactory.getYouTubeVideos($scope.keywords, $scope.sortBy).then(function (response) {
-      $scope.favVideos = undefined;
+      $scope.shownVideoID = null;
+      $scope.favVideos = null;
       $scope.youTubeVideos = response;
-      $scope.index = 0;
-      $scope.limitReached = response.length <= 10 ? true : false;
+      $scope.videoListIndex = 0;
+      $scope.isEndOfList = response.length <= 10 ? true : false;
     });
   };
 },

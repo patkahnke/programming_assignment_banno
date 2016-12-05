@@ -30,8 +30,8 @@
             class="btn btn-primary btn-sm"
             ng-click="addSearchWord()">Add Search Word
     </button><br>
-    <span class="good" ng-show="added">Search Word Added</span>
-    <span class="bad" ng-show="alreadySearchWord">Already Search Word</span>
+    <span class="good" ng-show="isAdded">Search Word Added</span>
+    <span class="bad" ng-show="isAlreadySearchWord">Already Search Word</span>
 
     <!-- Close "Create New Search Words" section -->
   </div>
@@ -50,7 +50,7 @@
             class="btn btn-primary btn-sm"
             ng-click="deleteSearchWord()">Delete Search Word
     </button><br>
-    <span class="good" ng-show="deleted">Search Word Deleted</span>
+    <span class="good" ng-show="isDeleted">Search Word Deleted</span>
 
     <!-- Close "Delete Search Words" section -->
   </div>

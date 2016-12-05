@@ -13,7 +13,7 @@
           class="btn btn-primary btn-sm"
           ng-click="assignSearchWord(searchWord, video)">Assign Search Word
   </button>
-  <div ng-show="assigned && selectedID === video.id">
+  <div ng-show="isAssigned && assignedVideoID === video.id">
     <span class="good">Search word assigned</span>
   </div>
   <!-- Close "Assign Search Word" section -->

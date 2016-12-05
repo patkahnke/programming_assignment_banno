@@ -7,16 +7,16 @@ myApp.controller('pkAssignSearchWordsController',
   // Factories
   databaseFactory = DatabaseFactory;
 
-  // Scope Variables (Specific to this directive)
-  $scope.assigned;
+  $scope.assignedVideoID;
+  $scope.isAssigned;
 
   // Scope Functions
   $scope.assignSearchWord = function (searchWord, video) {
     databaseFactory.assignSearchWord(searchWord, video);
-    $scope.selectedID = video.id;
-    $scope.assigned = true;
-    $scope.searchWord = undefined;
-    $timeout(function(){$scope.assigned = false}, 1500);
+    $scope.assignedVideoID = video.id;
+    $scope.isAssigned = true;
+    $scope.searchWord = null;
+    $timeout(function(){$scope.isAssigned = false}, 1500);
   };
 },
 ]);

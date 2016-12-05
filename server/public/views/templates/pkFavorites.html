@@ -13,7 +13,7 @@
 
                 <!-- Thumbnail -->
               <div  class="col-md-6"
-                    ng-if="video.videoid !== selectedId">
+                    ng-if="video.videoid !== shownFavoriteID">
                   <img
                     src="{{ video.thumbnail }}"
                     alt="thumbnail image"
@@ -23,7 +23,7 @@
 
             <!-- iFrame -->
               <div  class="col-md-6"
-                    ng-if="video.videoid == selectedId">
+                    ng-if="video.videoid === shownFavoriteID">
               <div>
                 <iframe
                   width="480"
@@ -60,12 +60,12 @@
     </ul>
     <!-- "Submit" button for next videos in list -->
     <button
-            ng-show="!limitReached"
+            ng-show="!isEndOfList"
             type="submit"
-            class="btn btn-primary btn-md limitReached"
+            class="btn btn-primary btn-md isEndOfList"
             ng-click="increaseIndex(favVideos)">Get More Videos
     </button>
-    <span class="good limitReached" ng-show="limitReached">End of search results</span>
+    <span class="good isEndOfList" ng-show="isEndOfList">End of search results</span>
     <!-- Close iFrame/Thumbnail section -->
   </div>
 </div>

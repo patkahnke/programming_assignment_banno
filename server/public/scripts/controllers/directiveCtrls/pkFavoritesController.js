@@ -2,8 +2,7 @@ myApp.controller('pkFavoritesController',
                 ['$scope',
         function ($scope) {
 
-    // Scope variables (Specific to this directive)
-    $scope.favVideos;
+    $scope.shownFavoriteID;
 
     // Scope functions
     $scope.deleteFavorite = function (favVideo) {
@@ -15,7 +14,7 @@ myApp.controller('pkFavoritesController',
     };
 
     $scope.showFavoriteVideo = function (video) {
-      $scope.selectedId = video.videoid;
+      $scope.shownFavoriteID = video.videoid;
     };
   },
 ]);
