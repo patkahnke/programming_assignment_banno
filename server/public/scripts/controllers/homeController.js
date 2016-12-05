@@ -14,17 +14,13 @@ myApp.controller('homeController',
   $scope.favVideos;
   $scope.youTubeVideos;
 
-  // Scope Variables used in more than one directive
-  $scope.searchWord;
   $scope.videoListIndex;
   $scope.isEndOfList;
 
-  // Scope function used in more than one directive
+  // Scope function used in both pkYouTube and pkFavorites directives
   $scope.increaseIndex = function (videos) {
     $scope.videoListIndex += 10;
-    if ($scope.videoListIndex >= (videos.length - 10)) {
-      $scope.isEndOfList = true;
-    };
+    $scope.isEndOfList = $scope.videoListIndex >= videos.length - 10 ? true : false;
   };
 },
 ]);

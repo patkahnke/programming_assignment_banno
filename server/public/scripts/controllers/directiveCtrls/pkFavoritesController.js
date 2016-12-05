@@ -7,10 +7,8 @@ myApp.controller('pkFavoritesController',
     // Scope functions
     $scope.deleteFavorite = function (favVideo) {
       $scope.databaseFactory.deleteFavorite(favVideo.favorite_id).then(function () {
-        $scope.databaseFactory.refreshFavorites($scope.searchWord).then(function () {
-          $scope.getFavorites();
+          $scope.getFavorites($scope.searchWord);
         });
-      });
     };
 
     $scope.showFavoriteVideo = function (video) {

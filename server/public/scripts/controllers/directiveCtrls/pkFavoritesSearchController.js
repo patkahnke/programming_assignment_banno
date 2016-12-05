@@ -12,11 +12,12 @@ myApp.controller('pkFavoritesSearchController',
   // Object containing searchWords for the select list
   $scope.searchWords;
 
+  $scope.searchWord;
+  $scope.newSearchWord;
+  $scope.searchWordMessage;
   $scope.isAlreadySearchWord;
   $scope.isAdded;
   $scope.isDeleted;
-  $scope.newSearchWord;
-  $scope.searchWordMessage;
 
   // Scope functions
   $scope.getSearchWords = function () {
