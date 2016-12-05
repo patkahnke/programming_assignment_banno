@@ -16,7 +16,7 @@ myApp.service('buildEmbedUrlsService', ['$sce', function ($sce) {
           //As a security measure, AngularJS' Strict Contextual Escaping does not allow binding of
           //arbitrary HTML that is controlled by the user, such as the embedded url below.
           //$sce.trustAsResourceUrl lets AngularJS know the url is safe.
-          embedUrl = $sce.trustAsResourceUrl('https://www.youtube.com/embed/' + videoID + autoplay);
+          embedUrl = $sce.trustAsResourceUrl('https://www.youtube.com/embed/' + videoID + '?rel=0;&autoplay=1');
 
           //add "embedUrl" to the videos object and populate it with the new embedUrls
           videosObject[i].embedUrl = embedUrl;

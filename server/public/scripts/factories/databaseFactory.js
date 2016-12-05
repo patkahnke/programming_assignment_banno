@@ -58,7 +58,6 @@ myApp.factory('DatabaseFactory',
   }
 
   function factoryRefreshFavorites(searchBy) {
-    var autoplay = '?rel=0;&autoplay=1';
 
     // If the "searchBy" parameter is undefined, set "searchID" to zero, which will be interpreted
     // by searchWords.js to mean that ALL favorites are requested. Otherwise, set searchID to the
@@ -73,7 +72,7 @@ myApp.factory('DatabaseFactory',
     var promise = $http.get('/favorites?search=' + searchID).then(function (response) {
 
       // Build embeddable urls and set autoplay to "1" for immediate playback when iFrame is loaded
-      favorites = buildEmbedUrlsService.buildEmbedUrls(response.data, autoplay);
+      favorites = buildEmbedUrlsService.buildEmbedUrls(response.data);
     });
 
     return promise;

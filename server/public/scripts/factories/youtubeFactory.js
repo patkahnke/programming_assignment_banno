@@ -72,9 +72,8 @@ myApp.factory('YouTubeFactory', ['$http', '$filter', '$q',
 
   function formatVideos(videoDataObject, deferredThree) {
     // Build embeddable URLs for video resources, and assign an "isFavorite" value of true or false
-    var autoplay = '?rel=0;&autoplay=1';
     var videosToEmbed = videoDataObject.data.items;
-    var embedVideos = buildEmbedUrlsService.buildEmbedUrls(videosToEmbed, autoplay);
+    var embedVideos = buildEmbedUrlsService.buildEmbedUrls(videosToEmbed);
     embedVideos = checkIfFavorite(embedVideos);
     deferredThree.resolve(embedVideos);
   }
