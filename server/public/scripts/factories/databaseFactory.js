@@ -20,11 +20,12 @@ myApp.factory('DatabaseFactory',
   function factoryCreateFavorite(video) {
 
     // Build a "favorite" object in the database format
-    var favorite = {};
-    favorite.title = video.snippet.title;
-    favorite.videoId = video.id;
-    favorite.thumbnail = video.snippet.thumbnails.high.url;
-    favorite.date_added = $filter('date')(new Date(), 'medium');
+    var favorite = {
+      title: video.snippet.title,
+      videoId: video.id,
+      thumbnail: video.snippet.thumbnails.high.url,
+      date_added: $filter('date')(new Date(), 'medium'),
+    };
 
     // post the favorite to the database "favorites" table
     var promise = $http.post('/favorites', favorite).then(function (response) {
@@ -41,9 +42,9 @@ myApp.factory('DatabaseFactory',
   function factoryCreateSearchWord(searchWord) {
 
     // Wrap a new search word in an object so it is able to be included in a "post" request
-    var newSearchWord = searchWord.toLowerCase();
-    var searchWordObject = {};
-    searchWordObject.searchWord = newSearchWord;
+    var searchWordObject = {
+      searchWord: searchWord.toLowerCase(),
+    };
 
     // Post the new search word to the database "search_words" table
     var promise = $http.post('/searchWords', searchWordObject).then(function (response) {
@@ -58,11 +59,8 @@ myApp.factory('DatabaseFactory',
   }
 
   function factoryRefreshFavorites(searchBy) {
-
-    // If the "searchBy" parameter is undefined, set "searchID" to zero, which will be interpreted
-    // by searchWords.js to mean that ALL favorites are requested. Otherwise, set searchID to the
-    // value of searchBy
-    if (searchBy === undefined || searchBy === null) {
+    // Request all searchwords from the database "search_words" table
+    if (!searchBy) {
       var searchID = 0;
     } else {
       var searchID = searchBy.search_word_id;
@@ -71,7 +69,7 @@ myApp.factory('DatabaseFactory',
     // Request favorites (filtered by "searchBy") from the database "favorites" table
     var promise = $http.get('/favorites?search=' + searchID).then(function (response) {
 
-      // Build embeddable urls and set autoplay to "1" for immediate playback when iFrame is loaded
+      // Build embeddable urls
       favorites = buildEmbedUrlsService.buildEmbedUrls(response.data);
     });
 
@@ -79,11 +77,10 @@ myApp.factory('DatabaseFactory',
   };
 
   function factoryRefreshSearchWords() {
-
     // Request all searchwords from the database "search_words" table
     var promise = $http.get('/searchWords').then(function (response) {
 
-        // Empty the global "searchWords" arbitrary
+        // Empty the global "searchWords" array
         searchWords.length = 0;
 
         // Populate the "searchWords" array with properly formatted searchWord objects
@@ -100,7 +97,6 @@ myApp.factory('DatabaseFactory',
   };
 
   function factoryDeleteFavorite(id) {
-
     // Delete a favorite, by id, from the database "favorites" table
     var promise = $http.delete('/favorites/' + id, id).then(function (response) {
       if (response.status == 200) {
@@ -114,7 +110,6 @@ myApp.factory('DatabaseFactory',
   }
 
   function factoryDeleteSearchWord(searchWord) {
-
     // Delete a searchWord, by id, from the database "search_words" table
     var id = searchWord.search_word_id;
     var promise = $http.delete('/searchWords/' + id, id).then(function (response) {
@@ -131,9 +126,10 @@ myApp.factory('DatabaseFactory',
   function factoryAssignSearchWord(searchWord, favorite) {
 
     // Build an object that contains primary keys for a favorite/searchWord pair
-    var pairing = {};
-    pairing.favoriteID = getFavoriteIDService.getFavoriteID(favorite, favorites);
-    pairing.searchWordID = getSearchWordIDService.getSearchWordID(searchWord, searchWords);
+    var pairing = {
+      favoriteID: getFavoriteIDService.getFavoriteID(favorite, favorites),
+      searchWordID: getSearchWordIDService.getSearchWordID(searchWord, searchWords),
+    };
 
     // Post the favorite/searchWord pair to the database "favorites_search_words" table
     $http.post('/favoritesSearchWords', pairing).then(function (response) {

@@ -9,6 +9,10 @@
   font-size: medium;
 }
 
+.thumbnail {
+  cursor: pointer;
+}
+
 .btn {
   margin-top: 5px;
   border-radius: 15px;
@@ -64,6 +68,7 @@ span {
 
 .iFrames {
   margin-bottom: 40px;
+  cursor: pointer;
 }
 
 h2 {

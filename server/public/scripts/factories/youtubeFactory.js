@@ -17,11 +17,11 @@ myApp.factory('YouTubeFactory', ['$http', '$filter', '$q',
   setKey();
 
   var favorites;
-  setFavorites();
+  setFavorites(null);
 
   function factoryGetYouTubeVideos(rawKeywords, sortBy) {
     // Main video request function that is called from the "searchController"
-    //Step three in the YouTube API request: Format the videos returned from "getVideosData".
+    // Final step in the YouTube API request: Format the videos returned from "getVideosData".
     var deferredThree = $q.defer();
     getVideosData(rawKeywords, sortBy).then(function (response) {
       var promise = formatVideos(response, deferredThree);
@@ -30,9 +30,8 @@ myApp.factory('YouTubeFactory', ['$http', '$filter', '$q',
     return deferredThree.promise;
   }
 
-  //Utility Functions
   function getVideosData(rawKeywords, sortBy) {
-    // Step two in the YouTube API request: Get more data on video IDs returned from "getVideoIds"
+    // Step two in the YouTube API request: Get more data on video resources returned from "getVideoIds"
     var deferredTwo = $q.defer();
     getVideoIds(rawKeywords, sortBy).then(function (response) {
         var requestTwo;
@@ -54,7 +53,7 @@ myApp.factory('YouTubeFactory', ['$http', '$filter', '$q',
     var keywords;
     var requestOne;
 
-    // Replace spaces between keywords, reset "nextPageToken" if new search, and build request
+    // Replace spaces between keywords and build request
     keywords = formatKeywords(rawKeywords);
     requestOne = buildRequestOne(keywords, sortBy, youTubeAPIKey);
 
@@ -71,7 +70,7 @@ myApp.factory('YouTubeFactory', ['$http', '$filter', '$q',
   }
 
   function formatVideos(videoDataObject, deferredThree) {
-    // Build embeddable URLs for video resources, and assign an "isFavorite" value of true or false
+    // Build embeddable URLs for video resources and assign an "isFavorite" value of true or false
     var videosToEmbed = videoDataObject.data.items;
     var embedVideos = buildEmbedUrlsService.buildEmbedUrls(videosToEmbed);
     embedVideos = checkIfFavorite(embedVideos);
@@ -79,15 +78,13 @@ myApp.factory('YouTubeFactory', ['$http', '$filter', '$q',
   }
 
   function formatKeywords(keywords) {
-    var newString = keywords.replace(/ /g, '+');
-    return newString;
+    return keywords.replace(/ /g, '+');
   }
 
   function buildQueryIdList(videoList) {
     //build a comma-separated list of the returned video IDs to insert into the request URL
-
     var queryIdList = '';
-    for (var i = 0; i < videoList.length - 1; i++) {
+    for (var i = 0, l = videoList.length; i < l - 1; i++) {
       queryIdList += (videoList[i].id.videoId + ',');
     }
 
@@ -96,12 +93,13 @@ myApp.factory('YouTubeFactory', ['$http', '$filter', '$q',
   }
 
   function checkIfFavorite(videos) {
-    for (var i = 0; i < videos.length; i++) {
+    favorites = databaseFactory.getFavorites();
+    for (var i = 0, l = videos.length; i < l; i++) {
       videos[i].isFavorite = false;
     };
 
-    for (var i = 0; i < videos.length; i++) {
-      for (var j = 0; j < favorites.length; j++) {
+    for (var i = 0, l = videos.length; i < l; i++) {
+      for (var j = 0, k = favorites.length; j < k; j++) {
         if (videos[i].id === favorites[j].videoid) {
           videos[i].isFavorite = true;
         };

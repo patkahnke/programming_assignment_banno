@@ -12,7 +12,7 @@ myApp.controller('pkFavoritesSearchController',
   // Object containing searchWords for the select list
   $scope.searchWords;
 
-  $scope.searchWord;
+  $scope.searchWord = null;
   $scope.newSearchWord;
   $scope.searchWordMessage;
   $scope.isAlreadySearchWord;
@@ -33,7 +33,7 @@ myApp.controller('pkFavoritesSearchController',
         $scope.favVideos = $scope.databaseFactory.getFavorites();
         $scope.videoListIndex = 0;
         $scope.isEndOfList = $scope.favVideos.length <= 10 ? true : false;
-        $scope.searchWordMessage = searchWord === undefined || searchWord === null ? 'All' : searchWord.parameter;
+        $scope.searchWordMessage = !searchWord ? 'All' : searchWord.parameter;
       });
     };
 
@@ -57,7 +57,7 @@ myApp.controller('pkFavoritesSearchController',
   $scope.deleteSearchWord = function () {
     databaseFactory.deleteSearchWord($scope.searchWordToDelete).then(function () {
       databaseFactory.refreshSearchWords().then(function () {
-          $scope.searchWord = undefined;
+          $scope.searchWord = null;
           $scope.getSearchWords();
           $scope.isDeleted = !searchWordService.isSearchWord($scope.searchWords, $scope.newSearchWord);
           $timeout(function(){$scope.isDeleted = false}, 1500);

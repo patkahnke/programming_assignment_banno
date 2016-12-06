@@ -3,9 +3,7 @@ myApp.service('updateVideosService', ['YouTubeFactory', function (YouTubeFactory
 
     this.updateVids = function (video, scopeVideos, searchBy) {
       for (var i = 0, l = scopeVideos.length; i < l; i++) {
-        if (scopeVideos[i].id === video.id) {
-          scopeVideos[i].isFavorite = true;
-        };
+        scopeVideos[i].isFavorite = scopeVideos[i].id === video.id ? true : false;
       };
 
       youTubeFactory.refreshFavorites(searchBy);
