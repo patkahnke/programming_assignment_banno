@@ -60,13 +60,9 @@ myApp.factory('DatabaseFactory',
 
   function factoryRefreshFavorites(searchBy) {
     // Request all searchwords from the database "search_words" table
-    if (!searchBy) {
-      var searchID = 0;
-    } else {
-      var searchID = searchBy.search_word_id;
-    };
+    searchID = searchBy ? searchBy.search_word_id : 0;
 
-    // Request favorites (filtered by "searchBy") from the database "favorites" table
+    // Request favorites (filtered by "searchID") from the database "favorites" table
     var promise = $http.get('/favorites?search=' + searchID).then(function (response) {
 
       // Build embeddable urls
@@ -85,11 +81,11 @@ myApp.factory('DatabaseFactory',
 
         // Populate the "searchWords" array with properly formatted searchWord objects
         for (var i = 0, l = response.data.length; i < l; i++) {
-          var param = {
+          var searchWord = {
                         parameter: response.data[i].search_word,
                         search_word_id: response.data[i].search_word_id,
                       };
-          searchWords.push(param);
+          searchWords.push(searchWord);
         }
       });
 
