@@ -13,10 +13,8 @@ myApp.controller('pkYouTubeSearchController',
   // Scope functions
   $scope.getYouTubeVideos = function () {
     $scope.youTubeFactory.getYouTubeVideos($scope.keywords, $scope.sortBy).then(function (response) {
-      $scope.shownVideoID = null;
-      $scope.favVideos = null;
+      $scope.resetScope();
       $scope.youTubeVideos = response;
-      $scope.videoListIndex = 0;
       $scope.isEndOfList = response.length <= 10 ? true : false;
     });
   };

@@ -17,7 +17,14 @@ myApp.controller('homeController',
   $scope.videoListIndex;
   $scope.isEndOfList;
 
-  // Scope function used in both pkYouTube and pkFavorites directives
+  // Scope functions used in both pkYouTube and pkFavorites directives
+  $scope.resetScope = function () {
+    $scope.shownFavoriteID = null;
+    $scope.youTubeVideos = null;
+    $scope.favVideos = null;
+    $scope.videoListIndex = 0;
+  };
+
   $scope.increaseIndex = function (videos) {
     $scope.videoListIndex += 10;
     $scope.isEndOfList = $scope.videoListIndex >= videos.length - 10 ? true : false;

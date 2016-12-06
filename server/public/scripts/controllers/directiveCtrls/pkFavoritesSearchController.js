@@ -12,7 +12,7 @@ myApp.controller('pkFavoritesSearchController',
   // Object containing searchWords for the select list
   $scope.searchWords;
 
-  $scope.searchWord = null;
+  $scope.searchWord;
   $scope.newSearchWord;
   $scope.searchWordMessage;
   $scope.isAlreadySearchWord;
@@ -26,16 +26,14 @@ myApp.controller('pkFavoritesSearchController',
     });
   };
 
-    $scope.getFavorites = function (searchWord) {
-      $scope.databaseFactory.refreshFavorites(searchWord).then(function () {
-        $scope.shownFavoriteID = null;
-        $scope.youTubeVideos = null;
-        $scope.favVideos = $scope.databaseFactory.getFavorites();
-        $scope.videoListIndex = 0;
-        $scope.isEndOfList = $scope.favVideos.length <= 10 ? true : false;
-        $scope.searchWordMessage = !searchWord ? 'All' : searchWord.parameter;
-      });
-    };
+  $scope.getFavorites = function (searchWord) {
+    $scope.databaseFactory.refreshFavorites(searchWord).then(function () {
+      $scope.resetScope();
+      $scope.favVideos = $scope.databaseFactory.getFavorites();
+      $scope.isEndOfList = $scope.favVideos.length <= 10 ? true : false;
+      $scope.searchWordMessage = !searchWord ? 'All' : searchWord.parameter;
+    });
+  };
 
   $scope.addSearchWord = function () {
     $scope.isAlreadySearchWord = searchWordService.isSearchWord($scope.searchWords, $scope.newSearchWord);

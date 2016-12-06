@@ -7,7 +7,7 @@ myApp.service('buildEmbedUrlsService', ['$sce', function ($sce) {
 
           // Account for different names for the YouTube video ID between a database video resource
           // and a YouTube API video resource
-          videoID = vids[i].videoid ? vids[i].videoid : vids[i].id;
+          videoID = vids[i].videoid || vids[i].id;
 
           //As a security measure, AngularJS' Strict Contextual Escaping does not allow binding of
           //arbitrary HTML that is controlled by the user, such as the embedded url below.
