@@ -100,7 +100,9 @@ myApp.factory('YouTubeFactory', ['$http', '$filter', '$q',
 
     for (var i = 0, l = videos.length; i < l; i++) {
       for (var j = 0, k = favorites.length; j < k; j++) {
-        videos[i].isFavorite = (videos[i].id === favorites[j].videoid) && true;
+        if (videos[i].id === favorites[j].videoid) {
+            videos[i].isFavorite = true;
+          };
       };
     }
 
