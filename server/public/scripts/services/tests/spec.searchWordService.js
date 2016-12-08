@@ -36,7 +36,7 @@ describe('searchWordService', function () {
     expect(searchWordService.isSearchWord(searchWords, testWord1)).toEqual(true);
   });
 
-  // Confirm that isSearchWord returns "true" correctly
+  // Confirm that isSearchWord returns "false" correctly
   it('returns "false" correctly', function () {
     expect(searchWordService.isSearchWord(searchWords, testWord2)).toEqual(false);
   });

@@ -141,7 +141,7 @@ myApp.factory('YouTubeFactory', ['$http', '$filter', '$q',
 
   function setKey() {
     youTubeKeyService.getAPIKey().then(function (response) {
-      youTubeAPIKey = response;
+      youTubeAPIKey = response.data.youTubeAPIKey;
     });
   }
 

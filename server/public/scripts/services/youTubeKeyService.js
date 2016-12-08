@@ -1,14 +1,6 @@
-myApp.service('youTubeKeyService', ['$http', '$q', function ($http, $q) {
+myApp.service('youTubeKeyService', ['$http', function ($http) {
     this.getAPIKey = function () {
-        var deferred = $q.defer();
-        var promise = getKey(deferred);
-        return deferred.promise;
-      };
-
-    function getKey(deferred) {
-      $http.get('/youtubeAPIKey').then(function (response) {
-        deferred.resolve(response.data.youTubeAPIKey);
-      });
-    }
+      return $http.get('/youtubeAPIKey');
+    };
   },
 ]);
