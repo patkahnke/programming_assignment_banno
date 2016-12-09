@@ -1,3 +1,6 @@
+(function () {
+'use strict';
+
 myApp.service('getSearchWordIDService', function () {
 
     // Given a word and the complete list of database search words, match the word with one from
@@ -10,3 +13,4 @@ myApp.service('getSearchWordIDService', function () {
       };
     };
   });
+})();

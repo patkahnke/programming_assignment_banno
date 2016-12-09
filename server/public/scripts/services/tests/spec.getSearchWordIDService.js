@@ -1,3 +1,6 @@
+(function () {
+'use strict';
+
 describe('getSearchWordIDService', function () {
   var getSearchWordIDService;
 
@@ -41,3 +44,4 @@ describe('getSearchWordIDService', function () {
     expect(getSearchWordIDService.getSearchWordID(testWord, searchWords)).toEqual(12);
   });
 });
+})();

@@ -1,3 +1,6 @@
+(function () {
+'use strict';
+
 myApp.controller('pkYouTubeSearchController',
                 ['$scope',
         function ($scope) {
@@ -20,3 +23,4 @@ myApp.controller('pkYouTubeSearchController',
   };
 },
 ]);
+})();

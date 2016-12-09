@@ -1,3 +1,6 @@
+(function () {
+'use strict';
+
 describe('getFavoriteIDService', function () {
   var getFavoriteIDService;
 
@@ -47,3 +50,4 @@ describe('getFavoriteIDService', function () {
     expect(getFavoriteIDService.getFavoriteID(testVideo, videos)).toEqual(12345);
   });
 });
+})();

@@ -1,3 +1,6 @@
+(function () {
+'use strict';
+
 myApp.controller('pkFavoritesController',
                 ['$scope',
         function ($scope) {
@@ -16,3 +19,4 @@ myApp.controller('pkFavoritesController',
     };
   },
 ]);
+})();

@@ -1,3 +1,7 @@
+(function () {
+'use strict';
+
+
 myApp.service('updateVideosService', ['YouTubeFactory', function (YouTubeFactory) {
     // Update the saved videos to ensure that any new favorite has been marked as "isFavorite"
     // and refresh the favorites list in the youTube factory, preparing for the next You Tube search.
@@ -13,3 +17,4 @@ myApp.service('updateVideosService', ['YouTubeFactory', function (YouTubeFactory
     };
   },
 ]);
+})();

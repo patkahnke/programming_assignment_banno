@@ -1,3 +1,6 @@
+(function () {
+'use strict';
+
 myApp.service('searchWordService', function () {
     // Given a new searchWord and the entire list of searchWords, check to see if the
     // new searchWord is already in the list
@@ -15,3 +18,4 @@ myApp.service('searchWordService', function () {
       return false;
     };
   });
+})();

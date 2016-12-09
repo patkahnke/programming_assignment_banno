@@ -1,3 +1,6 @@
+(function () {
+'use strict';
+
 myApp.controller('pkFavoritesSearchController',
                 ['$scope', '$timeout',
                 'DatabaseFactory',
@@ -7,7 +10,7 @@ myApp.controller('pkFavoritesSearchController',
                   searchWordService) {
 
   // Factories
-  databaseFactory = DatabaseFactory;
+  var databaseFactory = DatabaseFactory;
 
   // Object containing searchWords for the select list
   $scope.searchWords;
@@ -66,3 +69,4 @@ myApp.controller('pkFavoritesSearchController',
   $scope.getSearchWords();
 },
 ]);
+})();

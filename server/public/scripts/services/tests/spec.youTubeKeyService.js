@@ -1,3 +1,6 @@
+(function () {
+'use strict';
+
 describe('youTubeKeyService', function () {
   var youTubeKeyService;
   var result;
@@ -28,3 +31,4 @@ describe('youTubeKeyService', function () {
     });
   });
 });
+})();

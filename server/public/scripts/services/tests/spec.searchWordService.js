@@ -1,3 +1,6 @@
+(function () {
+'use strict';
+
 describe('searchWordService', function () {
   var searchWordService;
   var testWord1 = 'silly';
@@ -41,3 +44,4 @@ describe('searchWordService', function () {
     expect(searchWordService.isSearchWord(searchWords, testWord2)).toEqual(false);
   });
 });
+})();

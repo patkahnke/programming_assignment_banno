@@ -1,3 +1,6 @@
+(function () {
+'use strict';
+
 describe('buildEmbedUrlsService', function () {
   var buildEmbedUrlsService;
 
@@ -43,3 +46,4 @@ describe('buildEmbedUrlsService', function () {
     expect(videos[0].embedUrl).toBeDefined();
   });
 });
+})();

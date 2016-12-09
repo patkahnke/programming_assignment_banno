@@ -1,3 +1,6 @@
+(function () {
+'use strict';
+
 myApp.controller('pkAssignSearchWordsController',
                 ['$scope', '$timeout',
                 'DatabaseFactory',
@@ -5,7 +8,7 @@ myApp.controller('pkAssignSearchWordsController',
                   DatabaseFactory) {
 
   // Factories
-  databaseFactory = DatabaseFactory;
+  var databaseFactory = DatabaseFactory;
 
   $scope.assignedVideoID;
   $scope.isAssigned;
@@ -20,3 +23,4 @@ myApp.controller('pkAssignSearchWordsController',
   };
 },
 ]);
+})();

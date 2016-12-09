@@ -1,3 +1,5 @@
+(function () {
+'use strict';
 myApp.factory('DatabaseFactory',
               ['$http', '$filter',
               'buildEmbedUrlsService',
@@ -60,7 +62,7 @@ myApp.factory('DatabaseFactory',
 
   function factoryRefreshFavorites(searchBy) {
     // Request all searchwords from the database "search_words" table
-    searchID = searchBy ? searchBy.search_word_id : 0;
+    var searchID = searchBy ? searchBy.search_word_id : 0;
 
     // Request favorites (filtered by "searchID") from the database "favorites" table
     var promise = $http.get('/favorites?search=' + searchID).then(function (response) {
@@ -179,3 +181,4 @@ myApp.factory('DatabaseFactory',
   return publicApi;
 },
 ]);
+})();

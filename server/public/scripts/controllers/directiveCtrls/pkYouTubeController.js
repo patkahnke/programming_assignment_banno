@@ -1,3 +1,6 @@
+(function () {
+'use strict';
+
 myApp.controller('pkYouTubeController',
                 ['$scope', '$timeout',
                 'updateVideosService',
@@ -29,3 +32,4 @@ myApp.controller('pkYouTubeController',
   };
 },
 ]);
+})();

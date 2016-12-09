@@ -1,3 +1,6 @@
+(function () {
+'use strict';
+
 myApp.service('getFavoriteIDService', function () {
     // Given a favorite and the complete list of favorites, match the YouTube video ID of the
     // favorite with a YouTube video ID in the list of favorites, then return the
@@ -11,3 +14,4 @@ myApp.service('getFavoriteIDService', function () {
       };
     };
   });
+})();

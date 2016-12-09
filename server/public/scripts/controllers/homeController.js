@@ -1,3 +1,6 @@
+(function () {
+'use strict';
+
 myApp.controller('homeController',
                 ['$scope',
                 'YouTubeFactory',
@@ -20,6 +23,7 @@ myApp.controller('homeController',
   // Scope functions used in both pkYouTube and pkFavorites directives
   $scope.resetScope = function () {
     $scope.shownFavoriteID = null;
+    $scope.shownVideoID = null;
     $scope.youTubeVideos = null;
     $scope.favVideos = null;
     $scope.videoListIndex = 0;
@@ -31,3 +35,4 @@ myApp.controller('homeController',
   };
 },
 ]);
+})();

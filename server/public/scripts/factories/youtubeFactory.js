@@ -1,3 +1,5 @@
+(function () {
+'use strict';
 myApp.factory('YouTubeFactory', ['$http', '$filter', '$q',
                                 'DatabaseFactory',
                                 'buildEmbedUrlsService',
@@ -166,3 +168,4 @@ myApp.factory('YouTubeFactory', ['$http', '$filter', '$q',
   return publicApi;
 },
 ]);
+})();

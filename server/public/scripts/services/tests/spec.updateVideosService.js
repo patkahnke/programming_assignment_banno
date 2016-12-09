@@ -1,3 +1,6 @@
+(function () {
+'use strict';
+
 describe('updateVideosService', function () {
   var updateVideosService;
   var video = {
@@ -53,3 +56,4 @@ describe('updateVideosService', function () {
     expect(scopeVideos[0].isFavorite).toEqual(false);
   });
 });
+})();
