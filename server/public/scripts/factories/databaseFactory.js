@@ -61,7 +61,7 @@ myApp.factory('DatabaseFactory',
   }
 
   function factoryRefreshFavorites(searchBy) {
-    // Request all searchwords from the database "search_words" table
+    // Request all favorites from the database "favorites" table
     var searchID = searchBy ? searchBy.search_word_id : 0;
 
     // Request favorites (filtered by "searchID") from the database "favorites" table
