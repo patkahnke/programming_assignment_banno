@@ -9,8 +9,8 @@ myApp.controller('pkFavoritesSearchController',
                   DatabaseFactory,
                   searchWordService) {
 
-  // Factories
-  var databaseFactory = DatabaseFactory;
+  // // Factories
+  // var databaseFactory = DatabaseFactory;
 
   // Object containing searchWords for the select list
   $scope.searchWords;
@@ -24,8 +24,8 @@ myApp.controller('pkFavoritesSearchController',
 
   // Scope functions
   $scope.getSearchWords = function () {
-    databaseFactory.refreshSearchWords().then(function () {
-      $scope.searchWords = databaseFactory.getSearchWords();
+    $scope.databaseFactory.refreshSearchWords().then(function () {
+      $scope.searchWords = $scope.databaseFactory.getSearchWords();
     });
   };
 
@@ -41,8 +41,8 @@ myApp.controller('pkFavoritesSearchController',
   $scope.addSearchWord = function () {
     $scope.isAlreadySearchWord = searchWordService.isSearchWord($scope.searchWords, $scope.newSearchWord);
     if (!$scope.isAlreadySearchWord) {
-      databaseFactory.createSearchWord($scope.newSearchWord).then(function () {
-        databaseFactory.refreshSearchWords().then(function () {
+      $scope.databaseFactory.createSearchWord($scope.newSearchWord).then(function () {
+        $scope.databaseFactory.refreshSearchWords().then(function () {
           $scope.getSearchWords();
           $scope.isAdded = searchWordService.isSearchWord($scope.searchWords, $scope.newSearchWord);
           $timeout(function(){$scope.isAdded = false}, 1500);
@@ -56,8 +56,8 @@ myApp.controller('pkFavoritesSearchController',
   };
 
   $scope.deleteSearchWord = function () {
-    databaseFactory.deleteSearchWord($scope.searchWordToDelete).then(function () {
-      databaseFactory.refreshSearchWords().then(function () {
+    $scope.databaseFactory.deleteSearchWord($scope.searchWordToDelete).then(function () {
+      $scope.databaseFactory.refreshSearchWords().then(function () {
           $scope.searchWord = null;
           $scope.getSearchWords();
           $scope.isDeleted = !searchWordService.isSearchWord($scope.searchWords, $scope.newSearchWord);

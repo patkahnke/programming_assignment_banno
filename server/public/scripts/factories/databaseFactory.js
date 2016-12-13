@@ -69,6 +69,7 @@ myApp.factory('DatabaseFactory',
 
       // Build embeddable urls
       favorites = buildEmbedUrlsService.buildEmbedUrls(response.data);
+      console.log('favorites: ', favorites);
     });
 
     return promise;

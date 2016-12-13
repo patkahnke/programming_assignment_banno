@@ -20,6 +20,7 @@ module.exports = function(config) {
       'server/public/vendors/angular-mocks.js',
       'server/public/scripts/clientapp.js',
       'server/public/scripts/controllers/directiveCtrls/*.js',
+      'server/public/scripts/controllers/directiveCtrls/tests/*.js',
       'server/public/scripts/controllers/*.js',
       'server/public/scripts/directives/*.js',
       'server/public/scripts/factories/*.js',
