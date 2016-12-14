@@ -30,13 +30,14 @@ myApp.factory('DatabaseFactory',
     };
 
     // post the favorite to the database "favorites" table
-    var promise = $http.post('/favorites', favorite).then(function (response) {
-      if (response.status == 201) {
-        console.log('favorite added to database');
-      } else {
-        console.log('Error', response.data);
-      }
-    });
+    var promise = $http.post('/favorites', favorite)
+      .then(function (response) {
+        if (response.status === 201) {
+          console.log('favorite added to database');
+        } else {
+          console.log('Error', response.data);
+        }
+      });
 
     return promise;
   }
@@ -49,13 +50,14 @@ myApp.factory('DatabaseFactory',
     };
 
     // Post the new search word to the database "search_words" table
-    var promise = $http.post('/searchWords', searchWordObject).then(function (response) {
-      if (response.status == 201) {
-        console.log('searchWord added to database');
-      } else {
-        console.log('Error', response.data);
-      }
-    });
+    var promise = $http.post('/searchWords', searchWordObject)
+      .then(function (response) {
+        if (response.status === 201) {
+          console.log('searchWord added to database');
+        } else {
+          console.log('Error', response.data);
+        }
+      });
 
     return promise;
   }

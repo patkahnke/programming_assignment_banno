@@ -3,11 +3,10 @@
 
 myApp.controller('pkAssignSearchWordsController',
                 ['$scope', '$timeout',
-                'DatabaseFactory',
+                 'DatabaseFactory',
         function ($scope, $timeout,
                   DatabaseFactory) {
 
-  // Factories
   var databaseFactory = DatabaseFactory;
 
   $scope.assignedVideoID;
@@ -15,11 +14,14 @@ myApp.controller('pkAssignSearchWordsController',
 
   // Scope Functions
   $scope.assignSearchWord = function (searchWord, video) {
+    console.log('searchword, video: ', searchWord, video);
     databaseFactory.assignSearchWord(searchWord, video);
     $scope.assignedVideoID = video.id;
     $scope.isAssigned = true;
     $scope.searchWord = null;
-    $timeout(function(){$scope.isAssigned = false}, 1500);
+    $timeout(function () {
+        $scope.isAssigned = false;
+      }, 1500);
   };
 },
 ]);

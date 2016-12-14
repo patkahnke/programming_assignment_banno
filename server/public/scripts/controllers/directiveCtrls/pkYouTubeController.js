@@ -4,8 +4,12 @@
 myApp.controller('pkYouTubeController',
                 ['$scope', '$timeout',
                 'updateVideosService',
+                'DatabaseFactory',
         function ($scope, $timeout,
-                  updateVideosService) {
+                  updateVideosService,
+                  DatabaseFactory) {
+
+  var databaseFactory = DatabaseFactory;
 
   $scope.selectedVideoID;
   $scope.shownVideoID;
@@ -14,7 +18,7 @@ myApp.controller('pkYouTubeController',
 
   // Scope functions
   $scope.addFavorite = function (video) {
-    $scope.databaseFactory.createFavorite(video).then(function () {
+    databaseFactory.createFavorite(video).then(function () {
       $scope.favoriteAdded = true;
       $scope.selectedVideoID = video.id;
       $scope.youTubeVideos = updateVideosService.updateVids(video, $scope.youTubeVideos);
@@ -24,7 +28,9 @@ myApp.controller('pkYouTubeController',
   $scope.alreadyFavorite = function (video) {
     $scope.selectedVideoID = video.id;
     $scope.isAlreadyFav = true;
-    $timeout(function(){$scope.isAlreadyFav = false}, 1500);
+    $timeout(function () {
+        $scope.isAlreadyFav = false;
+      }, 1500);
   };
 
   $scope.showYouTubeVideo = function (video) {

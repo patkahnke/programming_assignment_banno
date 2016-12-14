@@ -2,8 +2,10 @@
 'use strict';
 
 myApp.controller('pkYouTubeSearchController',
-                ['$scope',
-        function ($scope) {
+                ['$scope', 'YouTubeFactory',
+        function ($scope, YouTubeFactory) {
+
+  var youTubeFactory = YouTubeFactory;
 
   $scope.keywords;
   $scope.youTubeSearchParams = [
@@ -15,7 +17,7 @@ myApp.controller('pkYouTubeSearchController',
 
   // Scope functions
   $scope.getYouTubeVideos = function () {
-    $scope.youTubeFactory.getYouTubeVideos($scope.keywords, $scope.sortBy).then(function (response) {
+    youTubeFactory.getYouTubeVideos($scope.keywords, $scope.sortBy).then(function (response) {
       $scope.resetScope();
       $scope.youTubeVideos = response;
       $scope.isEndOfList = response.length <= 10 ? true : false;

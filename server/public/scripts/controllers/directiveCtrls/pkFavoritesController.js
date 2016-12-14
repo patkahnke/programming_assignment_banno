@@ -2,14 +2,16 @@
 'use strict';
 
 myApp.controller('pkFavoritesController',
-                ['$scope',
-        function ($scope) {
+                ['$scope', 'DatabaseFactory',
+        function ($scope, DatabaseFactory) {
+
+    var databaseFactory = DatabaseFactory;
 
     $scope.shownFavoriteID;
 
     // Scope functions
     $scope.deleteFavorite = function (favVideo) {
-      $scope.databaseFactory.deleteFavorite(favVideo.favorite_id).then(function () {
+      databaseFactory.deleteFavorite(favVideo.favorite_id).then(function () {
           $scope.getFavorites($scope.searchWord);
         });
     };

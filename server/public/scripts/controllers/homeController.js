@@ -3,15 +3,7 @@
 
 myApp.controller('homeController',
                 ['$scope',
-                'YouTubeFactory',
-                'DatabaseFactory',
-        function ($scope,
-                  YouTubeFactory,
-                  DatabaseFactory) {
-
-  // Factories
-  $scope.youTubeFactory = YouTubeFactory;
-  $scope.databaseFactory = DatabaseFactory;
+        function ($scope) {
 
   // Main objects containing Favorite videos and YouTube videos
   $scope.favVideos;

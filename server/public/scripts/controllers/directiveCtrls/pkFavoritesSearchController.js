@@ -9,8 +9,8 @@ myApp.controller('pkFavoritesSearchController',
                   DatabaseFactory,
                   searchWordService) {
 
-  // // Factories
-  // var databaseFactory = DatabaseFactory;
+  // Factories
+  var databaseFactory = DatabaseFactory;
 
   // Object containing searchWords for the select list
   $scope.searchWords;
@@ -24,15 +24,15 @@ myApp.controller('pkFavoritesSearchController',
 
   // Scope functions
   $scope.getSearchWords = function () {
-    $scope.databaseFactory.refreshSearchWords().then(function () {
-      $scope.searchWords = $scope.databaseFactory.getSearchWords();
+    databaseFactory.refreshSearchWords().then(function () {
+      $scope.searchWords = databaseFactory.getSearchWords();
     });
   };
 
   $scope.getFavorites = function (searchWord) {
-    $scope.databaseFactory.refreshFavorites(searchWord).then(function () {
+    databaseFactory.refreshFavorites(searchWord).then(function () {
       $scope.resetScope();
-      $scope.favVideos = $scope.databaseFactory.getFavorites();
+      $scope.favVideos = databaseFactory.getFavorites();
       $scope.isEndOfList = $scope.favVideos.length <= 10 ? true : false;
       $scope.searchWordMessage = !searchWord ? 'All' : searchWord.parameter;
     });
@@ -41,27 +41,33 @@ myApp.controller('pkFavoritesSearchController',
   $scope.addSearchWord = function () {
     $scope.isAlreadySearchWord = searchWordService.isSearchWord($scope.searchWords, $scope.newSearchWord);
     if (!$scope.isAlreadySearchWord) {
-      $scope.databaseFactory.createSearchWord($scope.newSearchWord).then(function () {
-        $scope.databaseFactory.refreshSearchWords().then(function () {
+      databaseFactory.createSearchWord($scope.newSearchWord).then(function () {
+        databaseFactory.refreshSearchWords().then(function () {
           $scope.getSearchWords();
           $scope.isAdded = searchWordService.isSearchWord($scope.searchWords, $scope.newSearchWord);
-          $timeout(function(){$scope.isAdded = false}, 1500);
           $scope.newSearchWord = null;
+          $timeout(function () {
+              $scope.isAdded = false;
+            }, 1500);
         });
       });
     } else {
-      $timeout(function(){$scope.isAlreadySearchWord = false}, 1500);
       $scope.newSearchWord = null;
+      $timeout(function () {
+          $scope.isAlreadySearchWord = false;
+        }, 1500);
     }
   };
 
   $scope.deleteSearchWord = function () {
-    $scope.databaseFactory.deleteSearchWord($scope.searchWordToDelete).then(function () {
-      $scope.databaseFactory.refreshSearchWords().then(function () {
+    databaseFactory.deleteSearchWord($scope.searchWordToDelete).then(function () {
+      databaseFactory.refreshSearchWords().then(function () {
           $scope.searchWord = null;
           $scope.getSearchWords();
           $scope.isDeleted = !searchWordService.isSearchWord($scope.searchWords, $scope.newSearchWord);
-          $timeout(function(){$scope.isDeleted = false}, 1500);
+          $timeout(function () {
+              $scope.isDeleted = false;
+            }, 1500);
         });
     });
   };
