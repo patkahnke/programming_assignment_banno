@@ -52,7 +52,7 @@ myApp.controller('pkFavoritesSearchController',
     } else {
       $timeout(function(){$scope.isAlreadySearchWord = false}, 1500);
       $scope.newSearchWord = null;
-    };
+    }
   };
 
   $scope.deleteSearchWord = function () {

@@ -73,7 +73,7 @@ myApp.factory('DatabaseFactory',
     });
 
     return promise;
-  };
+  }
 
   function factoryRefreshSearchWords() {
     // Request all searchwords from the database "search_words" table
@@ -93,7 +93,7 @@ myApp.factory('DatabaseFactory',
       });
 
     return promise;
-  };
+  }
 
   function factoryDeleteFavorite(id) {
     // Delete a favorite, by id, from the database "favorites" table

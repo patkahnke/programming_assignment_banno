@@ -26,7 +26,7 @@ describe('pkFavoritesSearchController', function () {
     $httpBackend = _$httpBackend_;
     $scope = $rootScope.$new();
     $timeout = _$timeout_;
-    databaseFactory = _DatabaseFactory_;
+    $scope.databaseFactory = _DatabaseFactory_;
     searchWordService = _searchWordService_;
 
     createController = function () {
@@ -79,7 +79,7 @@ describe('pkFavoritesSearchController', function () {
           $httpBackend.flush();
 
         expect($scope.favVideos).toEqual(videosResponse);
-    })
+    });
 
       // expect(scope.retrievedUrls).toEqual(["http://www.google.com", "http://angularjs.org", "http://amazon.com"]);
       // expect(scope.parseOriginalUrlStatus).toEqual('waiting');

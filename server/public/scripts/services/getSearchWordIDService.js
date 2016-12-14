@@ -9,8 +9,8 @@ myApp.service('getSearchWordIDService', function () {
       for (var i = 0, l = searchWords.length; i < l; i++) {
         if (searchWords[i].parameter === searchWord.parameter) {
           return searchWords[i].search_word_id;
-        };
-      };
+        }
+      }
     };
   });
 })();

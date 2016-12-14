@@ -98,14 +98,14 @@ myApp.factory('YouTubeFactory', ['$http', '$filter', '$q',
     favorites = databaseFactory.getFavorites();
     for (var i = 0, l = videos.length; i < l; i++) {
       videos[i].isFavorite = false;
-    };
+    }
 
     for (var i = 0, l = videos.length; i < l; i++) {
       for (var j = 0, k = favorites.length; j < k; j++) {
         if (videos[i].id === favorites[j].videoid) {
-            videos[i].isFavorite = true;
-          };
-      };
+          videos[i].isFavorite = true;
+        }
+      }
     }
 
     return videos;

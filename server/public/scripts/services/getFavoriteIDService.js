@@ -10,8 +10,8 @@ myApp.service('getFavoriteIDService', function () {
       for (var i = 0, l = favorites.length; i < l; i++) {
         if (favorites[i].videoid === favorite.id || favorites[i].videoid === favorite.videoid) {
           return favorites[i].favorite_id;
-        };
-      };
+        }
+      }
     };
   });
 })();
