@@ -16,6 +16,14 @@ myApp.controller('pkYouTubeSearchController',
   $scope.sortBy = $scope.youTubeSearchParams[0];
 
   // Scope functions
+  $scope.resetScope = function () {
+    $scope.shownFavoriteID = null;
+    $scope.shownVideoID = null;
+    $scope.youTubeVideos = null;
+    $scope.favVideos = null;
+    $scope.videoListIndex = 0;
+  };
+
   $scope.getYouTubeVideos = function () {
     youTubeFactory.getYouTubeVideos($scope.keywords, $scope.sortBy).then(function (response) {
       $scope.resetScope();

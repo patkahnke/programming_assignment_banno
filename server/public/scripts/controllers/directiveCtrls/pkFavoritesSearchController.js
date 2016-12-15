@@ -23,6 +23,14 @@ myApp.controller('pkFavoritesSearchController',
   $scope.isDeleted;
 
   // Scope functions
+  $scope.resetScope = function () {
+    $scope.shownFavoriteID = null;
+    $scope.shownVideoID = null;
+    $scope.youTubeVideos = null;
+    $scope.favVideos = null;
+    $scope.videoListIndex = 0;
+  };
+
   $scope.getSearchWords = function () {
     databaseFactory.refreshSearchWords().then(function () {
       $scope.searchWords = databaseFactory.getSearchWords();
