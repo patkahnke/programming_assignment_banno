@@ -14,7 +14,6 @@ myApp.controller('pkAssignSearchWordsController',
 
   // Scope Functions
   $scope.assignSearchWord = function (searchWord, video) {
-    console.log('searchword, video: ', searchWord, video);
     databaseFactory.assignSearchWord(searchWord, video);
     $scope.assignedVideoID = video.id;
     $scope.isAssigned = true;
